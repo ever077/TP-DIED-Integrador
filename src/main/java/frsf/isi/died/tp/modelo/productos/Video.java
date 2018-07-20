@@ -73,6 +73,10 @@ public class Video extends MaterialCapacitacion {
 		}
 		return false;
 	}
+
+	public void setDuracion(Integer duracion) {
+		this.duracion = duracion;
+	}
 	
 	
 }

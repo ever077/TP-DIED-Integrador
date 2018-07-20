@@ -20,4 +20,5 @@ public interface MaterialCapacitacionDao {
 	public List<MaterialCapacitacion> buscarCamino(Integer idOrigen, Integer idDestino, Integer saltos);
 	public MaterialCapacitacion buscarMaterial(Integer idMaterialCapacitacion) throws MaterialNotFoundException;
 	public void modificarLibro(Libro l) throws IOException;
+	public void eliminarLibro(Integer id) throws MaterialNotFoundException;
 }

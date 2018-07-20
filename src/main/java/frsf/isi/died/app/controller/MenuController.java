@@ -11,6 +11,7 @@ import frsf.isi.died.app.vista.grafo.GrafoPanel;*/
 //importar cuando hagamos lode grafo *************************************************************************************
 
 import frsf.isi.died.app.vista.material.LibroPanel;
+import frsf.isi.died.app.vista.material.LibroPanelEliminacion;
 import frsf.isi.died.app.vista.material.LibroPanelModificacion;
 
 public class MenuController {
@@ -37,6 +38,19 @@ public class MenuController {
 			 framePrincipal.setContentPane(controllerModificacion.getPanelLibro());
 			// ArrayList filaSeleccionada = controller2.getFilaSeleccionada();
 			 //controller2.cargarCampos(filaSeleccionada);
+			 break;
+		case BAJA_LIBROS:
+			
+			 LibroPanelEliminacion panelEliminacion = new LibroPanelEliminacion();
+			 LibroController controllerEliminacion = new LibroController(panelEliminacion);
+			 controllerEliminacion.crearPanel();
+			 framePrincipal.setContentPane(controllerEliminacion.getPanelLibro());
+			// ArrayList filaSeleccionada = controller2.getFilaSeleccionada();
+			 //controller2.cargarCampos(filaSeleccionada);
+			 break;
+		case ALTA_VIDEOS:
+			
+			 
 			 break;
 		case VER_GRAFO:
 			/*JPanel panel = new JPanel(new BorderLayout());

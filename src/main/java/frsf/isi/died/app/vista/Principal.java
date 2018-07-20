@@ -7,6 +7,7 @@ import javax.swing.JMenuItem;
 
 import frsf.isi.died.app.controller.TiposAcciones;
 import frsf.isi.died.app.controller.MenuController;
+import javax.swing.JTextField;
 
 public class Principal {
 	private static JMenuItem menuItem_NuevoVideo;
@@ -14,6 +15,7 @@ public class Principal {
 	private static JMenuItem menuItem_Salir;
 	private static JMenuItem menuItem_BuscarCamino;
 	private static JMenuItem menuItem_ModificarLibro;
+	private static JMenuItem menuItem_EliminarLibro;
 	public static void main(String[] args) {
 	    javax.swing.SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {
@@ -44,14 +46,20 @@ public class Principal {
 	        menuItem_ModificarLibro = new JMenuItem("Modificar Libro");
 	        MenuLibro.add(menuItem_ModificarLibro);
 	        
+	        menuItem_EliminarLibro = new JMenuItem("Eliminar Libro");
+	        MenuLibro.add(menuItem_EliminarLibro);
+	        
 	        menuItem_NuevoLibro.addActionListener(e -> controller.showView(TiposAcciones.ALTA_LIBROS));
 	        menuItem_ModificarLibro.addActionListener(e -> controller.showView(TiposAcciones.MODIFICACION_LIBROS));
+	        menuItem_EliminarLibro.addActionListener(e -> controller.showView(TiposAcciones.BAJA_LIBROS));
 	        
 	        JMenu MenuVideo = new JMenu("Video");
 	        menu.add(MenuVideo);
 
 	        menuItem_NuevoVideo = new JMenuItem("Nuevo Video");
 	        MenuVideo.add(menuItem_NuevoVideo);
+	        MenuVideo.addActionListener(e -> controller.showView(TiposAcciones.ALTA_VIDEOS));
+	        
 	        menu.addSeparator();
 	        menuItem_Salir = new JMenuItem("Salir");
 	        menuItem_Salir.addActionListener(e->System.exit(99));

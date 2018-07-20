@@ -166,9 +166,10 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 					fila.set(2, l.getCosto().toString());
 					fila.set(3, l.getPaginas().toString());
 					fila.set(4, l.getPrecioCompra().toString());
+					
 				}
-				// agrego fila al nuevo archivo
-				dataSource.writeLine(escritor, fila);
+				// sobreescribo la linea
+					dataSource.writeLine(escritor, fila);
 				
 				// Alternativo -> No guarda con el mismo formato
 			/*	for(int i = 0; i < fila.size() ; i++) {
@@ -193,5 +194,50 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 	    }
 	}
 	
+	public void eliminarLibro(Integer id) throws MaterialNotFoundException {
+		List<List<String>> listaArchivo = dataSource.readFile("libros.csv");
+		FileWriter fichero = null;
+	    PrintWriter escritor = null;
+	    File nuevoArchivo = null;
+	    PrintWriter escritorNuevo = null;
+		try {
+			fichero = new FileWriter("libros.csv");
+			escritor = new PrintWriter(fichero);
+			escritor.flush();
+			//nuevoArchivo = new File("libros.csv");
+			//escritorNuevo = new PrintWriter(nuevoArchivo);
+			//escritorNuevo.flush();
+			for(List<String> fila : listaArchivo) {
+				if(!(fila.get(0).equals(id.toString()))) {
+					// Escribimos la linea en el nuevo archivo
+					
+					dataSource.writeLine(escritor, fila);
+				}
+				
+			//	this.cargarGrafo();
+				// Alternativo -> No guarda con el mismo formato
+			/*	for(int i = 0; i < fila.size() ; i++) {
+					escritor.write(fila.get(i));
+				}
+				escritor.println();
+			*/
+			}
+			escritor.close();
+			//escritorNuevo.close();
+		}
+		catch(IOException e){
+			JOptionPane.showMessageDialog(null, "Error al escribir en el archivo de texto: "+e.getMessage());
+		}
+		finally {
+	        if(fichero != null){
+	            try {
+	                fichero.close();
+	            } catch (IOException e) {
+	                JOptionPane.showMessageDialog(null, "Error al cerrar archivo de texto: "+e.getMessage());
+	            }
+	        }
+	    }
+		
+	}
 	
 }

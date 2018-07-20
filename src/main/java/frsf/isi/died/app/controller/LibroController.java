@@ -78,7 +78,15 @@ public class LibroController {
 			System.out.println(e.getMessage());
 		}
 		
-		
+	}
+	
+	public void eliminarLibro(Integer id) throws MaterialNotFoundException {
+		try {
+			materialDAO.eliminarLibro(id);
+			this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);
+		}catch(MaterialNotFoundException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	 
 }
