@@ -14,11 +14,11 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import frsf.isi.died.app.controller.VideoController;
-import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.tp.modelo.productos.Video;
 
-public class VideoPanelModificacion extends VPanel {
+public class VideoPanelEliminacion extends VPanel {
+	
 	private JScrollPane scrollPane;
 	private JTable tabla;
 	private JLabel lblTitulo;
@@ -31,16 +31,15 @@ public class VideoPanelModificacion extends VPanel {
 
 	private JTextField txtDuracion;
 	private JTextField txtCalificacion;
-	private JButton btnModificar;
+	private JButton btnEliminar;
 	private JButton btnCancelar;
 
 	private VideoTableModel tableModel;
-
 	private VideoController controller;
 	// Id del video que selecciona el usuario
 	private Integer idVideoSeleccionado = 0;
 	
-	public VideoPanelModificacion() {
+	public VideoPanelEliminacion() {
 		this.setLayout(new GridBagLayout());
 		tableModel = new VideoTableModel();
 	}
@@ -54,28 +53,29 @@ public class VideoPanelModificacion extends VPanel {
 		
 		txtTitulo = new JTextField();
 		txtTitulo.setColumns(40);
+		txtTitulo.setEditable(false);
 		gridConst.gridx=1;
 		gridConst.gridwidth=5;
 		this.add(txtTitulo, gridConst);
 		
+		
 
-		btnModificar = new JButton("Modificar");
-		btnModificar.addActionListener( e ->{
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener( e ->{
 			try {
-				Double costo = Double.valueOf(txtCosto.getText());
-				Integer duracion = Integer.valueOf(txtDuracion.getText());
-				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
-				controller.verificarTitulo(txtTitulo.getText());
-				controller.verificarCalificacion(Integer.valueOf(calificacion));
-				controller.modificarVideo(idVideoSeleccionado, txtTitulo.getText(), costo, duracion, calificacion);
+				if(!txtTitulo.getText().isEmpty()) {
+					Double costo = Double.valueOf(txtCosto.getText());
+					Integer duracion = Integer.valueOf(txtDuracion.getText());
+					Integer calificacion = Integer.valueOf(txtCalificacion.getText());
+					controller.verificarTitulo(txtTitulo.getText());
+					controller.verificarCalificacion(Integer.valueOf(calificacion));
+					controller.eliminarVideo(idVideoSeleccionado);
+				}
 				
 				txtTitulo.setText("");
 				txtCosto.setText("");
 				txtDuracion.setText("");
 				txtCalificacion.setText("");
-			}
-			catch(DataOutOfBoundException d) {
-				JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
 			}
 			catch(MaterialNotFoundException mex) {
 				JOptionPane.showMessageDialog(this, mex.getMessage(), "Dato no encontrado", JOptionPane.ERROR_MESSAGE);
@@ -88,7 +88,7 @@ public class VideoPanelModificacion extends VPanel {
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		gridConst.gridx=6;
-		this.add(btnModificar, gridConst);
+		this.add(btnEliminar, gridConst);
 		
 		
 		lblCosto= new JLabel("Costo: ");		
@@ -99,6 +99,7 @@ public class VideoPanelModificacion extends VPanel {
 		
 		txtCosto = new JTextField();
 		txtCosto.setColumns(5);
+		txtCosto.setEditable(false);
 		gridConst.gridx=1;
 		this.add(txtCosto, gridConst);
 		
@@ -108,6 +109,7 @@ public class VideoPanelModificacion extends VPanel {
 		
 		txtDuracion = new JTextField();
 		txtDuracion.setColumns(5);
+		txtDuracion.setEditable(false);
 		gridConst.gridx=3;
 		this.add(txtDuracion, gridConst);
 		
@@ -117,6 +119,7 @@ public class VideoPanelModificacion extends VPanel {
 		
 		txtCalificacion = new JTextField();
 		txtCalificacion.setColumns(5);
+		txtCalificacion.setEditable(false);
 		gridConst.gridx=5;
 		this.add(txtCalificacion, gridConst);
 		
@@ -161,7 +164,7 @@ public class VideoPanelModificacion extends VPanel {
 		int fila = tabla.getSelectedRow();
 		for(int i = 0; i < 5; i++) {
 			if(i == 0) {
-				// Capturo la ID del video seleccionado
+				// Capturo la ID del libro seleccionado
 				idVideoSeleccionado = (Integer) tabla.getValueAt(fila, i);
 			}else {
 				lista.add(tabla.getValueAt(fila, i));
@@ -171,7 +174,7 @@ public class VideoPanelModificacion extends VPanel {
 	}
 	public void cargarCampos(ArrayList lista){
 		txtTitulo.setText((String)lista.get(0));
-		txtCosto.setText(lista.get(1).toString());
+		txtCosto.setText(lista.get(2).toString());
 		txtDuracion.setText((String)lista.get(2).toString());
 		txtCalificacion.setText((String)lista.get(3).toString());
 	}

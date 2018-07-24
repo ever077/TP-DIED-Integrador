@@ -14,6 +14,7 @@ import frsf.isi.died.app.vista.material.LibroPanel;
 import frsf.isi.died.app.vista.material.LibroPanelEliminacion;
 import frsf.isi.died.app.vista.material.LibroPanelModificacion;
 import frsf.isi.died.app.vista.material.VideoPanel;
+import frsf.isi.died.app.vista.material.VideoPanelEliminacion;
 import frsf.isi.died.app.vista.material.VideoPanelModificacion;
 
 public class MenuController {
@@ -63,7 +64,10 @@ public class MenuController {
 			 framePrincipal.setContentPane(vControllerModificacion.getPanelVideo());
 			 break;
 		case BAJA_VIDEOS:
-			 
+			 VideoPanelEliminacion vPanelEliminacion = new VideoPanelEliminacion();
+			 VideoController vControllerEliminacion = new VideoController(vPanelEliminacion);
+			 vControllerEliminacion.crearPanel();
+			 framePrincipal.setContentPane(vControllerEliminacion.getPanelVideo());
 			 break;
 		case VER_GRAFO:
 			/*JPanel panel = new JPanel(new BorderLayout());
