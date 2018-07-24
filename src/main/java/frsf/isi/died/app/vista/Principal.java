@@ -16,6 +16,8 @@ public class Principal {
 	private static JMenuItem menuItem_BuscarCamino;
 	private static JMenuItem menuItem_ModificarLibro;
 	private static JMenuItem menuItem_EliminarLibro;
+	private static JMenuItem menuItem_ModificarVideo;
+	private static JMenuItem menuItem_EliminarVideo;
 	public static void main(String[] args) {
 	    javax.swing.SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {
@@ -58,7 +60,16 @@ public class Principal {
 
 	        menuItem_NuevoVideo = new JMenuItem("Nuevo Video");
 	        MenuVideo.add(menuItem_NuevoVideo);
-	        MenuVideo.addActionListener(e -> controller.showView(TiposAcciones.ALTA_VIDEOS));
+	        
+	        menuItem_ModificarVideo = new JMenuItem("Modificar Video");
+	        MenuVideo.add(menuItem_ModificarVideo);
+	        
+	        menuItem_EliminarVideo = new JMenuItem("Eliminar Video");
+	        MenuVideo.add(menuItem_EliminarVideo);
+	        
+	        menuItem_NuevoVideo.addActionListener(e -> controller.showView(TiposAcciones.ALTA_VIDEOS));
+	        menuItem_ModificarVideo.addActionListener(e -> controller.showView(TiposAcciones.MODIFICACION_VIDEOS));
+	        menuItem_EliminarVideo.addActionListener(e -> controller.showView(TiposAcciones.BAJA_VIDEOS));
 	        
 	        menu.addSeparator();
 	        menuItem_Salir = new JMenuItem("Salir");

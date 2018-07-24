@@ -21,4 +21,6 @@ public interface MaterialCapacitacionDao {
 	public MaterialCapacitacion buscarMaterial(Integer idMaterialCapacitacion) throws MaterialNotFoundException;
 	public void modificarLibro(Libro l) throws IOException;
 	public void eliminarLibro(Integer id) throws MaterialNotFoundException;
+	public void modificarVideo(Video v) throws IOException;
+	public void eliminarVideo(Integer id) throws MaterialNotFoundException;
 }

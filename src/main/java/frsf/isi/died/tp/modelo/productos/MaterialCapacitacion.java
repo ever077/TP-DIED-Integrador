@@ -41,8 +41,8 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 	/**
 	 * Constructor por defecto
 	 */
-	protected Integer calificacion =0;
-	protected Date fechaPublicacion = new Date();
+	protected Integer calificacion = 0;
+	protected String fechaPublicacion = "";
 	protected Relevancia relevancia = null;
 	
 	public MaterialCapacitacion() {
@@ -100,15 +100,14 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 
 
 
-	public MaterialCapacitacion(Integer id, String titulo, Double costo, Integer calificacion, Date fechaPublicacion,
-			Relevancia relevancia) {
+	public MaterialCapacitacion(Integer id, String titulo, Double costo, Integer calificacion, String fechaPublicacion
+			) {
 		
 		this.id = id;
 		this.titulo = titulo;
 		this.costo = costo;
 		this.calificacion = calificacion;
 		this.fechaPublicacion = fechaPublicacion;
-		this.relevancia = relevancia;
 	}
 
 
@@ -140,6 +139,31 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 	public void setCosto(Double costo) {
 		this.costo = costo;
 	}
+
+	public Integer getCalificacion() {
+		return calificacion;
+	}
+
+	public void setCalificacion(Integer calificacion) {
+		this.calificacion = calificacion;
+	}
+
+	public String getFechaPublicacion() {
+		return fechaPublicacion;
+	}
+
+	public void setFechaPublicacion(String fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
+	}
+
+	public Relevancia getRelevancia() {
+		return relevancia;
+	}
+
+	public void setRelevancia(Relevancia relevancia) {
+		this.relevancia = relevancia;
+	}
+
 
 	/**
 	 * El precio de un material se define según el tipo del material y toma como

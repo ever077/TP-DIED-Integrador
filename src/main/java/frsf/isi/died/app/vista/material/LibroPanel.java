@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 import frsf.isi.died.app.controller.LibroController;
+import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Libro;
 
 public class LibroPanel extends LPanel{
@@ -59,11 +60,16 @@ public class LibroPanel extends LPanel{
 				Double costo = Double.valueOf(txtCosto.getText());
 				Double precio = Double.valueOf(txtPrecioCompra.getText());
 				Integer paginas = Integer.valueOf(txtPaginas.getText());
-				controller.agregarLibro(txtTitulo.getText(), costo, precio, paginas);
+				Integer calif = 0;
+				// Verifico que el titulo no este vacio
+				controller.verificarTitulo(txtTitulo.getText());
+				controller.agregarLibro(txtTitulo.getText(), costo, precio, paginas, calif);
 				txtTitulo.setText("");
 				txtCosto.setText("");
 				txtPrecioCompra.setText("");
 				txtPaginas.setText("");
+			}catch(DataOutOfBoundException d){
+				 JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 			}

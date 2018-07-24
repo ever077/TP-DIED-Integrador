@@ -13,6 +13,8 @@ import frsf.isi.died.app.vista.grafo.GrafoPanel;*/
 import frsf.isi.died.app.vista.material.LibroPanel;
 import frsf.isi.died.app.vista.material.LibroPanelEliminacion;
 import frsf.isi.died.app.vista.material.LibroPanelModificacion;
+import frsf.isi.died.app.vista.material.VideoPanel;
+import frsf.isi.died.app.vista.material.VideoPanelModificacion;
 
 public class MenuController {
 
@@ -26,16 +28,16 @@ public class MenuController {
 		switch (accion) {
 		case ALTA_LIBROS:
 			LibroPanel panelLibros = new LibroPanel();
-			LibroController controller = new LibroController(panelLibros);
-			controller.crearPanel();
-			framePrincipal.setContentPane((LibroPanel) controller.getPanelLibro());
+			LibroController controllerLibro = new LibroController(panelLibros);
+			controllerLibro.crearPanel();
+			framePrincipal.setContentPane((LibroPanel) controllerLibro.getPanelLibro());
 			break;
 		case MODIFICACION_LIBROS:
 			
-			 LibroPanelModificacion panelModificacion = new LibroPanelModificacion();
-			 LibroController controllerModificacion = new LibroController(panelModificacion);
-			 controllerModificacion.crearPanel();
-			 framePrincipal.setContentPane(controllerModificacion.getPanelLibro());
+			 LibroPanelModificacion lPanelModificacion = new LibroPanelModificacion();
+			 LibroController lControllerModificacion = new LibroController(lPanelModificacion);
+			 lControllerModificacion.crearPanel();
+			 framePrincipal.setContentPane(lControllerModificacion.getPanelLibro());
 			// ArrayList filaSeleccionada = controller2.getFilaSeleccionada();
 			 //controller2.cargarCampos(filaSeleccionada);
 			 break;
@@ -45,11 +47,22 @@ public class MenuController {
 			 LibroController controllerEliminacion = new LibroController(panelEliminacion);
 			 controllerEliminacion.crearPanel();
 			 framePrincipal.setContentPane(controllerEliminacion.getPanelLibro());
-			// ArrayList filaSeleccionada = controller2.getFilaSeleccionada();
-			 //controller2.cargarCampos(filaSeleccionada);
+			 // ArrayList filaSeleccionada = controller2.getFilaSeleccionada();
+			 // controller2.cargarCampos(filaSeleccionada);
 			 break;
 		case ALTA_VIDEOS:
-			
+			 VideoPanel panelVideos = new VideoPanel();
+			 VideoController controllerVideo = new VideoController(panelVideos);
+			 controllerVideo.crearPanel();
+			 framePrincipal.setContentPane((VideoPanel) controllerVideo.getPanelVideo());
+			 break;
+		case MODIFICACION_VIDEOS:
+			 VideoPanelModificacion vPanelModificacion = new VideoPanelModificacion();
+			 VideoController vControllerModificacion = new VideoController(vPanelModificacion);
+			 vControllerModificacion.crearPanel();
+			 framePrincipal.setContentPane(vControllerModificacion.getPanelVideo());
+			 break;
+		case BAJA_VIDEOS:
 			 
 			 break;
 		case VER_GRAFO:

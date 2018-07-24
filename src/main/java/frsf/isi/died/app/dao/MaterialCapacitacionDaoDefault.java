@@ -240,4 +240,53 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		
 	}
 	
+	public void modificarVideo(Video v) throws IOException {
+		// TODO
+		List<List<String>> listaArchivo = dataSource.readFile("videos.csv");
+		FileWriter fichero = null;
+	    PrintWriter escritor = null;
+		try {
+			fichero = new FileWriter("videos.csv");
+			escritor = new PrintWriter(fichero);
+			escritor.flush();
+			for(List<String> fila : listaArchivo) {
+				if(fila.get(0).equals(v.getId().toString())) {
+					// Este es el video a modificar
+					fila.set(1, v.getTitulo());
+					fila.set(2, v.getCosto().toString());
+					fila.set(3, v.getDuracion().toString());
+					fila.set(4, v.getCalificacion().toString());
+					
+				}
+				// sobreescribo la linea
+					dataSource.writeLine(escritor, fila);
+				
+				// Alternativo -> No guarda con el mismo formato
+			/*	for(int i = 0; i < fila.size() ; i++) {
+					escritor.write(fila.get(i));
+				}
+				escritor.println();
+			*/
+			}
+			escritor.flush();
+			escritor.close();
+		}
+		catch(IOException e){
+			JOptionPane.showMessageDialog(null, "Error al escribir en el archivo de texto: "+e.getMessage());
+		}
+		finally {
+	        if(fichero != null){
+	            try {
+	                fichero.close();
+	            } catch (IOException e) {
+	                JOptionPane.showMessageDialog(null, "Error al cerrar archivo de texto: "+e.getMessage());
+	            }
+	        }
+	    }
+	}
+	
+	public void eliminarVideo(Integer id) throws MaterialNotFoundException {
+		// TODO
+	}
+	
 }

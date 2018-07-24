@@ -1,10 +1,13 @@
 package frsf.isi.died.app.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import frsf.isi.died.app.dao.MaterialCapacitacionDao;
 import frsf.isi.died.app.dao.MaterialCapacitacionDaoDefault;
+import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.app.vista.material.LPanel;
 import frsf.isi.died.app.vista.material.LibroPanel;
@@ -22,8 +25,8 @@ public class LibroController {
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
-	public void agregarLibro(String titulo,Double costo,Double precio,Integer paginas) {	
-		Libro l = new Libro(0,titulo, costo, precio, paginas) ;
+	public void agregarLibro(String titulo,Double costo,Double precio,Integer paginas, Integer calificacion) {	
+		Libro l = new Libro(0,titulo, costo, precio, paginas, calificacion, this.getFechaActual()) ;
 		materialDAO .agregarLibro(l);
 		this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);
 	}
@@ -89,4 +92,16 @@ public class LibroController {
 		}
 	}
 	 
+	public static String getFechaActual() {
+	    Date ahora = new Date();
+	    SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+	    return formateador.format(ahora);
+	}
+	
+	public void verificarTitulo(String titulo) throws DataOutOfBoundException {
+		if(titulo.isEmpty()) {
+			throw new DataOutOfBoundException("No ingreso ningun titulo");
+		}
+	}
+	
 }

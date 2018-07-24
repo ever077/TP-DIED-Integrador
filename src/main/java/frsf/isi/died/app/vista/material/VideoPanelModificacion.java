@@ -13,34 +13,36 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-import frsf.isi.died.app.controller.LibroController;
+import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
-import frsf.isi.died.tp.modelo.productos.Libro;
+import frsf.isi.died.tp.modelo.productos.Video;
 
-public class LibroPanelModificacion extends LPanel {
+public class VideoPanelModificacion extends VPanel {
 	private JScrollPane scrollPane;
 	private JTable tabla;
 	private JLabel lblTitulo;
 	private JLabel lblCosto;
-	private JLabel lblPrecioCompra;
-	private JLabel lblPaginas;
+	
+	private JLabel lblDuracion;
+	private JLabel lblCalificacion;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
-	private JTextField txtPrecioCompra;
-	private JTextField txtPaginas;
+
+	private JTextField txtDuracion;
+	private JTextField txtCalificacion;
 	private JButton btnModificar;
 	private JButton btnCancelar;
 
-	private LibroTableModel tableModel;
+	private VideoTableModel tableModel;
 
-	private LibroController controller;
+	private VideoController controller;
 	// Id del libro que selecciona el usuario
-	private Integer idLibroSeleccionado = 0;
+	private Integer idVideoSeleccionado = 0;
 	
-	public LibroPanelModificacion() {
+	public VideoPanelModificacion() {
 		this.setLayout(new GridBagLayout());
-		tableModel = new LibroTableModel();
+		tableModel = new VideoTableModel();
 	}
 	
 	public void construir() {
@@ -56,27 +58,29 @@ public class LibroPanelModificacion extends LPanel {
 		gridConst.gridwidth=5;
 		this.add(txtTitulo, gridConst);
 		
-		
 
 		btnModificar = new JButton("Modificar");
 		btnModificar.addActionListener( e ->{
 			try {
 				Double costo = Double.valueOf(txtCosto.getText());
-				Double precio = Double.valueOf(txtPrecioCompra.getText());
-				Integer paginas = Integer.valueOf(txtPaginas.getText());
-				// Verifico que el titulo no este vacio
+				Integer duracion = Integer.valueOf(txtDuracion.getText());
+				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
 				controller.verificarTitulo(txtTitulo.getText());
-				controller.modificarLibro(idLibroSeleccionado, txtTitulo.getText(), costo, precio, paginas);
+				controller.verificarCalificacion(Integer.valueOf(calificacion));
+				controller.modificarVideo(idVideoSeleccionado, txtTitulo.getText(), costo, duracion, calificacion);
 				
 				txtTitulo.setText("");
 				txtCosto.setText("");
-				txtPrecioCompra.setText("");
-				txtPaginas.setText("");
-			}catch(DataOutOfBoundException d){
-				 JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
-			}catch(MaterialNotFoundException mex) {
+				txtDuracion.setText("");
+				txtCalificacion.setText("");
+			}
+			catch(DataOutOfBoundException d) {
+				JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
+			}
+			catch(MaterialNotFoundException mex) {
 				JOptionPane.showMessageDialog(this, mex.getMessage(), "Dato no encontrado", JOptionPane.ERROR_MESSAGE);
-			}catch(Exception ex) {
+			}
+			catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 			}
 		});
@@ -98,25 +102,24 @@ public class LibroPanelModificacion extends LPanel {
 		gridConst.gridx=1;
 		this.add(txtCosto, gridConst);
 		
-		lblPrecioCompra= new JLabel("Precio Compra: ");
+		lblDuracion= new JLabel("Duracion: ");
 		gridConst.gridx=2;
-		this.add(lblPrecioCompra, gridConst);
+		this.add(lblDuracion, gridConst);
 		
-		txtPrecioCompra = new JTextField();
-		txtPrecioCompra.setColumns(5);
+		txtDuracion = new JTextField();
+		txtDuracion.setColumns(5);
 		gridConst.gridx=3;
-		this.add(txtPrecioCompra, gridConst);
+		this.add(txtDuracion, gridConst);
 		
-		lblPaginas= new JLabel("Paginas: ");		
+		lblCalificacion = new JLabel("Calificacion: ");
 		gridConst.gridx=4;
-		this.add(lblPaginas, gridConst);
+		this.add(lblCalificacion, gridConst);
 		
-		txtPaginas = new JTextField();
-		txtPaginas.setColumns(5);
+		txtCalificacion = new JTextField();
+		txtCalificacion.setColumns(5);
 		gridConst.gridx=5;
-		this.add(txtPaginas, gridConst);
-
-
+		this.add(txtCalificacion, gridConst);
+		
 		btnCancelar= new JButton("Cancelar");
 		gridConst.gridx=6;
 		gridConst.weightx=1.0;
@@ -140,16 +143,16 @@ public class LibroPanelModificacion extends LPanel {
 		this.add(scrollPane, gridConst);
 	}
 
-	public LibroController getController() {
+	public VideoController getController() {
 		return controller;
 	}
 
-	public void setController(LibroController controller) {
+	public void setController(VideoController controller) {
 		this.controller = controller;
 	}
 	
-	public void setListaLibros(List<Libro> librosLista,boolean actualizar) {
-		this.tableModel.setLibros(librosLista);
+	public void setListaVideos(List<Video> videosLista,boolean actualizar) {
+		this.tableModel.setVideos(videosLista);
 		if(actualizar) this.tableModel.fireTableDataChanged();
 	}
 	
@@ -159,7 +162,7 @@ public class LibroPanelModificacion extends LPanel {
 		for(int i = 0; i < 5; i++) {
 			if(i == 0) {
 				// Capturo la ID del libro seleccionado
-				idLibroSeleccionado = (Integer) tabla.getValueAt(fila, i);
+				idVideoSeleccionado = (Integer) tabla.getValueAt(fila, i);
 			}else {
 				lista.add(tabla.getValueAt(fila, i));
 			}
@@ -168,9 +171,9 @@ public class LibroPanelModificacion extends LPanel {
 	}
 	public void cargarCampos(ArrayList lista){
 		txtTitulo.setText((String)lista.get(0));
-		txtCosto.setText(lista.get(2).toString());
-		txtPaginas.setText((String)lista.get(3).toString());
-		txtPrecioCompra.setText((String)lista.get(1).toString());
+		txtCosto.setText(lista.get(1).toString());
+		txtDuracion.setText((String)lista.get(2).toString());
+		txtCalificacion.setText((String)lista.get(3).toString());
 	}
 	
 	private void setEventoMouseClicked(JTable tbl)

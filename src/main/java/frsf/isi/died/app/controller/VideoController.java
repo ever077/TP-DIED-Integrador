@@ -2,12 +2,16 @@ package frsf.isi.died.app.controller;
 
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import frsf.isi.died.app.dao.MaterialCapacitacionDao;
 import frsf.isi.died.app.dao.MaterialCapacitacionDaoDefault;
+import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.app.vista.material.VPanel;
+import frsf.isi.died.app.vista.material.VideoPanel;
 import frsf.isi.died.tp.modelo.productos.Video;
 
 public class VideoController {
@@ -21,8 +25,8 @@ public class VideoController {
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
-	public void agregarVideo(String titulo,Double costo,Integer duracion) {	
-		Video v = new Video(0,titulo, costo, duracion);
+	public void agregarVideo(String titulo,Double costo,Integer duracion, Integer calificacion) {	
+		Video v = new Video(0,titulo, costo, duracion, calificacion, this.getFechaActual());
 		materialDAO .agregarVideo(v);
 		this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
 	}
@@ -48,13 +52,13 @@ public class VideoController {
 		 panelVideo.cargarCampos(lista);
 	}
 	 
-	public void modificarVideo(Integer idVideoSeleccionado, String titulo, Double costo, Integer duracion) throws MaterialNotFoundException, IOException {
+	public void modificarVideo(Integer idVideoSeleccionado, String titulo, Double costo, Integer duracion, Integer calificacion) throws MaterialNotFoundException, IOException {
 		try {
 			Video v = (Video) materialDAO.buscarMaterial(idVideoSeleccionado);
 			v.setTitulo(titulo);
 			v.setCosto(costo);
 			v.setDuracion(duracion);
-			;
+			v.setCalificacion(calificacion);
 
 			materialDAO.modificarVideo(v);
 			this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
@@ -68,9 +72,28 @@ public class VideoController {
 	public void eliminarVideo(Integer id) throws MaterialNotFoundException {
 		try {
 			materialDAO.eliminarVideo(id);
-			this.panelVideos.setListaVideos(materialDAO.listaVideos(),true);
+			this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
 		}catch(MaterialNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 	}
 	 
+	public static String getFechaActual() {
+	    Date ahora = new Date();
+	    SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+	    return formateador.format(ahora);
+	}
+	
+	public void verificarCalificacion(Integer calificacion) throws DataOutOfBoundException {
+		if( ! (calificacion >= 0 && calificacion <= 100) ) {
+			throw new DataOutOfBoundException();
+		}
+	}
+	
+	public void verificarTitulo(String titulo) throws DataOutOfBoundException {
+		if(titulo.isEmpty()) {
+			throw new DataOutOfBoundException("No ingreso ningun titulo");
+		}
+	}
+	
+}

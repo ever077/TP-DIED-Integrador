@@ -13,6 +13,7 @@ import javax.swing.JTextField;
 
 import frsf.isi.died.app.controller.LibroController;
 import frsf.isi.died.app.controller.VideoController;
+import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.Video;
 
@@ -23,10 +24,12 @@ public class VideoPanel extends VPanel{
 	private JLabel lblCosto;
 	
 	private JLabel lblDuracion;
+	private JLabel lblCalificacion;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
 
 	private JTextField txtDuracion;
+	private JTextField txtCalificacion;
 	private JButton btnAgregar;
 	private JButton btnCancelar;
 
@@ -58,10 +61,17 @@ public class VideoPanel extends VPanel{
 			try {
 				Double costo = Double.valueOf(txtCosto.getText());
 				Integer duracion = Integer.valueOf(txtDuracion.getText());
-				controller.agregarVideo(txtTitulo.getText(), costo, duracion);
+				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
+				controller.verificarTitulo(txtTitulo.getText());
+				controller.verificarCalificacion(Integer.valueOf(calificacion));
+				controller.agregarVideo(txtTitulo.getText(), costo, duracion, calificacion);
 				txtTitulo.setText("");
 				txtCosto.setText("");		
 				txtDuracion.setText("");
+				txtCalificacion.setText("");
+				
+			}catch(DataOutOfBoundException d){
+				 JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 			}
@@ -93,6 +103,14 @@ public class VideoPanel extends VPanel{
 		gridConst.gridx=3;
 		this.add(txtDuracion, gridConst);
 		
+		lblCalificacion = new JLabel("Calificacion: ");
+		gridConst.gridx=4;
+		this.add(lblCalificacion, gridConst);
+		
+		txtCalificacion = new JTextField();
+		txtCalificacion.setColumns(5);
+		gridConst.gridx=5;
+		this.add(txtCalificacion, gridConst);
 		
 		btnCancelar= new JButton("Cancelar");
 		gridConst.gridx=6;

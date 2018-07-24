@@ -28,8 +28,8 @@ public class Video extends MaterialCapacitacion {
 		this.duracion = duracion;
 	}
 	
-	public Video(Integer id, String titulo, Double costo, Integer duracion, Integer calificacion, Date fechaPublicacion, Relevancia relevancia) {
-		super(id, titulo, costo, calificacion, fechaPublicacion, relevancia);
+	public Video(Integer id, String titulo, Double costo, Integer duracion, Integer calificacion, String fechaPublicacion) {
+		super(id, titulo, costo, calificacion, fechaPublicacion);
 		this.duracion = duracion;
 	}
 	
@@ -43,6 +43,8 @@ public class Video extends MaterialCapacitacion {
 		lista.add("\""+this.titulo.toString()+"\"");
 		lista.add(this.costo.toString());
 		lista.add(this.duracion.toString());
+		lista.add(this.calificacion.toString());
+		lista.add(this.fechaPublicacion.toString());
 		return lista;
 	}
 	
@@ -77,6 +79,11 @@ public class Video extends MaterialCapacitacion {
 	public void setDuracion(Integer duracion) {
 		this.duracion = duracion;
 	}
+
+	public Integer getDuracion() {
+		return duracion;
+	}
+
 	
 	
 }

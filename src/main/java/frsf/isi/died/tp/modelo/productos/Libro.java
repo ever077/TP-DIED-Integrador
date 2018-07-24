@@ -55,8 +55,8 @@ public class Libro extends MaterialCapacitacion {
 		this.paginas = paginas;
 	}
 
-	public Libro(Integer id, String titulo, Double costo, Double precioCompra, Integer paginas, Integer calificacion, Date fechaPublicacion, Relevancia relevancia) {
-		super(id, titulo, costo, calificacion, fechaPublicacion, relevancia);
+	public Libro(Integer id, String titulo, Double costo, Double precioCompra, Integer paginas, Integer calificacion, String fechaPublicacion) {
+		super(id, titulo, costo, calificacion, fechaPublicacion);
 		this.precioCompra = precioCompra;
 		this.paginas = paginas;
 	}
