@@ -64,5 +64,10 @@ public class LibroTableModel  extends AbstractTableModel {
 		}
 		return valor;
 	}
+	
+	public void deleteRow(int indice) {
+		libros.remove(indice);
+		this.fireTableRowsDeleted(indice, indice);
+	}
 
 }

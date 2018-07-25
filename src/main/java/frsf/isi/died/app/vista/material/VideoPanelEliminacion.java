@@ -1,5 +1,6 @@
 package frsf.isi.died.app.vista.material;
 
+import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
@@ -38,6 +40,8 @@ public class VideoPanelEliminacion extends VPanel {
 	private VideoController controller;
 	// Id del video que selecciona el usuario
 	private Integer idVideoSeleccionado = 0;
+	// Fila seleccionada
+	private int filaSeleccionada = -1;
 	
 	public VideoPanelEliminacion() {
 		this.setLayout(new GridBagLayout());
@@ -63,15 +67,8 @@ public class VideoPanelEliminacion extends VPanel {
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener( e ->{
 			try {
-				if(!txtTitulo.getText().isEmpty()) {
-					Double costo = Double.valueOf(txtCosto.getText());
-					Integer duracion = Integer.valueOf(txtDuracion.getText());
-					Integer calificacion = Integer.valueOf(txtCalificacion.getText());
-					controller.verificarTitulo(txtTitulo.getText());
-					controller.verificarCalificacion(Integer.valueOf(calificacion));
-					controller.eliminarVideo(idVideoSeleccionado);
-				}
-				
+				controller.eliminarVideo(idVideoSeleccionado);
+				tableModel.deleteRow(filaSeleccionada);
 				txtTitulo.setText("");
 				txtCosto.setText("");
 				txtDuracion.setText("");
@@ -162,6 +159,7 @@ public class VideoPanelEliminacion extends VPanel {
 	public ArrayList getFilaSeleccionada() {
 		ArrayList lista = new ArrayList();
 		int fila = tabla.getSelectedRow();
+		filaSeleccionada = fila;
 		for(int i = 0; i < 5; i++) {
 			if(i == 0) {
 				// Capturo la ID del libro seleccionado

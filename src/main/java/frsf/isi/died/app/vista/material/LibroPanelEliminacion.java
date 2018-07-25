@@ -36,6 +36,8 @@ public class LibroPanelEliminacion extends LPanel {
 	private LibroController controller;
 	// Id del libro que selecciona el usuario
 	private Integer idLibroSeleccionado = 0;
+	// Fila seleccionada
+	private int filaSeleccionada = -1;
 	
 	public LibroPanelEliminacion() {
 		this.setLayout(new GridBagLayout());
@@ -61,13 +63,8 @@ public class LibroPanelEliminacion extends LPanel {
 		btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener( e ->{
 			try {
-				if(!txtTitulo.getText().isEmpty()) {
-					Double costo = Double.valueOf(txtCosto.getText());
-					Double precio = Double.valueOf(txtPrecioCompra.getText());
-					Integer paginas = Integer.valueOf(txtPaginas.getText());
-					controller.eliminarLibro(idLibroSeleccionado);
-				}
-				
+				controller.eliminarLibro(idLibroSeleccionado);
+				tableModel.deleteRow(filaSeleccionada);
 				txtTitulo.setText("");
 				txtCosto.setText("");
 				txtPrecioCompra.setText("");
@@ -159,6 +156,7 @@ public class LibroPanelEliminacion extends LPanel {
 	public ArrayList getFilaSeleccionada() {
 		ArrayList lista = new ArrayList();
 		int fila = tabla.getSelectedRow();
+		filaSeleccionada = fila;
 		for(int i = 0; i < 5; i++) {
 			if(i == 0) {
 				// Capturo la ID del libro seleccionado

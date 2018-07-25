@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import frsf.isi.died.app.dao.util.CsvDatasource;
+import frsf.isi.died.app.dao.util.CsvRecord;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.tp.estructuras.Grafo;
 import frsf.isi.died.tp.modelo.Biblioteca;
@@ -22,7 +23,7 @@ import frsf.isi.died.tp.modelo.productos.Video;
 
 public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 
-	private static Grafo<MaterialCapacitacion> GRAFO_MATERIAL  = new Grafo<MaterialCapacitacion>();
+	private Grafo<MaterialCapacitacion> GRAFO_MATERIAL  = new Grafo<MaterialCapacitacion>();
 	private static Integer SECUENCIA_ID=0;
 	private static Biblioteca biblioteca = new BibliotecaABB();
 	
@@ -198,32 +199,18 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		List<List<String>> listaArchivo = dataSource.readFile("libros.csv");
 		FileWriter fichero = null;
 	    PrintWriter escritor = null;
-	    File nuevoArchivo = null;
-	    PrintWriter escritorNuevo = null;
 		try {
 			fichero = new FileWriter("libros.csv");
 			escritor = new PrintWriter(fichero);
 			escritor.flush();
-			//nuevoArchivo = new File("libros.csv");
-			//escritorNuevo = new PrintWriter(nuevoArchivo);
-			//escritorNuevo.flush();
 			for(List<String> fila : listaArchivo) {
 				if(!(fila.get(0).equals(id.toString()))) {
 					// Escribimos la linea en el nuevo archivo
-					
 					dataSource.writeLine(escritor, fila);
 				}
-				
-			//	this.cargarGrafo();
-				// Alternativo -> No guarda con el mismo formato
-			/*	for(int i = 0; i < fila.size() ; i++) {
-					escritor.write(fila.get(i));
-				}
-				escritor.println();
-			*/
 			}
+			escritor.flush();
 			escritor.close();
-			//escritorNuevo.close();
 		}
 		catch(IOException e){
 			JOptionPane.showMessageDialog(null, "Error al escribir en el archivo de texto: "+e.getMessage());
@@ -241,7 +228,6 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 	}
 	
 	public void modificarVideo(Video v) throws IOException {
-		// TODO
 		List<List<String>> listaArchivo = dataSource.readFile("videos.csv");
 		FileWriter fichero = null;
 	    PrintWriter escritor = null;
@@ -287,34 +273,36 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 	
 	public void eliminarVideo(Integer id) throws MaterialNotFoundException {
 		List<List<String>> listaArchivo = dataSource.readFile("videos.csv");
+	/*	List<Video> videos = new ArrayList<Video>();
+		for(List<String> filaVideo: listaArchivo) {
+			if(!(filaVideo.get(0).equals(id.toString()))) {
+				Video aux = new Video();
+				aux.loadFromStringRow(filaVideo);
+				videos.add(aux);
+			}
+			
+		}
+		List<CsvRecord> l = new ArrayList<CsvRecord>();
+		for(Video v : videos) {
+			l.add(v);
+			
+		}
+	*/	
 		FileWriter fichero = null;
 	    PrintWriter escritor = null;
-	    File nuevoArchivo = null;
-	    PrintWriter escritorNuevo = null;
 		try {
+	//		dataSource.guardarColeccion("videos.csv", l);
 			fichero = new FileWriter("videos.csv");
 			escritor = new PrintWriter(fichero);
 			escritor.flush();
-			//nuevoArchivo = new File("libros.csv");
-			//escritorNuevo = new PrintWriter(nuevoArchivo);
-			//escritorNuevo.flush();
 			for(List<String> fila : listaArchivo) {
 				if(!(fila.get(0).equals(id.toString()))) {
 					// Escribimos la linea en el nuevo archivo
-					
 					dataSource.writeLine(escritor, fila);
 				}
-				
-			//	this.cargarGrafo();
-				// Alternativo -> No guarda con el mismo formato
-			/*	for(int i = 0; i < fila.size() ; i++) {
-					escritor.write(fila.get(i));
-				}
-				escritor.println();
-			*/
 			}
+			escritor.flush();
 			escritor.close();
-			//escritorNuevo.close();
 		}
 		catch(IOException e){
 			JOptionPane.showMessageDialog(null, "Error al escribir en el archivo de texto: "+e.getMessage());

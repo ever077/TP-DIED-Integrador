@@ -41,7 +41,7 @@ public class Video extends MaterialCapacitacion {
 		List<String> lista = new ArrayList<String>();
 		lista.add(this.id+"");
 		lista.add("\""+this.titulo.toString()+"\"");
-		lista.add(this.costo.toString());
+		lista.add(super.costo.toString());            // Modifique this por super
 		lista.add(this.duracion.toString());
 		lista.add(this.calificacion.toString());
 		lista.add(this.fechaPublicacion.toString());
@@ -51,10 +51,12 @@ public class Video extends MaterialCapacitacion {
 
 	@Override
 	public void loadFromStringRow(List<String> datos) {
-		this.id =Integer.valueOf(datos.get(0));
+		this.id = Integer.valueOf(datos.get(0));
 		this.titulo = datos.get(1);
-		this.costo =Double.valueOf(datos.get(2));
-		this.duracion =Integer.valueOf(datos.get(3));
+		super.costo = Double.valueOf(datos.get(2));    // Modifique this por super
+		this.duracion = Integer.valueOf(datos.get(3));
+		this.calificacion = Integer.valueOf(datos.get(4));  // Agregue esta linea
+		this.fechaPublicacion = datos.get(5);    // Agregue esta linea
 	}
 
 	public Boolean esLibro() {

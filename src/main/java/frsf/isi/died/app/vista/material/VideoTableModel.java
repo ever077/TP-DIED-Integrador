@@ -6,7 +6,7 @@ import javax.swing.table.AbstractTableModel;
 
 import frsf.isi.died.tp.modelo.productos.Video;
 
-public class VideoTableModel  extends AbstractTableModel {
+public class VideoTableModel  extends AbstractTableModel{
 
 	private List<Video> videos;
 	private String[] columnas = {"ID","Titulo","Costo publicacion","Duracion","Calificacion","Fecha de publicacion","Precio Suscripcion"};
@@ -66,6 +66,11 @@ public class VideoTableModel  extends AbstractTableModel {
 			break;
 		}
 		return valor;
+	}
+	
+	public void deleteRow(int indice) {
+		videos.remove(indice);
+		this.fireTableRowsDeleted(indice, indice);
 	}
 
 }

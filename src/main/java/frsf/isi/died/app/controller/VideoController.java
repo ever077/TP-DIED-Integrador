@@ -61,6 +61,7 @@ public class VideoController {
 			v.setCalificacion(calificacion);
 
 			materialDAO.modificarVideo(v);
+			materialDAO = new MaterialCapacitacionDaoDefault(); //
 			this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
 		}
 		catch(MaterialNotFoundException e) {
