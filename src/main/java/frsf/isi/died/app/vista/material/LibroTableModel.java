@@ -9,7 +9,7 @@ import frsf.isi.died.tp.modelo.productos.Libro;
 public class LibroTableModel  extends AbstractTableModel {
 
 	private List<Libro> libros;
-	private String[] columnas = {"ID","Titulo","Precio Compra","Costo publicacion","Paginas","Precio Suscripcion"};
+	private String[] columnas = {"ID","Titulo","Costo publicacion","Precio Compra","Paginas","Calificacion","Relevancia","Fecha de publicacion","Precio Suscripcion"};
 	
 	
 	@Override
@@ -46,15 +46,24 @@ public class LibroTableModel  extends AbstractTableModel {
 			valor = this.libros.get(rowIndex).getTitulo();
 			break;
 		case 2:
-			valor = this.libros.get(rowIndex).getPrecioCompra();
+			valor = this.libros.get(rowIndex).getCosto();
 			break;
 		case 3:
-			valor = this.libros.get(rowIndex).getCosto();
+			valor = this.libros.get(rowIndex).getPrecioCompra();
 			break;
 		case 4:
 			valor = this.libros.get(rowIndex).getPaginas();
 			break;
 		case 5:
+			valor = this.libros.get(rowIndex).getCalificacion();
+			break;
+		case 6:
+			valor = this.libros.get(rowIndex).getRelevancia();
+			break;
+		case 7:
+			valor = this.libros.get(rowIndex).getFechaPublicacion();
+			break;
+		case 8:
 			valor = this.libros.get(rowIndex).precio();
 			break;
 		default:

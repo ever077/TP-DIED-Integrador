@@ -167,18 +167,14 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 					fila.set(2, l.getCosto().toString());
 					fila.set(3, l.getPaginas().toString());
 					fila.set(4, l.getPrecioCompra().toString());
-					
+					fila.set(5, l.getCalificacion().toString());
+					// La posicion 6 es la fecha de publicacion
+					fila.set(7, l.getRelevancia().toString());
 				}
 				// sobreescribo la linea
 					dataSource.writeLine(escritor, fila);
-				
-				// Alternativo -> No guarda con el mismo formato
-			/*	for(int i = 0; i < fila.size() ; i++) {
-					escritor.write(fila.get(i));
-				}
-				escritor.println();
-			*/
 			}
+			escritor.flush();
 			escritor.close();
 		}
 		catch(IOException e){
@@ -242,17 +238,11 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 					fila.set(2, v.getCosto().toString());
 					fila.set(3, v.getDuracion().toString());
 					fila.set(4, v.getCalificacion().toString());
-					
+					// La posicion 5 es la fecha de publicacion
+					fila.set(6, v.getRelevancia().toString());
 				}
 				// sobreescribo la linea
 					dataSource.writeLine(escritor, fila);
-				
-				// Alternativo -> No guarda con el mismo formato
-			/*	for(int i = 0; i < fila.size() ; i++) {
-					escritor.write(fila.get(i));
-				}
-				escritor.println();
-			*/
 			}
 			escritor.flush();
 			escritor.close();

@@ -4,7 +4,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -15,6 +17,7 @@ import frsf.isi.died.app.controller.LibroController;
 import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Libro;
+import frsf.isi.died.tp.modelo.productos.Relevancia;
 import frsf.isi.died.tp.modelo.productos.Video;
 
 public class VideoPanel extends VPanel{
@@ -22,16 +25,16 @@ public class VideoPanel extends VPanel{
 	private JTable tabla;
 	private JLabel lblTitulo;
 	private JLabel lblCosto;
-	
 	private JLabel lblDuracion;
 	private JLabel lblCalificacion;
+	private JLabel lblRelevancia;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
-
 	private JTextField txtDuracion;
 	private JTextField txtCalificacion;
 	private JButton btnAgregar;
 	private JButton btnCancelar;
+	private JComboBox comboRelevancia;
 
 	private VideoTableModel tableModel;
 
@@ -50,9 +53,9 @@ public class VideoPanel extends VPanel{
 		this.add(lblTitulo, gridConst);
 		
 		txtTitulo = new JTextField();
-		txtTitulo.setColumns(40);
+		txtTitulo.setColumns(50);
 		gridConst.gridx=1;
-		gridConst.gridwidth=5;
+		gridConst.gridwidth=7;
 		this.add(txtTitulo, gridConst);
 		
 
@@ -62,24 +65,30 @@ public class VideoPanel extends VPanel{
 				Double costo = Double.valueOf(txtCosto.getText());
 				Integer duracion = Integer.valueOf(txtDuracion.getText());
 				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
+				String relevancia = (String) comboRelevancia.getSelectedItem().toString();
+				
 				controller.verificarTitulo(txtTitulo.getText());
 				controller.verificarCalificacion(Integer.valueOf(calificacion));
-				controller.agregarVideo(txtTitulo.getText(), costo, duracion, calificacion);
+				controller.agregarVideo(txtTitulo.getText(), costo, duracion, calificacion, relevancia);
+				
 				txtTitulo.setText("");
 				txtCosto.setText("");		
 				txtDuracion.setText("");
 				txtCalificacion.setText("");
+				comboRelevancia.setSelectedIndex(0);
 				
-			}catch(DataOutOfBoundException d){
+			}
+			catch(DataOutOfBoundException d){
 				 JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
-			}catch(Exception ex) {
+			}
+			catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		gridConst.gridwidth=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
-		gridConst.gridx=6;
+		gridConst.gridx=8;
 		this.add(btnAgregar, gridConst);
 		
 		
@@ -112,8 +121,21 @@ public class VideoPanel extends VPanel{
 		gridConst.gridx=5;
 		this.add(txtCalificacion, gridConst);
 		
-		btnCancelar= new JButton("Cancelar");
+		// ----
+		lblRelevancia = new JLabel("Relevancia: ");
 		gridConst.gridx=6;
+		this.add(lblRelevancia, gridConst);
+		
+		comboRelevancia = new JComboBox();
+		comboRelevancia.setModel(new DefaultComboBoxModel(Relevancia.values()));	
+		comboRelevancia.setBackground(getBackground().brighter());
+		gridConst.gridx=7;
+		this.add(comboRelevancia, gridConst);
+		// ----
+		
+		btnCancelar= new JButton("Cancelar");
+		gridConst.gridx=8;
+		gridConst.gridy=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnCancelar, gridConst);
@@ -123,7 +145,7 @@ public class VideoPanel extends VPanel{
 		scrollPane= new JScrollPane(tabla);
 		
 		gridConst.gridx=0;
-		gridConst.gridwidth=7;	
+		gridConst.gridwidth=11;	
 		gridConst.gridy=2;
 		gridConst.weighty=1.0;
 		gridConst.weightx=1.0;

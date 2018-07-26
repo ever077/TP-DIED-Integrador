@@ -13,6 +13,7 @@ import frsf.isi.died.app.vista.material.LPanel;
 import frsf.isi.died.app.vista.material.LibroPanel;
 import frsf.isi.died.app.vista.material.LibroPanelModificacion;
 import frsf.isi.died.tp.modelo.productos.Libro;
+import frsf.isi.died.tp.modelo.productos.Relevancia;
 
 public class LibroController {
 
@@ -25,8 +26,8 @@ public class LibroController {
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
-	public void agregarLibro(String titulo,Double costo,Double precio,Integer paginas, Integer calificacion) {	
-		Libro l = new Libro(0,titulo, costo, precio, paginas, calificacion, this.getFechaActual()) ;
+	public void agregarLibro(String titulo, Double costo, Double precio, Integer paginas, Integer calificacion, String relevancia) {	
+		Libro l = new Libro(0,titulo, costo, precio, paginas, calificacion, this.getFechaActual(), relevancia);
 		materialDAO .agregarLibro(l);
 		this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);
 	}
@@ -52,13 +53,15 @@ public class LibroController {
 		 panelLibro.cargarCampos(lista);
 	}
 	 
-	public void modificarLibro(Integer idLibroSeleccionado, String titulo, Double costo, Double precio, Integer paginas) throws MaterialNotFoundException, IOException {
+	public void modificarLibro(Integer idLibroSeleccionado, String titulo, Double costo, Double precio, Integer paginas,Integer calificacion, String relevancia) throws MaterialNotFoundException, IOException {
 		try {
 			Libro l = (Libro) materialDAO.buscarMaterial(idLibroSeleccionado);
 			l.setTitulo(titulo);
 			l.setCosto(costo);
 			l.setPrecioCompra(precio);
 			l.setPaginas(paginas);
+			l.setCalificacion(calificacion);
+			l.setRelevancia(relevancia);
 			// Para no modificar l
 		/*	Libro aux = l;
 			if(!(l.getTitulo().equals(titulo))) {
@@ -75,6 +78,7 @@ public class LibroController {
 			}
 		*/
 			materialDAO.modificarLibro(l);
+			materialDAO = new MaterialCapacitacionDaoDefault(); 
 			this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);
 		}
 		catch(MaterialNotFoundException e) {
@@ -86,6 +90,7 @@ public class LibroController {
 	public void eliminarLibro(Integer id) throws MaterialNotFoundException {
 		try {
 			materialDAO.eliminarLibro(id);
+			materialDAO = new MaterialCapacitacionDaoDefault(); 
 			this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);
 		}catch(MaterialNotFoundException e) {
 			System.out.println(e.getMessage());
@@ -96,6 +101,12 @@ public class LibroController {
 	    Date ahora = new Date();
 	    SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
 	    return formateador.format(ahora);
+	}
+	
+	public void verificarCalificacion(Integer calificacion) throws DataOutOfBoundException {
+		if( ! (calificacion >= 0 && calificacion <= 100) ) {
+			throw new DataOutOfBoundException();
+		}
 	}
 	
 	public void verificarTitulo(String titulo) throws DataOutOfBoundException {

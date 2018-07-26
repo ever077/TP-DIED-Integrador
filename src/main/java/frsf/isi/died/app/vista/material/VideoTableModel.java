@@ -9,7 +9,7 @@ import frsf.isi.died.tp.modelo.productos.Video;
 public class VideoTableModel  extends AbstractTableModel{
 
 	private List<Video> videos;
-	private String[] columnas = {"ID","Titulo","Costo publicacion","Duracion","Calificacion","Fecha de publicacion","Precio Suscripcion"};
+	private String[] columnas = {"ID","Titulo","Costo publicacion","Duracion","Calificacion","Relevancia","Fecha de publicacion","Precio Suscripcion"};
 	
 	
 	@Override
@@ -55,9 +55,12 @@ public class VideoTableModel  extends AbstractTableModel{
 			valor = this.videos.get(rowIndex).getCalificacion();
 			break;
 		case 5:
-			valor = this.videos.get(rowIndex).getFechaPublicacion();
+			valor = this.videos.get(rowIndex).getRelevancia();
 			break;
 		case 6:
+			valor = this.videos.get(rowIndex).getFechaPublicacion();
+			break;
+		case 7:
 			valor = this.videos.get(rowIndex).precio();
 			break;
 		default:

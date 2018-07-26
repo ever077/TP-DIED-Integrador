@@ -3,19 +3,24 @@ package frsf.isi.died.app.vista.material;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.MouseEvent;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+
 import frsf.isi.died.app.controller.LibroController;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.tp.modelo.productos.Libro;
+import frsf.isi.died.tp.modelo.productos.Relevancia;
 
 public class LibroPanelEliminacion extends LPanel {
 	private JScrollPane scrollPane;
@@ -24,12 +29,16 @@ public class LibroPanelEliminacion extends LPanel {
 	private JLabel lblCosto;
 	private JLabel lblPrecioCompra;
 	private JLabel lblPaginas;
+	private JLabel lblCalificacion;
+	private JLabel lblRelevancia;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
 	private JTextField txtPrecioCompra;
 	private JTextField txtPaginas;
+	private JTextField txtCalificacion;
 	private JButton btnEliminar;
 	private JButton btnCancelar;
+	private JComboBox comboRelevancia;
 
 	private LibroTableModel tableModel;
 
@@ -38,6 +47,8 @@ public class LibroPanelEliminacion extends LPanel {
 	private Integer idLibroSeleccionado = 0;
 	// Fila seleccionada
 	private int filaSeleccionada = -1;
+	
+	private static final Integer CANTIDAD_COLUMNAS_MODIFICAR = 7;
 	
 	public LibroPanelEliminacion() {
 		this.setLayout(new GridBagLayout());
@@ -52,10 +63,10 @@ public class LibroPanelEliminacion extends LPanel {
 		this.add(lblTitulo, gridConst);
 		
 		txtTitulo = new JTextField();
-		txtTitulo.setColumns(40);
+		txtTitulo.setColumns(60);
 		txtTitulo.setEditable(false);
 		gridConst.gridx=1;
-		gridConst.gridwidth=5;
+		gridConst.gridwidth=9;
 		this.add(txtTitulo, gridConst);
 		
 		
@@ -64,11 +75,14 @@ public class LibroPanelEliminacion extends LPanel {
 		btnEliminar.addActionListener( e ->{
 			try {
 				controller.eliminarLibro(idLibroSeleccionado);
-				tableModel.deleteRow(filaSeleccionada);
+			//	tableModel.deleteRow(filaSeleccionada);
 				txtTitulo.setText("");
 				txtCosto.setText("");
 				txtPrecioCompra.setText("");
 				txtPaginas.setText("");
+				txtCalificacion.setText("");
+				comboRelevancia.removeAllItems();
+				comboRelevancia.addItem("           ");
 			}
 			catch(MaterialNotFoundException mex) {
 				JOptionPane.showMessageDialog(this, mex.getMessage(), "Dato no encontrado", JOptionPane.ERROR_MESSAGE);
@@ -80,7 +94,7 @@ public class LibroPanelEliminacion extends LPanel {
 		gridConst.gridwidth=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
-		gridConst.gridx=6;
+		gridConst.gridx=10;
 		this.add(btnEliminar, gridConst);
 		
 		
@@ -116,9 +130,35 @@ public class LibroPanelEliminacion extends LPanel {
 		gridConst.gridx=5;
 		this.add(txtPaginas, gridConst);
 
+		// ----
+		lblCalificacion = new JLabel("Calificacion: ");		
+		gridConst.gridx=6;
+		this.add(lblCalificacion, gridConst);
+				
+		txtCalificacion = new JTextField();
+		txtCalificacion.setColumns(5);
+		txtCalificacion.setEditable(false);
+		gridConst.gridx=7;
+		this.add(txtCalificacion, gridConst);
+					
+		lblRelevancia = new JLabel("Relevancia: ");
+		gridConst.gridx=8;
+		this.add(lblRelevancia, gridConst);
+				
+		comboRelevancia = new JComboBox();
+		// no cargo el combo
+		//comboRelevancia.setModel(new DefaultComboBoxModel(Relevancia.values()));	
+		//comboRelevancia.setSelectedIndex(-1);
+		//comboRelevancia.setSize(5, 0);
+		comboRelevancia.setEnabled(false);
+		comboRelevancia.addItem("           ");
+		comboRelevancia.setBackground(getBackground().brighter());
+		gridConst.gridx=9;
+		this.add(comboRelevancia, gridConst);
+		// ----
 
 		btnCancelar= new JButton("Cancelar");
-		gridConst.gridx=6;
+		gridConst.gridx=10;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnCancelar, gridConst);
@@ -131,7 +171,7 @@ public class LibroPanelEliminacion extends LPanel {
 		setEventoMouseClicked(tabla);
 		
 		gridConst.gridx=0;
-		gridConst.gridwidth=7;	
+		gridConst.gridwidth=11;	
 		gridConst.gridy=2;
 		gridConst.weighty=1.0;
 		gridConst.weightx=1.0;
@@ -157,7 +197,7 @@ public class LibroPanelEliminacion extends LPanel {
 		ArrayList lista = new ArrayList();
 		int fila = tabla.getSelectedRow();
 		filaSeleccionada = fila;
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < CANTIDAD_COLUMNAS_MODIFICAR; i++) {
 			if(i == 0) {
 				// Capturo la ID del libro seleccionado
 				idLibroSeleccionado = (Integer) tabla.getValueAt(fila, i);
@@ -169,9 +209,12 @@ public class LibroPanelEliminacion extends LPanel {
 	}
 	public void cargarCampos(ArrayList lista){
 		txtTitulo.setText((String)lista.get(0));
-		txtCosto.setText(lista.get(2).toString());
+		txtCosto.setText(lista.get(1).toString());
 		txtPaginas.setText((String)lista.get(3).toString());
-		txtPrecioCompra.setText((String)lista.get(1).toString());
+		txtPrecioCompra.setText((String)lista.get(2).toString());
+		txtCalificacion.setText((String)lista.get(4).toString());
+		comboRelevancia.removeAllItems();
+		comboRelevancia.addItem(Relevancia.valueOf((String)lista.get(5).toString()));
 	}
 	
 	private void setEventoMouseClicked(JTable tbl)

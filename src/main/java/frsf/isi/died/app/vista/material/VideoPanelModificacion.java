@@ -6,7 +6,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -16,6 +18,7 @@ import javax.swing.JTextField;
 import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
+import frsf.isi.died.tp.modelo.productos.Relevancia;
 import frsf.isi.died.tp.modelo.productos.Video;
 
 public class VideoPanelModificacion extends VPanel {
@@ -23,22 +26,24 @@ public class VideoPanelModificacion extends VPanel {
 	private JTable tabla;
 	private JLabel lblTitulo;
 	private JLabel lblCosto;
-	
 	private JLabel lblDuracion;
 	private JLabel lblCalificacion;
+	private JLabel lblRelevancia;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
-
 	private JTextField txtDuracion;
 	private JTextField txtCalificacion;
 	private JButton btnModificar;
 	private JButton btnCancelar;
+	private JComboBox comboRelevancia;
 
 	private VideoTableModel tableModel;
 
 	private VideoController controller;
 	// Id del video que selecciona el usuario
 	private Integer idVideoSeleccionado = 0;
+	
+	private static final Integer CANTIDAD_COLUMNAS_MODIFICAR = 6;
 	
 	public VideoPanelModificacion() {
 		this.setLayout(new GridBagLayout());
@@ -53,9 +58,9 @@ public class VideoPanelModificacion extends VPanel {
 		this.add(lblTitulo, gridConst);
 		
 		txtTitulo = new JTextField();
-		txtTitulo.setColumns(40);
+		txtTitulo.setColumns(50);
 		gridConst.gridx=1;
-		gridConst.gridwidth=5;
+		gridConst.gridwidth=7;
 		this.add(txtTitulo, gridConst);
 		
 
@@ -65,14 +70,17 @@ public class VideoPanelModificacion extends VPanel {
 				Double costo = Double.valueOf(txtCosto.getText());
 				Integer duracion = Integer.valueOf(txtDuracion.getText());
 				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
+				String relevancia = (String) comboRelevancia.getSelectedItem().toString();
 				controller.verificarTitulo(txtTitulo.getText());
 				controller.verificarCalificacion(Integer.valueOf(calificacion));
-				controller.modificarVideo(idVideoSeleccionado, txtTitulo.getText(), costo, duracion, calificacion);
+				controller.modificarVideo(idVideoSeleccionado, txtTitulo.getText(), costo, duracion, calificacion, relevancia);
 				
 				txtTitulo.setText("");
 				txtCosto.setText("");
 				txtDuracion.setText("");
 				txtCalificacion.setText("");
+				comboRelevancia.setSelectedIndex(-1);
+				comboRelevancia.setEnabled(false);
 			}
 			catch(DataOutOfBoundException d) {
 				JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
@@ -87,7 +95,7 @@ public class VideoPanelModificacion extends VPanel {
 		gridConst.gridwidth=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
-		gridConst.gridx=6;
+		gridConst.gridx=8;
 		this.add(btnModificar, gridConst);
 		
 		
@@ -120,8 +128,23 @@ public class VideoPanelModificacion extends VPanel {
 		gridConst.gridx=5;
 		this.add(txtCalificacion, gridConst);
 		
-		btnCancelar= new JButton("Cancelar");
+		// ----
+		lblRelevancia = new JLabel("Relevancia: ");
 		gridConst.gridx=6;
+		this.add(lblRelevancia, gridConst);
+		
+		comboRelevancia = new JComboBox();
+		comboRelevancia.setModel(new DefaultComboBoxModel(Relevancia.values()));
+		comboRelevancia.setSelectedIndex(-1);
+		comboRelevancia.setEnabled(false);
+		comboRelevancia.setBackground(getBackground().brighter());
+		gridConst.gridx=7;
+		this.add(comboRelevancia, gridConst);
+		// ----
+		
+		btnCancelar= new JButton("Cancelar");
+		gridConst.gridx=8;
+		gridConst.gridy=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnCancelar, gridConst);
@@ -134,7 +157,7 @@ public class VideoPanelModificacion extends VPanel {
 		setEventoMouseClicked(tabla);
 		
 		gridConst.gridx=0;
-		gridConst.gridwidth=7;	
+		gridConst.gridwidth=11;	
 		gridConst.gridy=2;
 		gridConst.weighty=1.0;
 		gridConst.weightx=1.0;
@@ -159,7 +182,7 @@ public class VideoPanelModificacion extends VPanel {
 	public ArrayList getFilaSeleccionada() {
 		ArrayList lista = new ArrayList();
 		int fila = tabla.getSelectedRow();
-		for(int i = 0; i < 5; i++) {
+		for(int i = 0; i < CANTIDAD_COLUMNAS_MODIFICAR; i++) {
 			if(i == 0) {
 				// Capturo la ID del video seleccionado
 				idVideoSeleccionado = (Integer) tabla.getValueAt(fila, i);
@@ -174,6 +197,8 @@ public class VideoPanelModificacion extends VPanel {
 		txtCosto.setText(lista.get(1).toString());
 		txtDuracion.setText((String)lista.get(2).toString());
 		txtCalificacion.setText((String)lista.get(3).toString());
+		comboRelevancia.setEnabled(true);
+		comboRelevancia.setSelectedItem(Relevancia.valueOf((String)lista.get(4).toString()));
 	}
 	
 	private void setEventoMouseClicked(JTable tbl)

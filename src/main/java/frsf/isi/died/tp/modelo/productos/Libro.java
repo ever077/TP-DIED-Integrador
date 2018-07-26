@@ -55,8 +55,8 @@ public class Libro extends MaterialCapacitacion {
 		this.paginas = paginas;
 	}
 
-	public Libro(Integer id, String titulo, Double costo, Double precioCompra, Integer paginas, Integer calificacion, String fechaPublicacion) {
-		super(id, titulo, costo, calificacion, fechaPublicacion);
+	public Libro(Integer id, String titulo, Double costo, Double precioCompra, Integer paginas, Integer calificacion, String fechaPublicacion, String relevancia) {
+		super(id, titulo, costo, calificacion, fechaPublicacion, relevancia);
 		this.precioCompra = precioCompra;
 		this.paginas = paginas;
 	}
@@ -132,11 +132,14 @@ public class Libro extends MaterialCapacitacion {
 	
 	@Override
 	public void loadFromStringRow(List<String> datos) {
-		this.id =Integer.valueOf(datos.get(0));
+		this.id = Integer.valueOf(datos.get(0));
 		this.titulo = datos.get(1);
-		this.costo =Double.valueOf(datos.get(2));
-		this.paginas =Integer.valueOf(datos.get(3));
-		this.precioCompra =Double.valueOf(datos.get(4));
+		this.costo = Double.valueOf(datos.get(2));
+		this.paginas = Integer.valueOf(datos.get(3));
+		this.precioCompra = Double.valueOf(datos.get(4));
+		this.calificacion = Integer.valueOf(datos.get(5));
+		this.fechaPublicacion = datos.get(6);
+		this.relevancia = datos.get(7);
 	}
 	
 	@Override
@@ -147,6 +150,9 @@ public class Libro extends MaterialCapacitacion {
 		lista.add(this.costo.toString());
 		lista.add(this.paginas.toString());
 		lista.add(this.precioCompra.toString());
+		lista.add(this.calificacion.toString());
+		lista.add(this.fechaPublicacion.toString());
+		lista.add(this.relevancia.toString());
 		return lista;
 	}
 }

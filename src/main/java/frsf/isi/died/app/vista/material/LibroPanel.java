@@ -2,9 +2,13 @@ package frsf.isi.died.app.vista.material;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -15,6 +19,7 @@ import javax.swing.JTextField;
 import frsf.isi.died.app.controller.LibroController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Libro;
+import frsf.isi.died.tp.modelo.productos.Relevancia;
 
 public class LibroPanel extends LPanel{
 	
@@ -24,12 +29,16 @@ public class LibroPanel extends LPanel{
 	private JLabel lblCosto;
 	private JLabel lblPrecioCompra;
 	private JLabel lblPaginas;
+	private JLabel lblCalificacion;
+	private JLabel lblRelevancia;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
 	private JTextField txtPrecioCompra;
 	private JTextField txtPaginas;
+	private JTextField txtCalificacion;
 	private JButton btnAgregar;
 	private JButton btnCancelar;
+	private JComboBox comboRelevancia;
 
 	private LibroTableModel tableModel;
 
@@ -48,9 +57,9 @@ public class LibroPanel extends LPanel{
 		this.add(lblTitulo, gridConst);
 		
 		txtTitulo = new JTextField();
-		txtTitulo.setColumns(40);
+		txtTitulo.setColumns(60);
 		gridConst.gridx=1;
-		gridConst.gridwidth=5;
+		gridConst.gridwidth=9;
 		this.add(txtTitulo, gridConst);
 		
 
@@ -60,28 +69,37 @@ public class LibroPanel extends LPanel{
 				Double costo = Double.valueOf(txtCosto.getText());
 				Double precio = Double.valueOf(txtPrecioCompra.getText());
 				Integer paginas = Integer.valueOf(txtPaginas.getText());
-				Integer calif = 0;
+				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
+				String relevancia = (String) comboRelevancia.getSelectedItem().toString();
+				
+				// Verificar calificacion
+				controller.verificarCalificacion(Integer.valueOf(calificacion));
 				// Verifico que el titulo no este vacio
 				controller.verificarTitulo(txtTitulo.getText());
-				controller.agregarLibro(txtTitulo.getText(), costo, precio, paginas, calif);
+				controller.agregarLibro(txtTitulo.getText(), costo, precio, paginas, calificacion, relevancia);
 				txtTitulo.setText("");
 				txtCosto.setText("");
 				txtPrecioCompra.setText("");
 				txtPaginas.setText("");
-			}catch(DataOutOfBoundException d){
+				txtCalificacion.setText("");
+				comboRelevancia.setSelectedIndex(0);
+				
+			}
+			catch(DataOutOfBoundException d){
 				 JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
-			}catch(Exception ex) {
+			}
+			catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		gridConst.gridwidth=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
-		gridConst.gridx=6;
+		gridConst.gridx=10;
 		this.add(btnAgregar, gridConst);
 		
 		
-		lblCosto= new JLabel("Costo: ");		
+		lblCosto = new JLabel("Costo: ");		
 		gridConst.gridx=0;
 		gridConst.gridy=1;
 		gridConst.weightx=0.0;
@@ -92,7 +110,7 @@ public class LibroPanel extends LPanel{
 		gridConst.gridx=1;
 		this.add(txtCosto, gridConst);
 		
-		lblPrecioCompra= new JLabel("Precio Compra: ");
+		lblPrecioCompra = new JLabel("Precio Compra: ");
 		gridConst.gridx=2;
 		this.add(lblPrecioCompra, gridConst);
 		
@@ -100,8 +118,9 @@ public class LibroPanel extends LPanel{
 		txtPrecioCompra.setColumns(5);
 		gridConst.gridx=3;
 		this.add(txtPrecioCompra, gridConst);
+	
 		
-		lblPaginas= new JLabel("Paginas: ");		
+		lblPaginas = new JLabel("Paginas: ");		
 		gridConst.gridx=4;
 		this.add(lblPaginas, gridConst);
 		
@@ -110,9 +129,30 @@ public class LibroPanel extends LPanel{
 		gridConst.gridx=5;
 		this.add(txtPaginas, gridConst);
 
-
-		btnCancelar= new JButton("Cancelar");
+		// ----
+		lblCalificacion = new JLabel("Calificacion: ");		
 		gridConst.gridx=6;
+		this.add(lblCalificacion, gridConst);
+		
+		txtCalificacion = new JTextField();
+		txtCalificacion.setColumns(5);
+		gridConst.gridx=7;
+		this.add(txtCalificacion, gridConst);
+	
+		lblRelevancia = new JLabel("Relevancia: ");
+		gridConst.gridx=8;
+		this.add(lblRelevancia, gridConst);
+		
+		comboRelevancia = new JComboBox();
+		comboRelevancia.setModel(new DefaultComboBoxModel(Relevancia.values()));	
+		comboRelevancia.setBackground(getBackground().brighter());
+		gridConst.gridx=9;
+		this.add(comboRelevancia, gridConst);
+		// ----
+		
+		btnCancelar= new JButton("Cancelar");
+		gridConst.gridx=10;
+		gridConst.gridy=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnCancelar, gridConst);
@@ -122,7 +162,7 @@ public class LibroPanel extends LPanel{
 		scrollPane= new JScrollPane(tabla);
 		
 		gridConst.gridx=0;
-		gridConst.gridwidth=7;	
+		gridConst.gridwidth=11;	
 		gridConst.gridy=2;
 		gridConst.weighty=1.0;
 		gridConst.weightx=1.0;

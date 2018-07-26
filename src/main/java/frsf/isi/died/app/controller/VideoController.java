@@ -25,8 +25,8 @@ public class VideoController {
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
-	public void agregarVideo(String titulo,Double costo,Integer duracion, Integer calificacion) {	
-		Video v = new Video(0,titulo, costo, duracion, calificacion, this.getFechaActual());
+	public void agregarVideo(String titulo,Double costo,Integer duracion, Integer calificacion, String relevancia) {	
+		Video v = new Video(0,titulo, costo, duracion, calificacion, this.getFechaActual(), relevancia);
 		materialDAO .agregarVideo(v);
 		this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
 	}
@@ -52,16 +52,17 @@ public class VideoController {
 		 panelVideo.cargarCampos(lista);
 	}
 	 
-	public void modificarVideo(Integer idVideoSeleccionado, String titulo, Double costo, Integer duracion, Integer calificacion) throws MaterialNotFoundException, IOException {
+	public void modificarVideo(Integer idVideoSeleccionado, String titulo, Double costo, Integer duracion, Integer calificacion, String relevancia) throws MaterialNotFoundException, IOException {
 		try {
 			Video v = (Video) materialDAO.buscarMaterial(idVideoSeleccionado);
 			v.setTitulo(titulo);
 			v.setCosto(costo);
 			v.setDuracion(duracion);
 			v.setCalificacion(calificacion);
+			v.setRelevancia(relevancia);
 
 			materialDAO.modificarVideo(v);
-			materialDAO = new MaterialCapacitacionDaoDefault(); //
+			materialDAO = new MaterialCapacitacionDaoDefault(); 
 			this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
 		}
 		catch(MaterialNotFoundException e) {
@@ -73,6 +74,7 @@ public class VideoController {
 	public void eliminarVideo(Integer id) throws MaterialNotFoundException {
 		try {
 			materialDAO.eliminarVideo(id);
+			materialDAO = new MaterialCapacitacionDaoDefault(); 
 			this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
 		}catch(MaterialNotFoundException e) {
 			System.out.println(e.getMessage());
