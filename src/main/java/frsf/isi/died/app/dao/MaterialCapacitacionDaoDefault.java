@@ -24,7 +24,7 @@ import frsf.isi.died.tp.modelo.productos.Video;
 public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 
 	private Grafo<MaterialCapacitacion> GRAFO_MATERIAL  = new Grafo<MaterialCapacitacion>();
-	private static Integer SECUENCIA_ID=0;
+	private static Integer SECUENCIA_ID;
 	private static Biblioteca biblioteca = new BibliotecaABB();
 	
 	private CsvDatasource dataSource;
@@ -34,6 +34,7 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		if(GRAFO_MATERIAL.esVacio()) {
 			cargarGrafo();
 		}
+		this.cargarIdSecuencia();
 	}
 
 	private void cargarGrafo() {
@@ -306,8 +307,17 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 	            }
 	        }
 	    }
-		
+	}
 	
+	private void cargarIdSecuencia() {
+		Integer maxId = 0;
+		List<MaterialCapacitacion> li = this.listaMateriales();
+		for(int i = 0; i < li.size(); i++) {
+			if(li.get(i).getId() > maxId) {
+				maxId = li.get(i).getId();
+			}
+		}
+		SECUENCIA_ID = maxId;
 	}
 	
 }

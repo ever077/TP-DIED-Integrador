@@ -18,6 +18,8 @@ public class Principal {
 	private static JMenuItem menuItem_EliminarLibro;
 	private static JMenuItem menuItem_ModificarVideo;
 	private static JMenuItem menuItem_EliminarVideo;
+	private static JMenuItem menuItem_BuscarMaterial;
+	private static JMenu menu_1;
 	public static void main(String[] args) {
 	    javax.swing.SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {
@@ -78,13 +80,17 @@ public class Principal {
 
 	        menuBar.add(menu);
 	        
-	        menu = new JMenu("Opciones");
-	        menuBar.add(menu);
+	        menu_1 = new JMenu("Opciones");
+	        menuBar.add(menu_1);
 	        
 	        menuItem_BuscarCamino = new JMenuItem("Buscar Camino");
 	        menuItem_BuscarCamino.addActionListener(e -> controller.showView(TiposAcciones.VER_GRAFO));
-	        menu.add(menuItem_BuscarCamino);
-	        menuBar.add(menu);
+	        menu_1.add(menuItem_BuscarCamino);
+	        menuBar.add(menu_1);
+	        
+	        menuItem_BuscarMaterial = new JMenuItem("Buscar Material");
+	        menuItem_BuscarMaterial.addActionListener(e -> controller.showView(TiposAcciones.BUSCAR_MAT));
+	        menu_1.add(menuItem_BuscarMaterial);
 	        
 	        f.setJMenuBar(menuBar);
 	        

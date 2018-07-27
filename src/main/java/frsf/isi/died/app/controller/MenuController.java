@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import frsf.isi.died.app.vista.material.BuscarMaterialPanel;
+
 /*import frsf.isi.died.app.vista.grafo.ControlPanel;     
 import frsf.isi.died.app.vista.grafo.GrafoPanel;*/
 //importar cuando hagamos lode grafo *************************************************************************************
@@ -68,6 +70,12 @@ public class MenuController {
 			 VideoController vControllerEliminacion = new VideoController(vPanelEliminacion);
 			 vControllerEliminacion.crearPanel();
 			 framePrincipal.setContentPane(vControllerEliminacion.getPanelVideo());
+			 break;
+		case BUSCAR_MAT:
+			 BuscarMaterialPanel buscarMaterialPanel = new BuscarMaterialPanel();
+			 BuscarController buscarController = new BuscarController(buscarMaterialPanel);
+			 buscarController.crearPanel();
+			 framePrincipal.setContentPane(buscarController.getPanelBuscar());
 			 break;
 		case VER_GRAFO:
 			/*JPanel panel = new JPanel(new BorderLayout());

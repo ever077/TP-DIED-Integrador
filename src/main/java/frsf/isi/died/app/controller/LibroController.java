@@ -14,6 +14,7 @@ import frsf.isi.died.app.vista.material.LibroPanel;
 import frsf.isi.died.app.vista.material.LibroPanelModificacion;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
+import frsf.isi.died.tp.util.ManipularFecha;
 
 public class LibroController {
 
@@ -27,7 +28,7 @@ public class LibroController {
 	}
 
 	public void agregarLibro(String titulo, Double costo, Double precio, Integer paginas, Integer calificacion, String relevancia) {	
-		Libro l = new Libro(0,titulo, costo, precio, paginas, calificacion, this.getFechaActual(), relevancia);
+		Libro l = new Libro(0,titulo, costo, precio, paginas, calificacion, ManipularFecha.getFechaActual(), relevancia);
 		materialDAO .agregarLibro(l);
 		this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);
 	}
@@ -95,12 +96,6 @@ public class LibroController {
 		}catch(MaterialNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-	}
-	 
-	public static String getFechaActual() {
-	    Date ahora = new Date();
-	    SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
-	    return formateador.format(ahora);
 	}
 	
 	public void verificarCalificacion(Integer calificacion) throws DataOutOfBoundException {

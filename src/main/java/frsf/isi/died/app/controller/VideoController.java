@@ -13,6 +13,7 @@ import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.app.vista.material.VPanel;
 import frsf.isi.died.app.vista.material.VideoPanel;
 import frsf.isi.died.tp.modelo.productos.Video;
+import frsf.isi.died.tp.util.ManipularFecha;
 
 public class VideoController {
 
@@ -26,7 +27,7 @@ public class VideoController {
 	}
 
 	public void agregarVideo(String titulo,Double costo,Integer duracion, Integer calificacion, String relevancia) {	
-		Video v = new Video(0,titulo, costo, duracion, calificacion, this.getFechaActual(), relevancia);
+		Video v = new Video(0,titulo, costo, duracion, calificacion, ManipularFecha.getFechaActual(), relevancia);
 		materialDAO .agregarVideo(v);
 		this.panelVideo.setListaVideos(materialDAO.listaVideos(),true);
 	}
@@ -79,12 +80,6 @@ public class VideoController {
 		}catch(MaterialNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
-	}
-	 
-	public static String getFechaActual() {
-	    Date ahora = new Date();
-	    SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
-	    return formateador.format(ahora);
 	}
 	
 	public void verificarCalificacion(Integer calificacion) throws DataOutOfBoundException {

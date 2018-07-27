@@ -215,13 +215,28 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 		return false;
 	}
 */
-	@Override
+
+/*	@Override
 	public int compareTo(MaterialCapacitacion arg0) {
 		// TODO Auto-generated method stub
 		int aux = this.titulo.compareTo(arg0.getTitulo());
 		if(aux == 0){
 			return this.precio().compareTo(arg0.precio());
 		}else{
+			return aux;
+		}
+	}
+*/	
+
+	
+	// Puse que por dececto se compare solamente por titulo y si es igual por id
+	// Esto es para cuando ordeno, me muestre los repetidos
+	@Override
+	public int compareTo(MaterialCapacitacion m) {
+		int aux = this.titulo.compareTo(m.getTitulo());
+		if(aux == 0) {
+			return this.getId().compareTo(m.getId());
+		}else {
 			return aux;
 		}
 	}
