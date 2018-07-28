@@ -78,5 +78,9 @@ public class LibroTableModel  extends AbstractTableModel {
 		libros.remove(indice);
 		this.fireTableRowsDeleted(indice, indice);
 	}
+	
+	public Boolean isNull() {
+		return (libros == null);
+	}
 
 }

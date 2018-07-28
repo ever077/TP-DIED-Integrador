@@ -20,6 +20,8 @@ public class Principal {
 	private static JMenuItem menuItem_EliminarVideo;
 	private static JMenuItem menuItem_BuscarMaterial;
 	private static JMenu menu_1;
+	
+	
 	public static void main(String[] args) {
 	    javax.swing.SwingUtilities.invokeLater(new Runnable() {
 	        public void run() {

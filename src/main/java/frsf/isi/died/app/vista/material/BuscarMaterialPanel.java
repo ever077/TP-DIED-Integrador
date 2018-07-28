@@ -3,6 +3,7 @@ package frsf.isi.died.app.vista.material;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -25,6 +26,7 @@ import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.Video;
+import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.util.OrdenarMaterialPorCalificacion;
 import frsf.isi.died.tp.util.OrdenarMaterialPorFecha;
 import frsf.isi.died.tp.util.OrdenarMaterialPorPrecio;
@@ -136,45 +138,65 @@ public class BuscarMaterialPanel extends JPanel {
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener( e ->{
 			try {
+				Boolean esLibro = false;
+				Boolean actualizarTabla = false;
 				
 				if( (comboTema.getSelectedItem().toString()).equals("LIBRO") ) {
 					// LIBRO
-					tabla.setModel(tableModelLibro);
-					String titulo = txtTitulo.getText();
-				//	controllerLibro.verificarTitulo(titulo);
-					Integer calificacion;
-					if(txtCalificacion.getText().isEmpty()) {
-						calificacion = -1;
-					}else {
-						calificacion = Integer.valueOf(txtCalificacion.getText());
-						//controllerLibro.verificarCalificacion(calificacion);
+					esLibro = true;
+					if(!(tableModelLibro.isNull())){
+						actualizarTabla = true;
+						for(int i = 0; i < tableModelLibro.getRowCount(); i++) {
+						tableModelLibro.deleteRow(i);
+						}
 					}
-					String fechaI = txtFechaI.getText();
-					String fechaF = txtFechaF.getText();
-					List<Libro> listaLibrosMostrar = buscarController.buscarLibros(titulo, calificacion, fechaI, fechaF);
-		
-					TiposDeOrden ordenSeleccionado = TiposDeOrden.getEnum(comboTipoOrden.getSelectedItem().toString());
-					Set<Libro> listaOrdenada = new TreeSet<Libro>();
-					listaOrdenada = buscarController.ordenarLibros(listaLibrosMostrar, ordenSeleccionado);
-					buscarController.cargarTablaLibros(listaOrdenada);
-					
-					//Limpiar campos
-					txtTitulo.setText("");
-					txtCalificacion.setText("");
-					txtFechaI.setText("");
-					txtFechaF.setText("");
-					comboTema.setSelectedIndex(0);
-					comboTipoOrden.setSelectedIndex(0);
+					tabla.setModel(tableModelLibro);
 				}else {
 					// VIDEO
+					if(!(tableModelVideo.isNull())){
+						actualizarTabla = true;
+						for(int i = 0; i < tableModelVideo.getRowCount(); i++) {
+							tableModelVideo.deleteRow(i);
+						}
+					}
 					tabla.setModel(tableModelVideo);
-					controllerVideo.verificarTitulo(txtTitulo.getText());
+				}
+				String titulo = txtTitulo.getText();
+				Integer calificacion;
+				if(txtCalificacion.getText().isEmpty()) {
+					calificacion = -1;
+				}else {
+					calificacion = Integer.valueOf(txtCalificacion.getText());
+				}
+				String fechaI = txtFechaI.getText();
+				String fechaF = txtFechaF.getText();
+				List<MaterialCapacitacion> listaMaterialesMostrar = buscarController.buscarMateriales(titulo, calificacion, fechaI, fechaF, (comboTema.getSelectedItem().toString()));
+	
+				TiposDeOrden ordenSeleccionado = TiposDeOrden.getEnum(comboTipoOrden.getSelectedItem().toString());
+				Set<MaterialCapacitacion> listaOrdenada = new TreeSet<MaterialCapacitacion>();
+				listaOrdenada = buscarController.ordenarMateriales(listaMaterialesMostrar, ordenSeleccionado);
+				if(esLibro) {
+					buscarController.cargarTablaLibros(listaOrdenada,actualizarTabla);
+				}else {
+					buscarController.cargarTablaVideos(listaOrdenada,actualizarTabla);
 				}
 				
+				
+				//Limpiar campos
+				txtTitulo.setText("");
+				txtCalificacion.setText("");
+				txtFechaI.setText("");
+				txtFechaF.setText("");
+				comboTema.setSelectedIndex(0);
+				comboTipoOrden.setSelectedIndex(0);
+					
+				// Falta reiniciar la pantalla
+				
 			}
-			catch(DataOutOfBoundException d){
+		// El catch no anda porque no verifico ni el titulo ni la calificacion
+	/*		catch(DataOutOfBoundException d){
 				 JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
-			}
+			} */
 			catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "Datos incorrectos", JOptionPane.ERROR_MESSAGE);
 			}
@@ -188,6 +210,10 @@ public class BuscarMaterialPanel extends JPanel {
 		
 		
 		btnCancelar= new JButton("Cancelar");
+		btnCancelar.addActionListener( e ->{
+// BUSCAR COMO ELIMINAR EL PANEL
+			this.setVisible(false);
+		});	
 		gridConst.gridx=9;
 		gridConst.gridy=1;
 		gridConst.weightx=1.0;
@@ -217,11 +243,18 @@ public class BuscarMaterialPanel extends JPanel {
 		this.controllerVideo = controllerVideo;
 	}
 	
-	public void setListaLibros(Set<Libro> librosLista,boolean actualizar) {
+	public void setListaLibros(Set<? extends MaterialCapacitacion> librosLista,boolean actualizar) {
 		List<Libro> l = new ArrayList<Libro>();
-		l.addAll(librosLista);
+		l.addAll((Collection<? extends Libro>) librosLista);
 		this.tableModelLibro.setLibros(l);
 		if(actualizar) this.tableModelLibro.fireTableDataChanged();
+	}
+	
+	public void setListaVideos(Set<? extends MaterialCapacitacion> videosLista,boolean actualizar) {
+		List<Video> l = new ArrayList<Video>();
+		l.addAll((Collection<? extends Video>) videosLista);
+		this.tableModelVideo.setVideos(l);
+		if(actualizar) this.tableModelVideo.fireTableDataChanged();
 	}
 	
 }

@@ -15,6 +15,7 @@ import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.app.vista.material.BuscarMaterialPanel;
 import frsf.isi.died.tp.modelo.productos.Libro;
+import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.modelo.productos.Video;
 import frsf.isi.died.tp.util.ManipularFecha;
 import frsf.isi.died.tp.util.OrdenarMaterialPorCalificacion;
@@ -52,23 +53,29 @@ public class BuscarController {
 			throw new DataOutOfBoundException("No ingreso ningun titulo");
 		}
 	}
+
 	
-	public List<Libro> buscarLibros(String titulo, Integer calificacion, String fechaI, String fechaF){
-		List<Libro> listaFinal = new ArrayList<Libro>();
-		List<Libro> listaLibros = materialDAO.listaLibros();
+	public List<MaterialCapacitacion> buscarMateriales(String titulo, Integer calificacion, String fechaI, String fechaF, String tipoMaterial){
+		List<MaterialCapacitacion> listaFinal = new ArrayList<MaterialCapacitacion>();
+		List<MaterialCapacitacion> listaMateriales = new ArrayList<MaterialCapacitacion>();
+		if(tipoMaterial.equals("LIBRO")) {
+			listaMateriales.addAll(materialDAO.listaLibros());
+		}else {
+			listaMateriales.addAll(materialDAO.listaVideos());
+		}
 		// Me ingresan Titulo
 		if((!titulo.isEmpty()) && (calificacion == -1) && (fechaI.isEmpty()) && (fechaF.isEmpty())) {
-			for(Libro l : listaLibros) {
-				if(l.getTitulo().equals(titulo)) {
-					listaFinal.add(l);
+			for(MaterialCapacitacion m : listaMateriales) {
+				if(m.getTitulo().equals(titulo)) {
+					listaFinal.add(m);
 				}
 			}
 		}
 		// Me ingresan Calificacion
 		if((titulo.isEmpty()) && (calificacion != -1) && (fechaI.isEmpty()) && (fechaF.isEmpty())) {
-			for(Libro l : listaLibros) {
-				if(l.getCalificacion() == calificacion) {
-					listaFinal.add(l);
+			for(MaterialCapacitacion m : listaMateriales) {
+				if(m.getCalificacion() == calificacion) {
+					listaFinal.add(m);
 				}
 			}
 		}
@@ -77,10 +84,10 @@ public class BuscarController {
 			Date fInicio = ManipularFecha.getDateFromString(fechaI);
 			Date fFin = ManipularFecha.getDateFromString(fechaF);
 			Date fLibro;
-			for(Libro l : listaLibros) {
-				fLibro = ManipularFecha.getDateFromString(l.getFechaPublicacion());
+			for(MaterialCapacitacion m : listaMateriales) {
+				fLibro = ManipularFecha.getDateFromString(m.getFechaPublicacion());
 				if(fLibro.after(fInicio) && fLibro.before(fFin)) {
-					listaFinal.add(l);
+					listaFinal.add(m);
 				}
 			}
 		}
@@ -89,10 +96,10 @@ public class BuscarController {
 			Date fInicio = ManipularFecha.getDateFromString(fechaI);
 			Date fFin = ManipularFecha.getDateFromString(fechaF);
 			Date fLibro;
-			for(Libro l : listaLibros) {
-				fLibro = ManipularFecha.getDateFromString(l.getFechaPublicacion());
-				if((l.getTitulo().equals(titulo)) && (l.getCalificacion() == calificacion) && (fLibro.after(fInicio)) && (fLibro.before(fFin))) {
-					listaFinal.add(l);
+			for(MaterialCapacitacion m : listaMateriales) {
+				fLibro = ManipularFecha.getDateFromString(m.getFechaPublicacion());
+				if((m.getTitulo().equals(titulo)) && (m.getCalificacion() == calificacion) && (fLibro.after(fInicio)) && (fLibro.before(fFin))) {
+					listaFinal.add(m);
 				}
 			}
 		}
@@ -101,18 +108,18 @@ public class BuscarController {
 			Date fInicio = ManipularFecha.getDateFromString(fechaI);
 			Date fFin = ManipularFecha.getDateFromString(fechaF);
 			Date fLibro;
-			for(Libro l : listaLibros) {
-				fLibro = ManipularFecha.getDateFromString(l.getFechaPublicacion());
-				if((l.getCalificacion() == calificacion) && (fLibro.after(fInicio)) && (fLibro.before(fFin))) {
-					listaFinal.add(l);
+			for(MaterialCapacitacion m : listaMateriales) {
+				fLibro = ManipularFecha.getDateFromString(m.getFechaPublicacion());
+				if((m.getCalificacion() == calificacion) && (fLibro.after(fInicio)) && (fLibro.before(fFin))) {
+					listaFinal.add(m);
 				}
 			}
 		}
 		// Me ingresan Titulo y Calificacion
 		if((!titulo.isEmpty()) && (calificacion != -1) && (fechaI.isEmpty()) && (fechaF.isEmpty())) {
-			for(Libro l : listaLibros) {
-				if((l.getTitulo().equals(titulo)) && (l.getCalificacion() == calificacion)) {
-					listaFinal.add(l);
+			for(MaterialCapacitacion m : listaMateriales) {
+				if((m.getTitulo().equals(titulo)) && (m.getCalificacion() == calificacion)) {
+					listaFinal.add(m);
 				}
 			}
 		}
@@ -121,10 +128,10 @@ public class BuscarController {
 			Date fInicio = ManipularFecha.getDateFromString(fechaI);
 			Date fFin = ManipularFecha.getDateFromString(fechaF);
 			Date fLibro;
-			for(Libro l : listaLibros) {
-				fLibro = ManipularFecha.getDateFromString(l.getFechaPublicacion());
-				if((l.getTitulo().equals(titulo)) && (fLibro.after(fInicio) && fLibro.before(fFin))) {
-					listaFinal.add(l);
+			for(MaterialCapacitacion m : listaMateriales) {
+				fLibro = ManipularFecha.getDateFromString(m.getFechaPublicacion());
+				if((m.getTitulo().equals(titulo)) && (fLibro.after(fInicio) && fLibro.before(fFin))) {
+					listaFinal.add(m);
 				}
 			}
 		}
@@ -132,30 +139,33 @@ public class BuscarController {
 		return listaFinal;
 	}
 	
-	
-	public Set<Libro> ordenarLibros(List<Libro> listaLibrosMostrar, TiposDeOrden ordenSeleccionado){
-		Set<Libro> listaOrdenada = null;
+	public Set<MaterialCapacitacion> ordenarMateriales(List<MaterialCapacitacion> listaMaterialesMostrar, TiposDeOrden ordenSeleccionado){
+		Set<MaterialCapacitacion> listaOrdenada = null;
 		if(ordenSeleccionado.equals(TiposDeOrden.TITULO)) {
-			listaOrdenada = new TreeSet<Libro>();
-			listaOrdenada.addAll(listaLibrosMostrar);
+			listaOrdenada = new TreeSet<MaterialCapacitacion>();
+			listaOrdenada.addAll(listaMaterialesMostrar);
 		}else if(ordenSeleccionado.equals(TiposDeOrden.CALIFICACION)) {
-			listaOrdenada = new TreeSet<Libro>(new OrdenarMaterialPorCalificacion());
-			listaOrdenada.addAll(listaLibrosMostrar);
+			listaOrdenada = new TreeSet<MaterialCapacitacion>(new OrdenarMaterialPorCalificacion());
+			listaOrdenada.addAll(listaMaterialesMostrar);
 		}else if(ordenSeleccionado.equals(TiposDeOrden.PRECIO)) {
-			listaOrdenada = new TreeSet<Libro>(new OrdenarMaterialPorPrecio());
-			listaOrdenada.addAll(listaLibrosMostrar);
+			listaOrdenada = new TreeSet<MaterialCapacitacion>(new OrdenarMaterialPorPrecio());
+			listaOrdenada.addAll(listaMaterialesMostrar);
 		}else if(ordenSeleccionado.equals(TiposDeOrden.FECHA)) {
-			listaOrdenada = new TreeSet<Libro>(new OrdenarMaterialPorFecha());
-			listaOrdenada.addAll(listaLibrosMostrar);
+			listaOrdenada = new TreeSet<MaterialCapacitacion>(new OrdenarMaterialPorFecha());
+			listaOrdenada.addAll(listaMaterialesMostrar);
 		}else if(ordenSeleccionado.equals(TiposDeOrden.RELEVANCIA)) {
-			listaOrdenada = new TreeSet<Libro>(new OrdenarMaterialPorRelevancia());
-			listaOrdenada.addAll(listaLibrosMostrar);
+			listaOrdenada = new TreeSet<MaterialCapacitacion>(new OrdenarMaterialPorRelevancia());
+			listaOrdenada.addAll(listaMaterialesMostrar);
 		}
 		return listaOrdenada;
 	}
 	
-	public void cargarTablaLibros(Set<Libro> s) {
-		this.buscarMaterialPanel.setListaLibros(s,false);
+	public void cargarTablaLibros(Set<MaterialCapacitacion> s, Boolean actualizarTabla) {
+		this.buscarMaterialPanel.setListaLibros(s,actualizarTabla);
+	}
+	
+	public void cargarTablaVideos(Set<MaterialCapacitacion> s, Boolean actualizarTabla) {
+		this.buscarMaterialPanel.setListaVideos(s,actualizarTabla);
 	}
 	
 }

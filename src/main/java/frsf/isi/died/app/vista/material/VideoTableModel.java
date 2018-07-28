@@ -75,5 +75,9 @@ public class VideoTableModel  extends AbstractTableModel{
 		videos.remove(indice);
 		this.fireTableRowsDeleted(indice, indice);
 	}
+	
+	public Boolean isNull() {
+		return (videos == null);
+	}
 
 }
