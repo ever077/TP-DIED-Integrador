@@ -18,6 +18,7 @@ import frsf.isi.died.app.vista.material.LibroPanelModificacion;
 import frsf.isi.died.app.vista.material.VideoPanel;
 import frsf.isi.died.app.vista.material.VideoPanelEliminacion;
 import frsf.isi.died.app.vista.material.VideoPanelModificacion;
+import frsf.isi.died.app.vista.material.WishListPanel;
 
 public class MenuController {
 
@@ -76,6 +77,12 @@ public class MenuController {
 			 BuscarController buscarController = new BuscarController(buscarMaterialPanel);
 			 buscarController.crearPanel();
 			 framePrincipal.setContentPane(buscarController.getPanelBuscar());
+			 break;
+		case BUSCAR_WISH:
+			WishListPanel wishListPanel = new WishListPanel();
+			WishListController wishListController = new WishListController(wishListPanel);
+			wishListController.crearPanel();
+			framePrincipal.setContentPane(wishListController.getPanel());
 			 break;
 		case VER_GRAFO:
 			/*JPanel panel = new JPanel(new BorderLayout());

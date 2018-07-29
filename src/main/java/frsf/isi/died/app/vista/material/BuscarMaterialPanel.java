@@ -2,6 +2,7 @@ package frsf.isi.died.app.vista.material;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,6 +23,7 @@ import frsf.isi.died.app.controller.BuscarController;
 import frsf.isi.died.app.controller.LibroController;
 import frsf.isi.died.app.controller.TiposDeOrden;
 import frsf.isi.died.app.controller.VideoController;
+import frsf.isi.died.app.controller.WishListController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
 import frsf.isi.died.tp.modelo.productos.Libro;
@@ -47,16 +49,19 @@ public class BuscarMaterialPanel extends JPanel {
 	private JTextField txtFechaF;
 	private JButton btnBuscar;
 	private JButton btnCancelar;
+	private JButton btnAgregarWishList;
 	private JComboBox comboTema;
 	private JComboBox comboTipoOrden;
+	
+	private Integer idFilaSeleccionada = -1;
 
 	private VideoTableModel tableModelVideo;
 	private LibroTableModel tableModelLibro;
 
-	BuscarController buscarController;
 	private VideoController controllerVideo;
 	private LibroController controllerLibro;
-	
+	private BuscarController buscarController;
+	private WishListController wishListController = new WishListController();
 	
 	public BuscarMaterialPanel() {
 		this.setLayout(new GridBagLayout());
@@ -222,7 +227,10 @@ public class BuscarMaterialPanel extends JPanel {
 		
 		tabla = new JTable();
 		tabla.setFillsViewportHeight(true);
-		scrollPane= new JScrollPane(tabla);
+		scrollPane = new JScrollPane(tabla);
+		
+		//  Seteamos el evento a la tabla
+		setEventoMouseClicked(tabla);
 		
 		gridConst.gridx=0;
 		gridConst.gridwidth=10;	
@@ -232,11 +240,31 @@ public class BuscarMaterialPanel extends JPanel {
 		gridConst.fill=GridBagConstraints.BOTH;
 		gridConst.anchor=GridBagConstraints.PAGE_START;		
 		this.add(scrollPane, gridConst);
+		
+		
+		btnAgregarWishList= new JButton("Agregar Wish List");
+		btnAgregarWishList.addActionListener( e ->{
+			// meter en try catch
+				if(idFilaSeleccionada != -1) {
+					wishListController.addMaterial(idFilaSeleccionada);
+					System.out.println(wishListController.getColaPrioridad());
+				}
+				
+			
+		});	
+		gridConst.gridx=4;
+		gridConst.gridy=3;
+		gridConst.gridwidth=2;
+		gridConst.weightx=1.0;
+		gridConst.anchor = GridBagConstraints.LINE_START;
+		this.add(btnAgregarWishList, gridConst);
+		
 	}
 	
 	public void setController(BuscarController buscarController) {
 		this.buscarController = buscarController;
 	}
+	
 	
 	public void setControllers(LibroController controllerLibro, VideoController controllerVideo) {
 		this.controllerLibro = controllerLibro;
@@ -256,5 +284,31 @@ public class BuscarMaterialPanel extends JPanel {
 		this.tableModelVideo.setVideos(l);
 		if(actualizar) this.tableModelVideo.fireTableDataChanged();
 	}
+	
+	// -------------------
+	
+	public void setIdFilaSeleccionada() {
+		int fila = tabla.getSelectedRow();
+		idFilaSeleccionada = (Integer) tabla.getValueAt(fila, 0);
+	}
+	
+	
+	private void setEventoMouseClicked(JTable tbl)
+    {
+        tbl.addMouseListener(new java.awt.event.MouseAdapter() {
+ 
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        	tblEjemploMouseClicked(e);
+        }
+        });
+        
+    }
+	
+	public void tblEjemploMouseClicked(java.awt.event.MouseEvent evt) {
+    	  this.setIdFilaSeleccionada();
+    }
+	
+	// -------------------
 	
 }

@@ -236,5 +236,5 @@ public class LibroPanelModificacion extends LPanel {
 	
 	public void tblEjemploMouseClicked(java.awt.event.MouseEvent evt) {
     	  this.cargarCampos(this.getFilaSeleccionada());
-       }
+    }
 }

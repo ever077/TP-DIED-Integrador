@@ -20,6 +20,7 @@ public class Principal {
 	private static JMenuItem menuItem_EliminarVideo;
 	private static JMenuItem menuItem_BuscarMaterial;
 	private static JMenu menu_1;
+	private static JMenuItem menuItem_MyWishlist;
 	
 	
 	public static void main(String[] args) {
@@ -93,6 +94,10 @@ public class Principal {
 	        menuItem_BuscarMaterial = new JMenuItem("Buscar Material");
 	        menuItem_BuscarMaterial.addActionListener(e -> controller.showView(TiposAcciones.BUSCAR_MAT));
 	        menu_1.add(menuItem_BuscarMaterial);
+	        
+	        menuItem_MyWishlist = new JMenuItem("My Wish-List");
+	        menuItem_MyWishlist.addActionListener(e -> controller.showView(TiposAcciones.BUSCAR_WISH));
+	        menu_1.add(menuItem_MyWishlist);
 	        
 	        f.setJMenuBar(menuBar);
 	        
