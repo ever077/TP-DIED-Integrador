@@ -248,7 +248,7 @@ public class BuscarMaterialPanel extends JPanel {
 			// meter en try catch
 				if(idFilaSeleccionada != -1) {
 					wishListController.addMaterial(idFilaSeleccionada);
-					System.out.println(wishListController.getColaPrioridad());
+				//	System.out.println(wishListController.getColaPrioridad());
 				}
 				
 			

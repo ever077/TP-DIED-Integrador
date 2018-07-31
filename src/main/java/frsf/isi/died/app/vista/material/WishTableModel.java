@@ -24,8 +24,9 @@ public class WishTableModel extends AbstractTableModel {
 	}
 
 	public void setMateriales(PriorityQueue<MaterialCapacitacion> colaPrioridad) {
-		while(!colaPrioridad.isEmpty()){
-			this.materiales.add((MaterialCapacitacion)colaPrioridad.peek());
+		PriorityQueue<MaterialCapacitacion> pqCopy = new PriorityQueue<MaterialCapacitacion>(colaPrioridad);
+		while(!pqCopy.isEmpty()){
+			this.materiales.add((MaterialCapacitacion)pqCopy.poll());
 		}
 		//this.materiales = (List<MaterialCapacitacion>) colaPrioridad;
 	}

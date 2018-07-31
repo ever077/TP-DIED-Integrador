@@ -21,11 +21,15 @@ import frsf.isi.died.tp.modelo.BibliotecaABB;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.modelo.productos.Video;
+import frsf.isi.died.tp.util.OrdenarMaterialWishList;
 
 public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 
 	private Grafo<MaterialCapacitacion> GRAFO_MATERIAL  = new Grafo<MaterialCapacitacion>();
+	private PriorityQueue<MaterialCapacitacion> wishListLibros = new PriorityQueue<MaterialCapacitacion>(new OrdenarMaterialWishList());
+	private PriorityQueue<MaterialCapacitacion> wishListVideos = new PriorityQueue<MaterialCapacitacion>(new OrdenarMaterialWishList());
 	private static Integer SECUENCIA_ID;
+	private static Integer SECUENCIA_ID_WISHLIST = 0;
 	private static Biblioteca biblioteca = new BibliotecaABB();
 	
 	private CsvDatasource dataSource;
@@ -34,6 +38,7 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		dataSource = new CsvDatasource();
 		if(GRAFO_MATERIAL.esVacio()) {
 			cargarGrafo();
+			cargarColaPrioridad();
 		}
 		this.cargarIdSecuencia();
 	}
@@ -58,6 +63,21 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 			GRAFO_MATERIAL.conectar(n1, n2);
 		}
  	}
+	
+	private void cargarColaPrioridad() {
+		List<List<String>> librosWishList = dataSource.readFile("wishListLibro.csv");
+		for(List<String> libro : librosWishList) {
+			Libro aux = new Libro();
+			aux.loadFromStringRow(libro);
+			wishListLibros.add(aux);
+		}
+		List<List<String>> videosWishList = dataSource.readFile("wishListVideo.csv");
+		for(List<String> video : videosWishList) {
+			Video aux = new Video();
+			aux.loadFromStringRow(video);
+			wishListVideos.add(aux);
+		}
+	}
 	
 	@Override
 	public void agregarLibro(Libro mat) {
@@ -321,19 +341,41 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		SECUENCIA_ID = maxId;
 	}
 	
-	/*
-	public void actualizarMaterialesWishList(PriorityQueue<MaterialCapacitacion> colaPrioridad) {
-		
-		try {
-			for(int i = 0 ; i < colaPrioridad.size(); i++) {
-				dataSource.agregarFilaAlFinal("wishList.csv", colaPrioridad.poll());
+	
+	public void agregarMaterialWishList(MaterialCapacitacion material) {
+		// Copio el material
+		MaterialCapacitacion mat;
+		if(material instanceof Libro) {
+			mat = new Libro(++SECUENCIA_ID_WISHLIST, material.getTitulo(), material.getCosto(), ((Libro) material).getPrecioCompra(), ((Libro) material).getPaginas(), material.getCalificacion(), material.getFechaPublicacion(), material.getRelevancia());
+			wishListLibros.add(mat);
+			try {
+				dataSource.agregarFilaAlFinal("wishListLibro.csv", mat);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		}else {
+			mat = new Video(++SECUENCIA_ID_WISHLIST, material.getTitulo(), material.getCosto(), ((Video)material).getDuracion(), material.getCalificacion(), material.getFechaPublicacion(), material.getRelevancia());
+			wishListVideos.add(mat);
+			try {
+				dataSource.agregarFilaAlFinal("wishListVideo.csv", mat);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
 	}
-	*/
+	
+	public PriorityQueue<MaterialCapacitacion> listaWishList(){
+		PriorityQueue<MaterialCapacitacion> pqLibrosCopy = new PriorityQueue<MaterialCapacitacion>(wishListLibros);
+		PriorityQueue<MaterialCapacitacion> pqVideosCopy = new PriorityQueue<MaterialCapacitacion>(wishListVideos);
+		for(int i = 0 ; i < pqVideosCopy.size() ; i++) {
+			pqLibrosCopy.add(pqVideosCopy.poll());
+		}
+		return pqLibrosCopy;
+	}
+	
 	
 }
