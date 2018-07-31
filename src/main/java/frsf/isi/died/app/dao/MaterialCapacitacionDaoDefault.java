@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import javax.swing.JOptionPane;
 
@@ -319,5 +320,20 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		}
 		SECUENCIA_ID = maxId;
 	}
+	
+	/*
+	public void actualizarMaterialesWishList(PriorityQueue<MaterialCapacitacion> colaPrioridad) {
+		
+		try {
+			for(int i = 0 ; i < colaPrioridad.size(); i++) {
+				dataSource.agregarFilaAlFinal("wishList.csv", colaPrioridad.poll());
+			}
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	*/
 	
 }

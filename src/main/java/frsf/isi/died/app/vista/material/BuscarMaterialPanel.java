@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -61,7 +62,7 @@ public class BuscarMaterialPanel extends JPanel {
 	private VideoController controllerVideo;
 	private LibroController controllerLibro;
 	private BuscarController buscarController;
-	private WishListController wishListController = new WishListController();
+	private WishListController wishListController;
 	
 	public BuscarMaterialPanel() {
 		this.setLayout(new GridBagLayout());
@@ -263,6 +264,10 @@ public class BuscarMaterialPanel extends JPanel {
 	
 	public void setController(BuscarController buscarController) {
 		this.buscarController = buscarController;
+	}
+	
+	public void setWishListController(WishListController wishListController) {
+		this.wishListController = wishListController;
 	}
 	
 	

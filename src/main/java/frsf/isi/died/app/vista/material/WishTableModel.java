@@ -1,6 +1,7 @@
 package frsf.isi.died.app.vista.material;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 
 import javax.swing.table.AbstractTableModel;
@@ -9,7 +10,7 @@ import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;;
 
 public class WishTableModel extends AbstractTableModel {
 
-	private List<MaterialCapacitacion> materiales;
+	private List<MaterialCapacitacion> materiales = new ArrayList<MaterialCapacitacion>();
 	private String[] columnas = {"ID","Titulo","Relevancia","Calificacion","Precio"};
 	
 	
@@ -23,7 +24,10 @@ public class WishTableModel extends AbstractTableModel {
 	}
 
 	public void setMateriales(PriorityQueue<MaterialCapacitacion> colaPrioridad) {
-		this.materiales = (List<MaterialCapacitacion>) colaPrioridad;
+		while(!colaPrioridad.isEmpty()){
+			this.materiales.add((MaterialCapacitacion)colaPrioridad.peek());
+		}
+		//this.materiales = (List<MaterialCapacitacion>) colaPrioridad;
 	}
 
 	@Override

@@ -74,13 +74,15 @@ public class MenuController {
 			 break;
 		case BUSCAR_MAT:
 			 BuscarMaterialPanel buscarMaterialPanel = new BuscarMaterialPanel();
+			 WishListPanel wishListPanel = new WishListPanel();
+			 buscarMaterialPanel.setWishListController(new WishListController(wishListPanel));
 			 BuscarController buscarController = new BuscarController(buscarMaterialPanel);
 			 buscarController.crearPanel();
 			 framePrincipal.setContentPane(buscarController.getPanelBuscar());
 			 break;
 		case BUSCAR_WISH:
-			WishListPanel wishListPanel = new WishListPanel();
-			WishListController wishListController = new WishListController(wishListPanel);
+			WishListPanel wishListPanel2 = new WishListPanel();
+			WishListController wishListController = new WishListController(wishListPanel2);
 			wishListController.crearPanel();
 			framePrincipal.setContentPane(wishListController.getPanel());
 			 break;

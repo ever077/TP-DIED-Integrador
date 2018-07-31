@@ -29,7 +29,6 @@ public class WishListPanel extends JPanel{
 	// Id del libro que selecciona el usuario
 	private Integer idLibroSeleccionado = 0;
 	
-	private static final Integer CANTIDAD_COLUMNAS_MODIFICAR = 7;
 	
 	public WishListPanel() {
 		this.setLayout(new GridBagLayout());
@@ -43,7 +42,7 @@ public class WishListPanel extends JPanel{
 
 		btnCancelar= new JButton("Cancelar");
 		gridConst.gridx=2;
-		gridConst.gridy=1;
+		gridConst.gridy=2;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnCancelar, gridConst);
