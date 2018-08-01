@@ -192,6 +192,7 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 					fila.set(5, l.getCalificacion().toString());
 					// La posicion 6 es la fecha de publicacion
 					fila.set(7, l.getRelevancia().toString());
+					fila.set(8, l.getTema().toString());
 				}
 				// sobreescribo la linea
 					dataSource.writeLine(escritor, fila);
@@ -262,6 +263,7 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 					fila.set(4, v.getCalificacion().toString());
 					// La posicion 5 es la fecha de publicacion
 					fila.set(6, v.getRelevancia().toString());
+					fila.set(7, v.getTema().toString());
 				}
 				// sobreescribo la linea
 					dataSource.writeLine(escritor, fila);
@@ -346,7 +348,7 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		// Copio el material
 		MaterialCapacitacion mat;
 		if(material instanceof Libro) {
-			mat = new Libro(++SECUENCIA_ID_WISHLIST, material.getTitulo(), material.getCosto(), ((Libro) material).getPrecioCompra(), ((Libro) material).getPaginas(), material.getCalificacion(), material.getFechaPublicacion(), material.getRelevancia());
+			mat = new Libro(++SECUENCIA_ID_WISHLIST, material.getTitulo(), material.getCosto(), ((Libro) material).getPrecioCompra(), ((Libro) material).getPaginas(), material.getCalificacion(), material.getFechaPublicacion(), material.getRelevancia(), material.getTema());
 			wishListLibros.add(mat);
 			try {
 				dataSource.agregarFilaAlFinal("wishListLibro.csv", mat);
@@ -356,7 +358,7 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 			}
 			
 		}else {
-			mat = new Video(++SECUENCIA_ID_WISHLIST, material.getTitulo(), material.getCosto(), ((Video)material).getDuracion(), material.getCalificacion(), material.getFechaPublicacion(), material.getRelevancia());
+			mat = new Video(++SECUENCIA_ID_WISHLIST, material.getTitulo(), material.getCosto(), ((Video)material).getDuracion(), material.getCalificacion(), material.getFechaPublicacion(), material.getRelevancia(), material.getTema());
 			wishListVideos.add(mat);
 			try {
 				dataSource.agregarFilaAlFinal("wishListVideo.csv", mat);

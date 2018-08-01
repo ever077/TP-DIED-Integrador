@@ -10,12 +10,14 @@ import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -27,6 +29,7 @@ import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.controller.WishListController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
+import frsf.isi.died.tp.modelo.productos.Temas;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.Video;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
@@ -44,6 +47,7 @@ public class BuscarMaterialPanel extends JPanel {
 	private JLabel lblTema;
 	private JLabel lblRangosFecha;
 	private JLabel lblTipoOrden;
+	private JLabel lblRB;
 	private JTextField txtTitulo;
 	private JTextField txtCalificacion;
 	private JTextField txtFechaI;
@@ -53,11 +57,13 @@ public class BuscarMaterialPanel extends JPanel {
 	private JButton btnAgregarWishList;
 	private JComboBox comboTema;
 	private JComboBox comboTipoOrden;
+	private JRadioButton rbTodos, rbLibros, rbVideos;
 	
 	private Integer idFilaSeleccionada = -1;
 
 	private VideoTableModel tableModelVideo;
 	private LibroTableModel tableModelLibro;
+	private WishTableModel todosTableModel;
 
 	private VideoController controllerVideo;
 	private LibroController controllerLibro;
@@ -69,6 +75,7 @@ public class BuscarMaterialPanel extends JPanel {
 		// Asignar el TableModel segun el comboTema seleccionado.
 		tableModelLibro = new LibroTableModel();
 		tableModelVideo = new VideoTableModel();
+		todosTableModel = new WishTableModel();
 	}
 	
 	public void construir() {
@@ -100,8 +107,10 @@ public class BuscarMaterialPanel extends JPanel {
 		this.add(lblTema, gridConst);
 		
 		comboTema = new JComboBox();
-		comboTema.addItem("LIBRO");
-		comboTema.addItem("VIDEO");
+		for(Temas t : Temas.values()) {
+			comboTema.addItem(t.getNombre());
+		}
+		comboTema.setSelectedIndex(-1);
 		comboTema.setBackground(getBackground().brighter());
 		gridConst.gridx=5;
 		this.add(comboTema, gridConst);
@@ -126,7 +135,7 @@ public class BuscarMaterialPanel extends JPanel {
 		
 		lblTipoOrden = new JLabel("Tipo de ordenamiento: ");
 		gridConst.gridx=0;
-		gridConst.gridy=1;
+		gridConst.gridy=2;
 		gridConst.gridwidth=2;
 		this.add(lblTipoOrden, gridConst);
 		
@@ -137,8 +146,38 @@ public class BuscarMaterialPanel extends JPanel {
 		//comboTipoOrden.setModel(new DefaultComboBoxModel(TiposDeOrden.values()));	
 		comboTipoOrden.setBackground(getBackground().brighter());
 		gridConst.gridx=2;
+		gridConst.gridy=2;
 		gridConst.gridwidth=2;
 		this.add(comboTipoOrden, gridConst);
+		
+		lblRB = new JLabel("Filtro: ");
+		gridConst.gridx=5;
+		gridConst.gridy=2;
+		gridConst.gridwidth=1;
+		this.add(lblRB, gridConst);
+		
+		rbTodos = new JRadioButton("Todos", true);
+		gridConst.gridx=6;
+		gridConst.gridy=1;
+		gridConst.gridwidth=1;
+		this.add(rbTodos, gridConst);
+		
+		rbLibros = new JRadioButton("Libros", false);
+		gridConst.gridx=6;
+		gridConst.gridy=2;
+		gridConst.gridwidth=1;
+		this.add(rbLibros, gridConst);
+		
+		rbVideos = new JRadioButton("Videos", false);
+		gridConst.gridx=6;
+		gridConst.gridy=3;
+		gridConst.gridwidth=1;
+		this.add(rbVideos, gridConst);
+		
+		ButtonGroup grupoRB = new ButtonGroup();
+		grupoRB.add(rbTodos);
+		grupoRB.add(rbLibros);
+		grupoRB.add(rbVideos);
 		
 		
 		btnBuscar = new JButton("Buscar");
@@ -146,10 +185,12 @@ public class BuscarMaterialPanel extends JPanel {
 			try {
 				Boolean esLibro = false;
 				Boolean actualizarTabla = false;
+				String flag = "";
 				
-				if( (comboTema.getSelectedItem().toString()).equals("LIBRO") ) {
+				if( rbLibros.isSelected() ) {
 					// LIBRO
-					esLibro = true;
+					//esLibro = true;
+					flag = "LIBRO";
 					if(!(tableModelLibro.isNull())){
 						actualizarTabla = true;
 						for(int i = 0; i < tableModelLibro.getRowCount(); i++) {
@@ -157,8 +198,9 @@ public class BuscarMaterialPanel extends JPanel {
 						}
 					}
 					tabla.setModel(tableModelLibro);
-				}else {
+				}else if( rbVideos.isSelected() ) {
 					// VIDEO
+					flag = "VIDEO";
 					if(!(tableModelVideo.isNull())){
 						actualizarTabla = true;
 						for(int i = 0; i < tableModelVideo.getRowCount(); i++) {
@@ -166,7 +208,18 @@ public class BuscarMaterialPanel extends JPanel {
 						}
 					}
 					tabla.setModel(tableModelVideo);
+				}else {
+					// TODOS
+					flag = "TODOS";
+					if(!(todosTableModel.isNull())){
+						actualizarTabla = true;
+						for(int i = 0; i < todosTableModel.getRowCount(); i++) {
+							todosTableModel.deleteRow(i);
+						}
+					}
+					tabla.setModel(todosTableModel);
 				}
+				
 				String titulo = txtTitulo.getText();
 				Integer calificacion;
 				if(txtCalificacion.getText().isEmpty()) {
@@ -176,15 +229,27 @@ public class BuscarMaterialPanel extends JPanel {
 				}
 				String fechaI = txtFechaI.getText();
 				String fechaF = txtFechaF.getText();
-				List<MaterialCapacitacion> listaMaterialesMostrar = buscarController.buscarMateriales(titulo, calificacion, fechaI, fechaF, (comboTema.getSelectedItem().toString()));
+				String tema;
+				if(comboTema.getSelectedIndex() == -1){
+					tema = "";
+				}else {
+					tema = (Temas.getEnum( (String) comboTema.getSelectedItem().toString()) ).getNombre();
+				}
+				
+				
+				List<MaterialCapacitacion> listaMaterialesMostrar = buscarController.buscarMateriales(titulo, calificacion, fechaI, fechaF, tema, flag);
+				
+				//List<MaterialCapacitacion> listaMaterialesMostrar = buscarController.buscarMateriales(titulo, calificacion, fechaI, fechaF, tema);
 	
 				TiposDeOrden ordenSeleccionado = TiposDeOrden.getEnum(comboTipoOrden.getSelectedItem().toString());
 				Set<MaterialCapacitacion> listaOrdenada = new TreeSet<MaterialCapacitacion>();
 				listaOrdenada = buscarController.ordenarMateriales(listaMaterialesMostrar, ordenSeleccionado);
-				if(esLibro) {
+				if(rbLibros.isSelected()) {
 					buscarController.cargarTablaLibros(listaOrdenada,actualizarTabla);
-				}else {
+				}else if(rbVideos.isSelected()) {
 					buscarController.cargarTablaVideos(listaOrdenada,actualizarTabla);
+				}else {
+					buscarController.cargarTablaMateriales(listaOrdenada,actualizarTabla);
 				}
 				
 				
@@ -208,7 +273,7 @@ public class BuscarMaterialPanel extends JPanel {
 			}
 		});
 		gridConst.gridx=9;
-		gridConst.gridy=0;
+		gridConst.gridy=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		gridConst.gridwidth=1;
@@ -221,7 +286,7 @@ public class BuscarMaterialPanel extends JPanel {
 			this.setVisible(false);
 		});	
 		gridConst.gridx=9;
-		gridConst.gridy=1;
+		gridConst.gridy=2;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnCancelar, gridConst);
@@ -235,7 +300,7 @@ public class BuscarMaterialPanel extends JPanel {
 		
 		gridConst.gridx=0;
 		gridConst.gridwidth=10;	
-		gridConst.gridy=2;
+		gridConst.gridy=4;
 		gridConst.weighty=1.0;
 		gridConst.weightx=1.0;
 		gridConst.fill=GridBagConstraints.BOTH;
@@ -254,7 +319,7 @@ public class BuscarMaterialPanel extends JPanel {
 			
 		});	
 		gridConst.gridx=4;
-		gridConst.gridy=3;
+		gridConst.gridy=5;
 		gridConst.gridwidth=2;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
@@ -288,6 +353,13 @@ public class BuscarMaterialPanel extends JPanel {
 		l.addAll((Collection<? extends Video>) videosLista);
 		this.tableModelVideo.setVideos(l);
 		if(actualizar) this.tableModelVideo.fireTableDataChanged();
+	}
+	
+	public void setListaMateriales(Set<MaterialCapacitacion> materialesLista,boolean actualizar) {
+		List<MaterialCapacitacion> l = new ArrayList<MaterialCapacitacion>();
+		l.addAll(materialesLista);
+		this.todosTableModel.setMateriales(l);
+		if(actualizar) this.todosTableModel.fireTableDataChanged();
 	}
 	
 	// -------------------

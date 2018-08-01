@@ -38,12 +38,12 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 	 */
 	protected Double costo;
 	
-	/**
-	 * Constructor por defecto
-	 */
 	protected Integer calificacion = 0;
 	protected String fechaPublicacion = "";
 	protected String relevancia = "";
+	protected String tema = "";
+	
+	
 	public MaterialCapacitacion() {
 		this(0,"en desarrollo",0.0);
 	}
@@ -105,7 +105,7 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 		this.fechaPublicacion = fechaPublicacion;
 	}
 	
-	public MaterialCapacitacion(Integer id, String titulo, Double costo, Integer calificacion, String fechaPublicacion, String relevancia) {
+	public MaterialCapacitacion(Integer id, String titulo, Double costo, Integer calificacion, String fechaPublicacion, String relevancia, String tema) {
 		
 		this.id = id;
 		this.titulo = titulo;
@@ -113,6 +113,7 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 		this.calificacion = calificacion;
 		this.fechaPublicacion = fechaPublicacion;
 		this.relevancia = relevancia;
+		this.tema = tema;
 	}
 
 
@@ -167,6 +168,16 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 
 	public void setRelevancia(String relevancia) {
 		this.relevancia = relevancia;
+	}
+
+
+	public String getTema() {
+		return tema;
+	}
+
+
+	public void setTema(String tema) {
+		this.tema = tema;
 	}
 
 

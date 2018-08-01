@@ -21,6 +21,7 @@ import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
+import frsf.isi.died.tp.modelo.productos.Temas;
 
 public class LibroPanelModificacion extends LPanel {
 	private JScrollPane scrollPane;
@@ -31,6 +32,7 @@ public class LibroPanelModificacion extends LPanel {
 	private JLabel lblPaginas;
 	private JLabel lblCalificacion;
 	private JLabel lblRelevancia;
+	private JLabel lblTema;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
 	private JTextField txtPrecioCompra;
@@ -39,6 +41,7 @@ public class LibroPanelModificacion extends LPanel {
 	private JButton btnModificar;
 	private JButton btnCancelar;
 	private JComboBox comboRelevancia;
+	private JComboBox comboTema;
 
 	private LibroTableModel tableModel;
 
@@ -46,7 +49,7 @@ public class LibroPanelModificacion extends LPanel {
 	// Id del libro que selecciona el usuario
 	private Integer idLibroSeleccionado = 0;
 	
-	private static final Integer CANTIDAD_COLUMNAS_MODIFICAR = 7;
+	private static final Integer CANTIDAD_COLUMNAS_MODIFICAR = 8;
 	
 	public LibroPanelModificacion() {
 		this.setLayout(new GridBagLayout());
@@ -61,9 +64,9 @@ public class LibroPanelModificacion extends LPanel {
 		this.add(lblTitulo, gridConst);
 		
 		txtTitulo = new JTextField();
-		txtTitulo.setColumns(60);
+		txtTitulo.setColumns(70);
 		gridConst.gridx=1;
-		gridConst.gridwidth=9;
+		gridConst.gridwidth=11;
 		this.add(txtTitulo, gridConst);
 		
 		
@@ -76,12 +79,13 @@ public class LibroPanelModificacion extends LPanel {
 				Integer paginas = Integer.valueOf(txtPaginas.getText());
 				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
 				String relevancia = (String) comboRelevancia.getSelectedItem().toString();
+				String tema = (Temas.getEnum( (String) comboTema.getSelectedItem().toString()) ).getNombre();
 				// Verifica que el titulo no este vacio
 				controller.verificarTitulo(txtTitulo.getText());
 				// Verifica que la calificacion este entre 0 - 100
 				controller.verificarCalificacion(Integer.valueOf(calificacion));
 				
-				controller.modificarLibro(idLibroSeleccionado, txtTitulo.getText(), costo, precio, paginas,calificacion, relevancia);
+				controller.modificarLibro(idLibroSeleccionado, txtTitulo.getText(), costo, precio, paginas,calificacion, relevancia, tema);
 				
 				txtTitulo.setText("");
 				txtCosto.setText("");
@@ -90,6 +94,8 @@ public class LibroPanelModificacion extends LPanel {
 				txtCalificacion.setText("");
 				comboRelevancia.setSelectedIndex(-1);
 				comboRelevancia.setEnabled(false);
+				comboTema.setSelectedIndex(-1);
+				comboTema.setEnabled(false);
 				
 			}
 			catch(DataOutOfBoundException d){
@@ -105,7 +111,7 @@ public class LibroPanelModificacion extends LPanel {
 		gridConst.gridwidth=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
-		gridConst.gridx=10;
+		gridConst.gridx=12;
 		this.add(btnModificar, gridConst);
 		
 		
@@ -160,10 +166,26 @@ public class LibroPanelModificacion extends LPanel {
 		comboRelevancia.setBackground(getBackground().brighter());
 		gridConst.gridx=9;
 		this.add(comboRelevancia, gridConst);
+		
+		lblTema = new JLabel("Tema: ");
+		gridConst.gridx=10;
+		this.add(lblTema, gridConst);
+		
+		comboTema = new JComboBox();
+		for(Temas t : Temas.values()) {
+			comboTema.addItem(t.getNombre());
+		}
+		comboTema.setSelectedIndex(-1);
+		comboTema.setEnabled(false);
+		comboTema.setBackground(getBackground().brighter());
+		gridConst.gridx=11;
+		this.add(comboTema, gridConst);
+		
+		
 		// ----
 
 		btnCancelar= new JButton("Cancelar");
-		gridConst.gridx=10;
+		gridConst.gridx=12;
 		gridConst.gridy=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
@@ -177,7 +199,7 @@ public class LibroPanelModificacion extends LPanel {
 		setEventoMouseClicked(tabla);
 		
 		gridConst.gridx=0;
-		gridConst.gridwidth=11;	
+		gridConst.gridwidth=13;	
 		gridConst.gridy=2;
 		gridConst.weighty=1.0;
 		gridConst.weightx=1.0;
@@ -220,6 +242,9 @@ public class LibroPanelModificacion extends LPanel {
 		txtCalificacion.setText((String)lista.get(4).toString());
 		comboRelevancia.setEnabled(true);
 		comboRelevancia.setSelectedItem(Relevancia.valueOf((String)lista.get(5).toString()));
+		comboTema.setEnabled(true);
+		comboTema.setSelectedItem( (Temas.getEnum((String)lista.get(6).toString()) ).getNombre());
+		
 	}
 	
 	private void setEventoMouseClicked(JTable tbl)

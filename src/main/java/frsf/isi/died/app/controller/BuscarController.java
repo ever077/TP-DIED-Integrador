@@ -18,6 +18,7 @@ import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.modelo.productos.Video;
 import frsf.isi.died.tp.util.ManipularFecha;
+import frsf.isi.died.tp.util.ManipularListas;
 import frsf.isi.died.tp.util.OrdenarMaterialPorCalificacion;
 import frsf.isi.died.tp.util.OrdenarMaterialPorFecha;
 import frsf.isi.died.tp.util.OrdenarMaterialPorPrecio;
@@ -55,14 +56,60 @@ public class BuscarController {
 	}
 
 	
-	public List<MaterialCapacitacion> buscarMateriales(String titulo, Integer calificacion, String fechaI, String fechaF, String tipoMaterial){
+	public List<MaterialCapacitacion> buscarMateriales(String titulo, Integer calificacion, String fechaI, String fechaF, String tema, String flag){
 		List<MaterialCapacitacion> listaFinal = new ArrayList<MaterialCapacitacion>();
 		List<MaterialCapacitacion> listaMateriales = new ArrayList<MaterialCapacitacion>();
-		if(tipoMaterial.equals("LIBRO")) {
+		if(flag.equals("LIBRO")) {
 			listaMateriales.addAll(materialDAO.listaLibros());
-		}else {
+		}else if(flag.equals("VIDEO")) {
 			listaMateriales.addAll(materialDAO.listaVideos());
+		}else {
+			listaMateriales.addAll(materialDAO.listaMateriales());
 		}
+		
+		
+		if(!titulo.isEmpty()) {
+			for(MaterialCapacitacion m : listaMateriales) {
+				if(!(m.getTitulo().equals(titulo))) {
+					//listaFinal.add(m);
+					//listaMateriales.remove(m);
+					listaMateriales = ManipularListas.eliminarElemento(listaMateriales, m);
+				}
+			}
+		}
+		if(calificacion != -1) {
+			for(MaterialCapacitacion m : listaMateriales) {
+				if(m.getCalificacion() != calificacion) {
+					////listaFinal.add(m);
+					listaMateriales = ManipularListas.eliminarElemento(listaMateriales, m);
+				}
+			}	
+		}
+		if( !(fechaI.isEmpty()) && !(fechaF.isEmpty()) ) {
+			Date fInicio = ManipularFecha.getDateFromString(fechaI);
+			Date fFin = ManipularFecha.getDateFromString(fechaF);
+			Date fLibro;
+			for(MaterialCapacitacion m : listaMateriales) {
+				fLibro = ManipularFecha.getDateFromString(m.getFechaPublicacion());
+				if( !(fLibro.after(fInicio) && fLibro.before(fFin)) ) {
+					//listaFinal.add(m);
+					//listaMateriales.remove(m);
+					listaMateriales = ManipularListas.eliminarElemento(listaMateriales, m);
+				}
+			}
+		}
+		if(!tema.isEmpty()) {
+			for(MaterialCapacitacion m : listaMateriales) {
+				if(!(m.getTema().equals(tema))) {
+					//listaFinal.add(m);
+					//listaMateriales.remove(m);
+					listaMateriales = ManipularListas.eliminarElemento(listaMateriales, m);
+				}
+			}
+		}
+		
+		
+/*
 		// Me ingresan Titulo
 		if((!titulo.isEmpty()) && (calificacion == -1) && (fechaI.isEmpty()) && (fechaF.isEmpty())) {
 			for(MaterialCapacitacion m : listaMateriales) {
@@ -135,8 +182,10 @@ public class BuscarController {
 				}
 			}
 		}
+*/
 		
-		return listaFinal;
+		//return listaFinal;
+		return listaMateriales;
 	}
 	
 	public Set<MaterialCapacitacion> ordenarMateriales(List<MaterialCapacitacion> listaMaterialesMostrar, TiposDeOrden ordenSeleccionado){
@@ -168,4 +217,7 @@ public class BuscarController {
 		this.buscarMaterialPanel.setListaVideos(s,actualizarTabla);
 	}
 	
+	public void cargarTablaMateriales(Set<MaterialCapacitacion> s, Boolean actualizarTabla) {
+		this.buscarMaterialPanel.setListaMateriales(s,actualizarTabla);
+	}
 }

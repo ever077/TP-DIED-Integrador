@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import frsf.isi.died.app.vista.grafo.ControlPanel;
+import frsf.isi.died.app.vista.grafo.GrafoPanel;
 import frsf.isi.died.app.vista.material.BuscarMaterialPanel;
 
 /*import frsf.isi.died.app.vista.grafo.ControlPanel;     
@@ -87,14 +89,14 @@ public class MenuController {
 			framePrincipal.setContentPane(wishListController.getPanel());
 			 break;
 		case VER_GRAFO:
-			/*JPanel panel = new JPanel(new BorderLayout());
+			JPanel panel = new JPanel(new BorderLayout());
 			ControlPanel controlPanel = new ControlPanel();
 			GrafoPanel grafoPanel = new GrafoPanel();
 			GrafoController grfController = new GrafoController(grafoPanel,controlPanel);
 			panel.add(controlPanel , BorderLayout.PAGE_START);
 			panel.add(grafoPanel , BorderLayout.CENTER);
 			
-			framePrincipal.setContentPane(panel);*/
+			framePrincipal.setContentPane(panel);
 			break;			
 		default:
 			break;

@@ -19,6 +19,7 @@ import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
+import frsf.isi.died.tp.modelo.productos.Temas;
 import frsf.isi.died.tp.modelo.productos.Video;
 
 public class VideoPanelModificacion extends VPanel {
@@ -29,6 +30,7 @@ public class VideoPanelModificacion extends VPanel {
 	private JLabel lblDuracion;
 	private JLabel lblCalificacion;
 	private JLabel lblRelevancia;
+	private JLabel lblTema;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
 	private JTextField txtDuracion;
@@ -36,6 +38,7 @@ public class VideoPanelModificacion extends VPanel {
 	private JButton btnModificar;
 	private JButton btnCancelar;
 	private JComboBox comboRelevancia;
+	private JComboBox comboTema;
 
 	private VideoTableModel tableModel;
 
@@ -43,7 +46,7 @@ public class VideoPanelModificacion extends VPanel {
 	// Id del video que selecciona el usuario
 	private Integer idVideoSeleccionado = 0;
 	
-	private static final Integer CANTIDAD_COLUMNAS_MODIFICAR = 6;
+	private static final Integer CANTIDAD_COLUMNAS_MODIFICAR = 7;
 	
 	public VideoPanelModificacion() {
 		this.setLayout(new GridBagLayout());
@@ -58,9 +61,9 @@ public class VideoPanelModificacion extends VPanel {
 		this.add(lblTitulo, gridConst);
 		
 		txtTitulo = new JTextField();
-		txtTitulo.setColumns(50);
+		txtTitulo.setColumns(60);
 		gridConst.gridx=1;
-		gridConst.gridwidth=7;
+		gridConst.gridwidth=9;
 		this.add(txtTitulo, gridConst);
 		
 
@@ -71,9 +74,10 @@ public class VideoPanelModificacion extends VPanel {
 				Integer duracion = Integer.valueOf(txtDuracion.getText());
 				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
 				String relevancia = (String) comboRelevancia.getSelectedItem().toString();
+				String tema = (Temas.getEnum( (String) comboTema.getSelectedItem().toString()) ).getNombre();
 				controller.verificarTitulo(txtTitulo.getText());
 				controller.verificarCalificacion(Integer.valueOf(calificacion));
-				controller.modificarVideo(idVideoSeleccionado, txtTitulo.getText(), costo, duracion, calificacion, relevancia);
+				controller.modificarVideo(idVideoSeleccionado, txtTitulo.getText(), costo, duracion, calificacion, relevancia, tema);
 				
 				txtTitulo.setText("");
 				txtCosto.setText("");
@@ -81,6 +85,8 @@ public class VideoPanelModificacion extends VPanel {
 				txtCalificacion.setText("");
 				comboRelevancia.setSelectedIndex(-1);
 				comboRelevancia.setEnabled(false);
+				comboTema.setSelectedIndex(-1);
+				comboTema.setEnabled(false);
 			}
 			catch(DataOutOfBoundException d) {
 				JOptionPane.showMessageDialog(this, d.getMessage(), "Dato fuera de rango", JOptionPane.ERROR_MESSAGE);
@@ -95,7 +101,7 @@ public class VideoPanelModificacion extends VPanel {
 		gridConst.gridwidth=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
-		gridConst.gridx=8;
+		gridConst.gridx=10;
 		this.add(btnModificar, gridConst);
 		
 		
@@ -140,10 +146,24 @@ public class VideoPanelModificacion extends VPanel {
 		comboRelevancia.setBackground(getBackground().brighter());
 		gridConst.gridx=7;
 		this.add(comboRelevancia, gridConst);
+		
+		lblTema = new JLabel("Tema: ");
+		gridConst.gridx=8;
+		this.add(lblTema, gridConst);
+		
+		comboTema = new JComboBox();
+		for(Temas t : Temas.values()) {
+			comboTema.addItem(t.getNombre());
+		}
+		comboTema.setSelectedIndex(-1);
+		comboTema.setEnabled(false);
+		comboTema.setBackground(getBackground().brighter());
+		gridConst.gridx=9;
+		this.add(comboTema, gridConst);
 		// ----
 		
 		btnCancelar= new JButton("Cancelar");
-		gridConst.gridx=8;
+		gridConst.gridx=10;
 		gridConst.gridy=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
@@ -199,6 +219,9 @@ public class VideoPanelModificacion extends VPanel {
 		txtCalificacion.setText((String)lista.get(3).toString());
 		comboRelevancia.setEnabled(true);
 		comboRelevancia.setSelectedItem(Relevancia.valueOf((String)lista.get(4).toString()));
+		comboTema.setEnabled(true);
+		comboTema.setSelectedItem( (Temas.getEnum((String)lista.get(5).toString()) ).getNombre());
+		
 	}
 	
 	private void setEventoMouseClicked(JTable tbl)

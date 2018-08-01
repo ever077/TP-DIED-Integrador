@@ -27,8 +27,8 @@ public class LibroController {
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
-	public void agregarLibro(String titulo, Double costo, Double precio, Integer paginas, Integer calificacion, String relevancia) {	
-		Libro l = new Libro(0,titulo, costo, precio, paginas, calificacion, ManipularFecha.getFechaActual(), relevancia);
+	public void agregarLibro(String titulo, Double costo, Double precio, Integer paginas, Integer calificacion, String relevancia, String tema) {	
+		Libro l = new Libro(0,titulo, costo, precio, paginas, calificacion, ManipularFecha.getFechaActual(), relevancia, tema);
 		materialDAO .agregarLibro(l);
 		this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);
 	}
@@ -54,7 +54,7 @@ public class LibroController {
 		 panelLibro.cargarCampos(lista);
 	}
 	 
-	public void modificarLibro(Integer idLibroSeleccionado, String titulo, Double costo, Double precio, Integer paginas,Integer calificacion, String relevancia) throws MaterialNotFoundException, IOException {
+	public void modificarLibro(Integer idLibroSeleccionado, String titulo, Double costo, Double precio, Integer paginas,Integer calificacion, String relevancia, String tema) throws MaterialNotFoundException, IOException {
 		try {
 			Libro l = (Libro) materialDAO.buscarMaterial(idLibroSeleccionado);
 			l.setTitulo(titulo);
@@ -63,6 +63,7 @@ public class LibroController {
 			l.setPaginas(paginas);
 			l.setCalificacion(calificacion);
 			l.setRelevancia(relevancia);
+			l.setTema(tema);
 			// Para no modificar l
 		/*	Libro aux = l;
 			if(!(l.getTitulo().equals(titulo))) {

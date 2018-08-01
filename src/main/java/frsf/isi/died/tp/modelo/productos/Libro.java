@@ -55,8 +55,8 @@ public class Libro extends MaterialCapacitacion {
 		this.paginas = paginas;
 	}
 
-	public Libro(Integer id, String titulo, Double costo, Double precioCompra, Integer paginas, Integer calificacion, String fechaPublicacion, String relevancia) {
-		super(id, titulo, costo, calificacion, fechaPublicacion, relevancia);
+	public Libro(Integer id, String titulo, Double costo, Double precioCompra, Integer paginas, Integer calificacion, String fechaPublicacion, String relevancia, String tema) {
+		super(id, titulo, costo, calificacion, fechaPublicacion, relevancia, tema);
 		this.precioCompra = precioCompra;
 		this.paginas = paginas;
 	}
@@ -140,6 +140,7 @@ public class Libro extends MaterialCapacitacion {
 		this.calificacion = Integer.valueOf(datos.get(5));
 		this.fechaPublicacion = datos.get(6);
 		this.relevancia = datos.get(7);
+		this.tema = datos.get(8);
 	}
 	
 	@Override
@@ -153,6 +154,7 @@ public class Libro extends MaterialCapacitacion {
 		lista.add(this.calificacion.toString());
 		lista.add(this.fechaPublicacion.toString());
 		lista.add(this.relevancia.toString());
+		lista.add(this.tema.toString());
 		return lista;
 	}
 }

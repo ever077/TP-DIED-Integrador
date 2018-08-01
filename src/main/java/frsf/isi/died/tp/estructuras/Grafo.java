@@ -278,16 +278,16 @@ public class Grafo<T> {
        }else {
         	
   
-        if(!visitados.contains(n1)) { 
-      	  visitados.add(n1); 
-      	  porvisitar = this.getAdyacentes(n1); 
+    	   if(!visitados.contains(n1)) {
+    		   	visitados.add(n1); 
+    		   	porvisitar = this.getAdyacentes(n1); 
       	  
-      	  	if(saltos == 1 && porvisitar.contains(n2)) {
-      	  		resultado.add(n1.getValor());
-      	  		resultado.add(n2.getValor());
-      	  		return resultado;
-      	  	}
-      	  	else {
+      	  		if(saltos == 1 && porvisitar.contains(n2)) {
+      	  			resultado.add(n1.getValor());
+      	  			resultado.add(n2.getValor());
+      	  			return resultado;
+      	  		}
+      	  		else {
       	  		
       	  			for(Vertice<T> vertice : porvisitar) {
           		  
@@ -303,15 +303,19 @@ public class Grafo<T> {
 	      	  				}
 	      	  			}
       	  			
-	      	  				if(!resultado.isEmpty()) {
-	      	  						return resultado;
-	      	  					}
+	      	  			if(!resultado.isEmpty()) {
+	      	  				return resultado;
+	      	  			}
       	  			}
-      	  	}  
-        }
-        return resultado;
+      	  		}
+    	   }
+    	   return resultado;
+       }
     }
- }
+    
+    
+    
+    
 }
 
 

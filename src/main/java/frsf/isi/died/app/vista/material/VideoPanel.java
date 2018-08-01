@@ -18,6 +18,7 @@ import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
+import frsf.isi.died.tp.modelo.productos.Temas;
 import frsf.isi.died.tp.modelo.productos.Video;
 
 public class VideoPanel extends VPanel{
@@ -28,6 +29,7 @@ public class VideoPanel extends VPanel{
 	private JLabel lblDuracion;
 	private JLabel lblCalificacion;
 	private JLabel lblRelevancia;
+	private JLabel lblTema;
 	private JTextField txtTitulo;
 	private JTextField txtCosto;
 	private JTextField txtDuracion;
@@ -35,6 +37,7 @@ public class VideoPanel extends VPanel{
 	private JButton btnAgregar;
 	private JButton btnCancelar;
 	private JComboBox comboRelevancia;
+	private JComboBox comboTema;
 
 	private VideoTableModel tableModel;
 
@@ -53,9 +56,9 @@ public class VideoPanel extends VPanel{
 		this.add(lblTitulo, gridConst);
 		
 		txtTitulo = new JTextField();
-		txtTitulo.setColumns(50);
+		txtTitulo.setColumns(60);
 		gridConst.gridx=1;
-		gridConst.gridwidth=7;
+		gridConst.gridwidth=9;
 		this.add(txtTitulo, gridConst);
 		
 
@@ -66,16 +69,18 @@ public class VideoPanel extends VPanel{
 				Integer duracion = Integer.valueOf(txtDuracion.getText());
 				Integer calificacion = Integer.valueOf(txtCalificacion.getText());
 				String relevancia = (String) comboRelevancia.getSelectedItem().toString();
+				String tema = (Temas.getEnum( (String) comboTema.getSelectedItem().toString()) ).getNombre();
 				
 				controller.verificarTitulo(txtTitulo.getText());
 				controller.verificarCalificacion(Integer.valueOf(calificacion));
-				controller.agregarVideo(txtTitulo.getText(), costo, duracion, calificacion, relevancia);
+				controller.agregarVideo(txtTitulo.getText(), costo, duracion, calificacion, relevancia, tema);
 				
 				txtTitulo.setText("");
 				txtCosto.setText("");		
 				txtDuracion.setText("");
 				txtCalificacion.setText("");
 				comboRelevancia.setSelectedIndex(0);
+				comboTema.setSelectedIndex(0);
 				
 			}
 			catch(DataOutOfBoundException d){
@@ -88,7 +93,7 @@ public class VideoPanel extends VPanel{
 		gridConst.gridwidth=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
-		gridConst.gridx=8;
+		gridConst.gridx=10;
 		this.add(btnAgregar, gridConst);
 		
 		
@@ -131,10 +136,24 @@ public class VideoPanel extends VPanel{
 		comboRelevancia.setBackground(getBackground().brighter());
 		gridConst.gridx=7;
 		this.add(comboRelevancia, gridConst);
+		
+		lblTema = new JLabel("Tema: ");
+		gridConst.gridx=8;
+		this.add(lblTema, gridConst);
+		
+		comboTema = new JComboBox();
+		for(Temas t : Temas.values()) {
+			comboTema.addItem(t.getNombre());
+		}
+		comboTema.setBackground(getBackground().brighter());
+		gridConst.gridx=9;
+		this.add(comboTema, gridConst);
+		
+		
 		// ----
 		
 		btnCancelar= new JButton("Cancelar");
-		gridConst.gridx=8;
+		gridConst.gridx=10;
 		gridConst.gridy=1;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;

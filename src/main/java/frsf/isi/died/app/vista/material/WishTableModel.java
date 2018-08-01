@@ -30,6 +30,10 @@ public class WishTableModel extends AbstractTableModel {
 		}
 		//this.materiales = (List<MaterialCapacitacion>) colaPrioridad;
 	}
+	
+	public void setMateriales(List<MaterialCapacitacion> lista) {
+		this.materiales = lista;
+	}
 
 	@Override
 	public int getRowCount() {

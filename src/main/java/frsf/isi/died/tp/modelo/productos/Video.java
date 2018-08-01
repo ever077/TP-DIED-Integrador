@@ -28,8 +28,8 @@ public class Video extends MaterialCapacitacion {
 		this.duracion = duracion;
 	}
 	
-	public Video(Integer id, String titulo, Double costo, Integer duracion, Integer calificacion, String fechaPublicacion, String relevancia) {
-		super(id, titulo, costo, calificacion, fechaPublicacion, relevancia);
+	public Video(Integer id, String titulo, Double costo, Integer duracion, Integer calificacion, String fechaPublicacion, String relevancia, String tema) {
+		super(id, titulo, costo, calificacion, fechaPublicacion, relevancia, tema);
 		this.duracion = duracion;
 	}
 	
@@ -46,6 +46,7 @@ public class Video extends MaterialCapacitacion {
 		lista.add(this.calificacion.toString());
 		lista.add(this.fechaPublicacion.toString());
 		lista.add(this.relevancia.toString());
+		lista.add(this.tema.toString());
 		return lista;
 	}
 	
@@ -56,9 +57,10 @@ public class Video extends MaterialCapacitacion {
 		this.titulo = datos.get(1);
 		super.costo = Double.valueOf(datos.get(2));    // Modifique this por super
 		this.duracion = Integer.valueOf(datos.get(3));
-		this.calificacion = Integer.valueOf(datos.get(4));  // Agregue esta linea
-		this.fechaPublicacion = datos.get(5);    // Agregue esta linea
-		this.relevancia = datos.get(6);     // Agregue esta linea
+		this.calificacion = Integer.valueOf(datos.get(4)); 
+		this.fechaPublicacion = datos.get(5);   
+		this.relevancia = datos.get(6);    
+		this.tema = datos.get(7);    
 	}
 
 	public Boolean esLibro() {
