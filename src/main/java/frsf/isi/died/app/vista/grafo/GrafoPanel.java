@@ -23,6 +23,7 @@ import java.util.function.Predicate;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import frsf.isi.died.app.controller.GrafoController;
 import frsf.isi.died.tp.estructuras.Arista;
@@ -42,6 +43,7 @@ public class GrafoPanel extends JPanel {
     private List<AristaView> aristas;
 
     private AristaView auxiliar;
+    private Point posicionColocarVertice;
 
     public GrafoPanel() {
         this.framePadre = (JFrame) this.getParent();
@@ -79,7 +81,8 @@ public class GrafoPanel extends JPanel {
                     }
                 }
             }
-
+            
+            
             public void mouseReleased(MouseEvent event) {
                 VerticeView vDestino = clicEnUnNodo(event.getPoint());
                 if (auxiliar!=null && vDestino != null) {
@@ -100,6 +103,16 @@ public class GrafoPanel extends JPanel {
                 }
             }
         });
+        
+        addMouseListener(new MouseAdapter() {
+        	public void mouseClicked(MouseEvent event) {
+    			if(SwingUtilities.isRightMouseButton(event)) {
+    				posicionColocarVertice = event.getPoint();
+    				controller.pintarVertice(event.getPoint());
+    			}
+    		}
+        });
+        
     }
 
     public void agregar(AristaView arista){
@@ -185,5 +198,28 @@ public class GrafoPanel extends JPanel {
         this.controller = controller;
     }
     
+    public Point getPosicionVertice() {
+    	Point punto = new Point();
+    	if(posicionColocarVertice != null) {
+    		punto = posicionColocarVertice;
+    		posicionColocarVertice = null;
+    	}
+    	return punto;
+/*    	this.getRightClick();
+    	
+    	return posicionColocarVertice;
+*/    	
+    }
+    
+/*    private void getRightClick() {
+    	addMouseListener(new MouseAdapter() {
+    		public void mouseRightClicked(MouseEvent event) {
+    			if(SwingUtilities.isRightMouseButton(event)) {
+    				posicionColocarVertice = event.getPoint();
+    			}
+    		}
+    	});
+    }
+*/    
     
 }

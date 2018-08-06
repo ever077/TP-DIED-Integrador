@@ -1,4 +1,4 @@
-package frsf.isi.died.app.vista.material;
+package frsf.isi.died.app.vista.wishlist;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

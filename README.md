@@ -14,4 +14,8 @@ Falta:
 Ejercicio 2:
 
 Falta:
-1) Todo con los videos
+[ok] 1) Todo con los videos
+
+
+*** Repasar el ordenamiento por calificacion en buscarMaterial
+	(creo que lo ordena de menor a mayor y tiene que ser al reves)

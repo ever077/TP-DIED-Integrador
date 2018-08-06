@@ -9,11 +9,17 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import frsf.isi.died.app.dao.MaterialCapacitacionDao;
 import frsf.isi.died.app.dao.MaterialCapacitacionDaoDefault;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
+import frsf.isi.died.app.vista.grafo.ControlPanel;
+import frsf.isi.died.app.vista.grafo.GrafoPanel;
 import frsf.isi.died.app.vista.material.BuscarMaterialPanel;
+import frsf.isi.died.app.vista.wishlist.WishListPanel;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.modelo.productos.Video;
@@ -28,10 +34,14 @@ public class BuscarController {
 	
 	private BuscarMaterialPanel buscarMaterialPanel;
 	private MaterialCapacitacionDao materialDAO;
+	private WishListController wishListController;
+	private GrafoController grafoController;
 	
 	public BuscarController(BuscarMaterialPanel buscarMaterialPanel) {
 		this.buscarMaterialPanel = buscarMaterialPanel;
 		this.buscarMaterialPanel.setController(this);
+		this.wishListController = new WishListController(new WishListPanel());
+		this.grafoController = new GrafoController(new GrafoPanel(), new ControlPanel());
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
@@ -109,7 +119,7 @@ public class BuscarController {
 		}
 		
 		
-/*
+/* Elim
 		// Me ingresan Titulo
 		if((!titulo.isEmpty()) && (calificacion == -1) && (fechaI.isEmpty()) && (fechaF.isEmpty())) {
 			for(MaterialCapacitacion m : listaMateriales) {
@@ -220,4 +230,18 @@ public class BuscarController {
 	public void cargarTablaMateriales(Set<MaterialCapacitacion> s, Boolean actualizarTabla) {
 		this.buscarMaterialPanel.setListaMateriales(s,actualizarTabla);
 	}
+	
+	public void addMaterialWishList(Integer id) {
+		wishListController.addMaterial(id);
+	}
+	
+	public List<MaterialCapacitacion> getMaterialesWithTema(Integer id){
+		return this.buscarMateriales("", -1, "", "", materialDAO.findById(id).getTema(), "");
+	}
+	
+	public void showRelaciones(Integer id, List<MaterialCapacitacion> materiales) {
+		grafoController.showRelaciones(id, materiales, (JFrame) SwingUtilities.getWindowAncestor(buscarMaterialPanel));
+	}
+	
+	
 }

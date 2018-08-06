@@ -1,4 +1,4 @@
-package frsf.isi.died.app.vista.material;
+package frsf.isi.died.app.vista.wishlist;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -78,7 +78,7 @@ public class WishTableModel extends AbstractTableModel {
 	}
 	
 	public Boolean isNull() {
-		return (materiales == null);
+		return (materiales.isEmpty());
 	}
 
 	

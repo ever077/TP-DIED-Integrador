@@ -6,7 +6,7 @@ import java.util.PriorityQueue;
 import frsf.isi.died.app.dao.MaterialCapacitacionDao;
 import frsf.isi.died.app.dao.MaterialCapacitacionDaoDefault;
 import frsf.isi.died.app.vista.material.BuscarMaterialPanel;
-import frsf.isi.died.app.vista.material.WishListPanel;
+import frsf.isi.died.app.vista.wishlist.WishListPanel;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.util.OrdenarMaterialWishList;
 

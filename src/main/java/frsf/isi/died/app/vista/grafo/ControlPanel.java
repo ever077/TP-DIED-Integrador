@@ -10,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.List;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -34,8 +35,14 @@ public class ControlPanel extends JPanel {
         
     public void armarPanel( List<MaterialCapacitacion> listaVertices){
     	this.listaVertices = listaVertices;
-    	this.cmbVertice1 = new JComboBox(listaVertices.toArray()); 
-        this.cmbVertice2 = new JComboBox(listaVertices.toArray()); 
+//    	this.cmbVertice1 = new JComboBox(listaVertices.toArray()); 
+//      this.cmbVertice2 = new JComboBox(listaVertices.toArray()); 
+    	this.cmbVertice1 = new JComboBox();
+    	this.cmbVertice1.setModel(new DefaultComboBoxModel(listaVertices.toArray()));
+    	
+    	this.cmbVertice2 = new JComboBox();
+    	this.cmbVertice2.setModel(new DefaultComboBoxModel(listaVertices.toArray()));
+    	
         this.txtLongitudCamino = new JTextField(5); 
         this.btnBuscarCamino = new JButton("Buscar Camino");
         this.btnBuscarCamino.addActionListener(
@@ -63,5 +70,16 @@ public class ControlPanel extends JPanel {
         this.controller = controller;
     }
 
+    public void cargarCombosBoxs(List<MaterialCapacitacion> listaVertices) {
+    	this.listaVertices = listaVertices;
+    	this.cmbVertice1.removeAllItems();
+    	this.cmbVertice2.removeAllItems();
+//    	this.cmbVertice1. = new JComboBox(listaVertices.toArray()); 
+//        this.cmbVertice2 = new JComboBox(listaVertices.toArray()); 
+        this.cmbVertice1.setModel(new DefaultComboBoxModel(listaVertices.toArray()));
+        this.cmbVertice2.setModel(new DefaultComboBoxModel(listaVertices.toArray()));
+        this.cmbVertice1.repaint();
+        this.cmbVertice2.repaint();
+    }
     
 }

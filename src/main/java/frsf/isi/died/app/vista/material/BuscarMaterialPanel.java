@@ -28,6 +28,7 @@ import frsf.isi.died.app.controller.TiposDeOrden;
 import frsf.isi.died.app.controller.VideoController;
 import frsf.isi.died.app.controller.WishListController;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
+import frsf.isi.died.app.vista.wishlist.WishTableModel;
 import frsf.isi.died.tp.modelo.productos.Relevancia;
 import frsf.isi.died.tp.modelo.productos.Temas;
 import frsf.isi.died.tp.modelo.productos.Libro;
@@ -55,6 +56,7 @@ public class BuscarMaterialPanel extends JPanel {
 	private JButton btnBuscar;
 	private JButton btnCancelar;
 	private JButton btnAgregarWishList;
+	private JButton btnAsignarRelaciones;
 	private JComboBox comboTema;
 	private JComboBox comboTipoOrden;
 	private JRadioButton rbTodos, rbLibros, rbVideos;
@@ -65,10 +67,10 @@ public class BuscarMaterialPanel extends JPanel {
 	private LibroTableModel tableModelLibro;
 	private WishTableModel todosTableModel;
 
-	private VideoController controllerVideo;
-	private LibroController controllerLibro;
+//Elim	private VideoController controllerVideo;
+//Elim	private LibroController controllerLibro;
 	private BuscarController buscarController;
-	private WishListController wishListController;
+//Elim	private WishListController wishListController;
 	
 	public BuscarMaterialPanel() {
 		this.setLayout(new GridBagLayout());
@@ -183,7 +185,6 @@ public class BuscarMaterialPanel extends JPanel {
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener( e ->{
 			try {
-				Boolean esLibro = false;
 				Boolean actualizarTabla = false;
 				String flag = "";
 				
@@ -258,7 +259,7 @@ public class BuscarMaterialPanel extends JPanel {
 				txtCalificacion.setText("");
 				txtFechaI.setText("");
 				txtFechaF.setText("");
-				comboTema.setSelectedIndex(0);
+				comboTema.setSelectedIndex(-1);
 				comboTipoOrden.setSelectedIndex(0);
 					
 				// Falta reiniciar la pantalla
@@ -312,18 +313,34 @@ public class BuscarMaterialPanel extends JPanel {
 		btnAgregarWishList.addActionListener( e ->{
 			// meter en try catch
 				if(idFilaSeleccionada != -1) {
-					wishListController.addMaterial(idFilaSeleccionada);
-				//	System.out.println(wishListController.getColaPrioridad());
+					buscarController.addMaterialWishList(idFilaSeleccionada);
+//Elim					wishListController.addMaterial(idFilaSeleccionada);\
 				}
 				
 			
 		});	
-		gridConst.gridx=4;
+		gridConst.gridx=2;
 		gridConst.gridy=5;
 		gridConst.gridwidth=2;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnAgregarWishList, gridConst);
+		
+		
+		btnAsignarRelaciones= new JButton("Asignar Relaciones");
+		btnAsignarRelaciones.addActionListener( e ->{
+			// meter en try catch
+				if(idFilaSeleccionada != -1) {
+					List<MaterialCapacitacion> materiales = buscarController.getMaterialesWithTema(idFilaSeleccionada);
+					buscarController.showRelaciones(idFilaSeleccionada, materiales);
+				}
+		});	
+		gridConst.gridx=6;
+		gridConst.gridy=5;
+		gridConst.gridwidth=2;
+		gridConst.weightx=1.0;
+		gridConst.anchor = GridBagConstraints.LINE_START;
+		this.add(btnAsignarRelaciones, gridConst);
 		
 	}
 	
@@ -331,16 +348,16 @@ public class BuscarMaterialPanel extends JPanel {
 		this.buscarController = buscarController;
 	}
 	
-	public void setWishListController(WishListController wishListController) {
+/*Elim	public void setWishListController(WishListController wishListController) {
 		this.wishListController = wishListController;
 	}
+*/	
 	
-	
-	public void setControllers(LibroController controllerLibro, VideoController controllerVideo) {
+/*	public void setControllers(LibroController controllerLibro, VideoController controllerVideo) {
 		this.controllerLibro = controllerLibro;
 		this.controllerVideo = controllerVideo;
 	}
-	
+*/	
 	public void setListaLibros(Set<? extends MaterialCapacitacion> librosLista,boolean actualizar) {
 		List<Libro> l = new ArrayList<Libro>();
 		l.addAll((Collection<? extends Libro>) librosLista);

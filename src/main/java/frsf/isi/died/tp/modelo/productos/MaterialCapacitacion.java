@@ -69,9 +69,14 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 		if (titulo == null) {
 			if (other.titulo != null)
 				return false;
-		} else if (!titulo.equals(other.titulo))
+		} else if(!titulo.equals(other.titulo)) {
 			return false;
+		}
+		if(id != other.id) {
+			return false;
+		}
 		return true;
+			
 	}
 
 	/**
