@@ -20,6 +20,7 @@ import java.util.Queue;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,6 +39,8 @@ public class GrafoPanel extends JPanel {
     private JFrame framePadre;
     private Queue<Color> colaColores;
     private GrafoController controller;
+    
+    private JButton btnActualizar;
 
     private List<VerticeView> vertices;
     private List<AristaView> aristas;
@@ -57,6 +60,13 @@ public class GrafoPanel extends JPanel {
         this.colaColores.add(Color.BLUE);
         this.colaColores.add(Color.ORANGE);
         this.colaColores.add(Color.CYAN);
+        
+        btnActualizar = new JButton("Actualizar");
+        this.add(btnActualizar);
+        btnActualizar.addActionListener( e ->{
+        	this.repaint();
+        	this.paintComponent(getGraphics());
+        });
 
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event) {
@@ -86,9 +96,11 @@ public class GrafoPanel extends JPanel {
             public void mouseReleased(MouseEvent event) {
                 VerticeView vDestino = clicEnUnNodo(event.getPoint());
                 if (auxiliar!=null && vDestino != null) {
-                    auxiliar.setDestino(vDestino);
-                    controller.crearArista(auxiliar);
-                    auxiliar = null;
+                    if(!auxiliar.getOrigen().equals(vDestino)) {
+                    	auxiliar.setDestino(vDestino);
+	                    controller.crearArista(auxiliar);
+	                    auxiliar = null;
+                    }
                 }
             }
 
@@ -135,8 +147,8 @@ public class GrafoPanel extends JPanel {
     			for(AristaView av : this.aristas) {
     				if(av.getOrigen().getId().equals(idOrigen) && av.getDestino().getId().equals(idDestino) ) {
     	    			av.setColor(Color.RED);
-    	    			av.getOrigen().setColor(Color.BLUE);
-    	    			av.getDestino().setColor(Color.BLUE);
+//    	    			av.getOrigen().setColor(Color.BLUE);
+//    	    			av.getDestino().setColor(Color.BLUE);
     				}
     			}
     			idOrigen = idDestino;

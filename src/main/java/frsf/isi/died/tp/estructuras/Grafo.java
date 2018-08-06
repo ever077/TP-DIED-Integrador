@@ -10,10 +10,12 @@ package frsf.isi.died.tp.estructuras;
  * @author mdominguez
  */
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Grafo<T> {
 
@@ -314,7 +316,66 @@ public class Grafo<T> {
     }
     
     
+    public List<List<T>> buscarCaminos(T n1,T n2) {
+    	Vertice<T> origen = this.getNodo(n1);
+		Vertice<T> destino= this.getNodo(n2);
+		List<T> v = new ArrayList<T>();
+		v.add(origen.getValor());
+    	List<List<T>> salida= new ArrayList<List<T>>();
+    	buscarCaminos(origen, destino, salida, v);
+    	return salida;
+    }
     
+    private void buscarCaminos(Vertice<T> n1, Vertice<T> n2, List<List<T>> resultado, List<T> visitados){
+    	List<Vertice<T>> adyacentes = this.getAdyacentes(n1); 
+    	List<T> copiaVisitados;
+    	
+    	for(int i=0; i<adyacentes.size(); i++) {
+    		
+    		if(n2.equals((Vertice<T>)adyacentes.get(i))){
+    			
+    			copiaVisitados = new ArrayList<T>(visitados);
+    			copiaVisitados.add(n2.getValor());
+    			resultado.add(copiaVisitados);
+    		}
+    		else if(!visitados.contains(adyacentes.get(i))){
+    			copiaVisitados = new ArrayList<T>(visitados);
+    			copiaVisitados.add(adyacentes.get(i).getValor());
+    			this.buscarCaminos(adyacentes.get(i), n2, resultado, copiaVisitados);
+    		}
+    	}
+    	
+    	
+    	
+/*    	List<T> lista = new ArrayList();
+    	Stack<Vertice> porVisitar = new Stack<Vertice>();
+    	
+    	if(n1.getValor().equals(n2.getValor())) {
+    		resultado.add(lista);
+    		return resultado;
+    	}else if(!this.getAdyacentes(n1).isEmpty()) {
+    		if(!visitados.contains(n1)) {
+    			visitados.add(n1);
+    			lista.add(n1.getValor());
+    			porVisitar.addAll(this.getAdyacentes(n1));
+    			
+    			for(int i = 0 ; i < porVisitar.size() ; i++) {
+    				Vertice v = porVisitar.pop();
+    				
+    				lista.addAll(buscarCaminos(v, n2, resultado, visitados));
+    			
+    			}
+    			
+    			
+    			resultado.add(lista);
+    		}
+    	}else {
+    		visitados.add(n1);
+    		return lista;
+    	}
+  */  	
+
+    }
     
 }
 

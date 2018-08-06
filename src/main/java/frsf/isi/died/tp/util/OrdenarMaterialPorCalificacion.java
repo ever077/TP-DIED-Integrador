@@ -11,7 +11,7 @@ public class OrdenarMaterialPorCalificacion implements Comparator<MaterialCapaci
 	@Override
 	public int compare(MaterialCapacitacion m1, MaterialCapacitacion m2) {
         
-        int aux = m1.getCalificacion().compareTo(m2.getCalificacion());
+        int aux = m2.getCalificacion().compareTo(m1.getCalificacion());
         if(aux == 0) {
         	return m1.getId().compareTo(m2.getId());
         }else {

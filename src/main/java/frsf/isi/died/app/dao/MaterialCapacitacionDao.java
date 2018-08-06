@@ -26,4 +26,5 @@ public interface MaterialCapacitacionDao {
 	public void eliminarVideo(Integer id) throws MaterialNotFoundException;
 	public void agregarMaterialWishList(MaterialCapacitacion material);
 	public PriorityQueue<MaterialCapacitacion> listaWishList();
+	public List<List<MaterialCapacitacion>> buscarCaminos(Integer idOrigen, Integer idDestino);
 }

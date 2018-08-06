@@ -144,6 +144,13 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		MaterialCapacitacion n2 = this.findById(idDestino);
 		return GRAFO_MATERIAL.buscarCaminoNSaltos(n1, n2, saltos);
 	}
+	
+	@Override
+	public List<List<MaterialCapacitacion>> buscarCaminos(Integer idOrigen, Integer idDestino) {
+		MaterialCapacitacion n1 = this.findById(idOrigen);
+		MaterialCapacitacion n2 = this.findById(idDestino);
+		return GRAFO_MATERIAL.buscarCaminos(n1, n2);
+	}
 
 	@Override
 	public void crearCamino(Integer idOrigen, Integer idDestino) {

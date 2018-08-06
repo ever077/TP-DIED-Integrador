@@ -3,6 +3,7 @@ package frsf.isi.died.app.controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,6 +63,13 @@ public class GrafoController {
 		this.vistaGrafo.repaint();
 	}
 
+	public List<List<MaterialCapacitacion>> buscarCaminos(Integer nodo1, Integer nodo2) {
+		List<List<MaterialCapacitacion>> caminos = this.materialDao.buscarCaminos(nodo1, nodo2);
+		//this.vistaGrafo.caminoPintar(caminos);
+	//	this.vistaGrafo.repaint();
+		return caminos;
+		
+	}
 
 	public List<MaterialCapacitacion> listaVertices() {
 		return materialDao.listaMateriales();
