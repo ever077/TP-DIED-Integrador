@@ -51,6 +51,7 @@ public class ControlPanel extends JPanel {
                 		Integer idOrigen = this.listaVertices.get(cmbVertice1.getSelectedIndex()).getId();
 	                    Integer idDestino = this.listaVertices.get(cmbVertice2.getSelectedIndex()).getId();
 	                    List<List<MaterialCapacitacion>> caminos = controller.buscarCaminos(idOrigen,idDestino); 
+	                    controller.pintarPrimero(caminos);//************************************************************************************************
                 	}
                 	else{
                 		Integer n = Integer.parseInt(txtLongitudCamino.getText());

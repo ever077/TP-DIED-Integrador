@@ -60,14 +60,21 @@ public class GrafoPanel extends JPanel {
         this.colaColores.add(Color.BLUE);
         this.colaColores.add(Color.ORANGE);
         this.colaColores.add(Color.CYAN);
-        
+      //************************************************************************************************
+      //************************************************************************************************
+      //************************************************************************************************
         btnActualizar = new JButton("Actualizar");
         this.add(btnActualizar);
         btnActualizar.addActionListener( e ->{
-        	this.repaint();
+        	
         	this.paintComponent(getGraphics());
+        	this.repaint();
+             controller.pintarSiguienteCamino();
+                
+                	
         });
-
+      //************************************************************************************************
+      //************************************************************************************************
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event) {
                 if (event.getClickCount() == 2 && !event.isConsumed()) {

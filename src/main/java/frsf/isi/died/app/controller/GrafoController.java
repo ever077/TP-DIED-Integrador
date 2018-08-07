@@ -31,6 +31,8 @@ public class GrafoController {
 	private GrafoPanel vistaGrafo;
 	private ControlPanel vistaControl;
 	private MaterialCapacitacionDao materialDao;
+	private List<MaterialCapacitacion> camino;
+	
 	
 	private Queue<MaterialCapacitacion> materialesPorPintar = new LinkedList<MaterialCapacitacion>();
 
@@ -135,6 +137,35 @@ public class GrafoController {
 			this.crearVertice(punto.x, punto.y, color, m);
 		}
 		
+	}
+//************************************************************************************************
+//************************************************************************************************
+//************************************************************************************************
+	public void pintarPrimero(List<List<MaterialCapacitacion>> caminos) {
+		
+		this.serPrimerCamino(caminos);
+		this.vistaGrafo.caminoPintar(camino);
+		this.vistaGrafo.repaint();
+		
+	}
+
+
+	private void serPrimerCamino(List<List<MaterialCapacitacion>> caminos) {
+		
+		this.camino = caminos.get(0);
+	}
+
+	public void pintarSiguienteCamino() {
+		
+		
+		this.setSiguienteCamino(camino);
+		this.vistaGrafo.caminoPintar(camino);
+		
+	}
+
+	private void setSiguienteCamino(List<MaterialCapacitacion> camino2) {
+		
+		this.camino = (List<MaterialCapacitacion>) camino2.remove(0);
 	}
 	
 	
