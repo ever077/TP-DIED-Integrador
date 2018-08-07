@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.event.MouseAdapter;
@@ -40,7 +41,7 @@ public class GrafoPanel extends JPanel {
     private Queue<Color> colaColores;
     private GrafoController controller;
     
-    private JButton btnActualizar;
+    private JButton btnSiguienteCamino;
 
     private List<VerticeView> vertices;
     private List<AristaView> aristas;
@@ -63,14 +64,14 @@ public class GrafoPanel extends JPanel {
       //************************************************************************************************
       //************************************************************************************************
       //************************************************************************************************
-        btnActualizar = new JButton("Actualizar");
-        this.add(btnActualizar);
-        btnActualizar.addActionListener( e ->{
+   
+        btnSiguienteCamino = new JButton("Siguiente camino");
+        this.add(btnSiguienteCamino);
+        btnSiguienteCamino.addActionListener( e ->{
         	
-        	this.paintComponent(getGraphics());
-        	this.repaint();
+        	//this.paintComponent(getGraphics());
              controller.pintarSiguienteCamino();
-                
+             this.repaint();
                 	
         });
       //************************************************************************************************
@@ -142,7 +143,7 @@ public class GrafoPanel extends JPanel {
         this.vertices.add(vert);
     }
 
-    public void caminoPintar(List<MaterialCapacitacion> camino){
+    public void caminoPintar(List<MaterialCapacitacion> camino, Color color){
         //this.vertices.add(vert);
     	Integer idOrigen =-1;
     	Integer idDestino =-1;
@@ -153,7 +154,7 @@ public class GrafoPanel extends JPanel {
     			idDestino = mat.getId();
     			for(AristaView av : this.aristas) {
     				if(av.getOrigen().getId().equals(idOrigen) && av.getDestino().getId().equals(idDestino) ) {
-    	    			av.setColor(Color.RED);
+    	    			av.setColor(color);
 //    	    			av.getOrigen().setColor(Color.BLUE);
 //    	    			av.getDestino().setColor(Color.BLUE);
     				}
@@ -173,14 +174,14 @@ public class GrafoPanel extends JPanel {
     }
 
     private void dibujarAristas(Graphics2D g2d) {
-        System.out.println(this.aristas);
+      //  System.out.println(this.aristas);
         for (AristaView a : this.aristas) {
             g2d.setPaint(a.getColor());
             g2d.setStroke ( a.getFormatoLinea());
             g2d.draw(a.getLinea());
             //dibujo una flecha al final
             // con el color del origen para que se note
-            g2d.setPaint(Color.BLACK);
+            g2d.setPaint(Color.MAGENTA);
             Polygon flecha = new Polygon();  
             flecha.addPoint(a.getDestino().getCoordenadaX(), a.getDestino().getCoordenadaY()+7);
             flecha.addPoint(a.getDestino().getCoordenadaX()+20, a.getDestino().getCoordenadaY()+10);
@@ -240,5 +241,7 @@ public class GrafoPanel extends JPanel {
     	});
     }
 */    
+    
+   
     
 }

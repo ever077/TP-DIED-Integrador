@@ -32,7 +32,7 @@ public class GrafoController {
 	private ControlPanel vistaControl;
 	private MaterialCapacitacionDao materialDao;
 	private List<MaterialCapacitacion> camino;
-	
+	private List<List<MaterialCapacitacion>> caminos = new ArrayList<List<MaterialCapacitacion>>();
 	
 	private Queue<MaterialCapacitacion> materialesPorPintar = new LinkedList<MaterialCapacitacion>();
 
@@ -61,7 +61,7 @@ public class GrafoController {
 
 	public void buscarCamino(Integer nodo1, Integer nodo2, Integer saltos) {
 		List<MaterialCapacitacion> camino = this.materialDao.buscarCamino(nodo1, nodo2, saltos);
-		this.vistaGrafo.caminoPintar(camino);
+		this.vistaGrafo.caminoPintar(camino, Color.PINK);
 		this.vistaGrafo.repaint();
 	}
 
@@ -142,29 +142,36 @@ public class GrafoController {
 //************************************************************************************************
 //************************************************************************************************
 	public void pintarPrimero(List<List<MaterialCapacitacion>> caminos) {
-		
-		this.serPrimerCamino(caminos);
-		this.vistaGrafo.caminoPintar(camino);
+		this.setCaminos(caminos);
+		this.vistaGrafo.caminoPintar(this.caminos.get(0), Color.GREEN);
 		this.vistaGrafo.repaint();
-		
 	}
 
-
-	private void serPrimerCamino(List<List<MaterialCapacitacion>> caminos) {
-		
-		this.camino = caminos.get(0);
+	private void setCaminos(List<List<MaterialCapacitacion>> caminos) {
+		for(int i = 0; i < caminos.size(); i++) {
+			List<MaterialCapacitacion> l = caminos.get(i);
+			this.caminos.add(i, l);
+		}
+	//	this.caminos.addAll(caminos);
 	}
 
 	public void pintarSiguienteCamino() {
-		
-		
-		this.setSiguienteCamino(camino);
-		this.vistaGrafo.caminoPintar(camino);
+		if(caminos.size() > 1) {
+			//this.setSiguienteCamino(camino);
+			
+			// Pinto el camino anterior del color original
+			this.vistaGrafo.caminoPintar(this.caminos.get(0), Color.BLACK);
+			
+			// Borro el camino anterior de la lista de caminos
+			caminos.remove(0);
+			
+			// Pinto el nuevo camino de rojo
+			this.vistaGrafo.caminoPintar(this.caminos.get(0), Color.GREEN);
+		}
 		
 	}
 
 	private void setSiguienteCamino(List<MaterialCapacitacion> camino2) {
-		
 		this.camino = (List<MaterialCapacitacion>) camino2.remove(0);
 	}
 	
