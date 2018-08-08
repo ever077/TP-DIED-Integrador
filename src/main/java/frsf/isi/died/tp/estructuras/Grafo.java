@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
+import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
+
 public class Grafo<T> {
 
 	protected List<Arista<T>> aristas;
@@ -472,6 +474,28 @@ public class Grafo<T> {
         public void deleteAristas() {
         	this.aristas = new ArrayList<Arista<T>>();
         }
+        
+        public List<T> getVerticesDeTema(String tema) {
+        	List<T> lista = new ArrayList<T>();
+        	for(Vertice<T> v : this.vertices) {
+        		if( ((MaterialCapacitacion) v.getValor()).getTema().equals(tema) ) {
+        			lista.add(v.getValor());
+        		}
+        	}
+        	return lista;
+        }
+        
+        public List<Arista<T>> getAristasDeTema(String tema) {
+        	List<Arista<T>> lista = new ArrayList<Arista<T>>();
+        	for(Arista<T> a : this.aristas) {
+        		if( ((MaterialCapacitacion) a.getInicio().getValor()).getTema().equals(tema) &&
+        				((MaterialCapacitacion) a.getFin().getValor()).getTema().equals(tema)) {
+        			lista.add(a);
+        		}
+        	}
+        	return lista;
+        }
+        
 }
 
 

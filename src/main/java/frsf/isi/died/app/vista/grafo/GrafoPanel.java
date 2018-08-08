@@ -42,6 +42,7 @@ public class GrafoPanel extends JPanel {
     private GrafoController controller;
     
     private JButton btnSiguienteCamino;
+    private JButton btnPageRank;
 
     private List<VerticeView> vertices;
     private List<AristaView> aristas;
@@ -61,9 +62,6 @@ public class GrafoPanel extends JPanel {
         this.colaColores.add(Color.BLUE);
         this.colaColores.add(Color.ORANGE);
         this.colaColores.add(Color.CYAN);
-      //************************************************************************************************
-      //************************************************************************************************
-      //************************************************************************************************
    
         btnSiguienteCamino = new JButton("Siguiente camino");
         this.add(btnSiguienteCamino);
@@ -74,8 +72,16 @@ public class GrafoPanel extends JPanel {
              this.repaint();
                 	
         });
-      //************************************************************************************************
-      //************************************************************************************************
+        
+        btnPageRank = new JButton("Calcular PageRank");
+        this.add(btnPageRank);
+        btnPageRank.addActionListener( e ->{
+        	List<Integer> listaIdVertice = this.getListIdFromVerticeView(this.vertices);
+        	List<List<Integer>> listaIdAristas = this.getListIdFromAristaView(this.aristas);
+        	controller.showPageRank(listaIdVertice, listaIdAristas);
+            
+        });
+        
         addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent event) {
                 if (event.getClickCount() == 2 && !event.isConsumed()) {
@@ -242,6 +248,25 @@ public class GrafoPanel extends JPanel {
     }
 */    
     
+    private List<Integer> getListIdFromVerticeView(List<VerticeView> listaVerticesView) {
+    	List<Integer> lista = new ArrayList<Integer>();
+    	for(VerticeView v : listaVerticesView) {
+    		lista.add(v.getId());
+    	}
+    	return lista;
+    }
+    
+    private List<List<Integer>> getListIdFromAristaView(List<AristaView> listaAristasView){
+    	List<List<Integer>> listaFinal = new ArrayList<List<Integer>>();
+    	
+    	for(AristaView a : listaAristasView) {
+    		List<Integer> lista = new ArrayList<Integer>();
+    		lista.add(a.getOrigen().getId());
+    		lista.add(a.getDestino().getId());
+    		listaFinal.add(lista);
+    	}
+    	return listaFinal;
+    }
    
     
 }

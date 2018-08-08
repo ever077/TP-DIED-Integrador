@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
+import frsf.isi.died.tp.estructuras.Arista;
+import frsf.isi.died.tp.estructuras.Vertice;
 import frsf.isi.died.tp.modelo.productos.Libro;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.modelo.productos.Video;

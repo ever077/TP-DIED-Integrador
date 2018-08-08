@@ -15,6 +15,7 @@
  */
 package frsf.isi.died.tp.modelo.productos;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -42,6 +43,7 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 	protected String fechaPublicacion = "";
 	protected String relevancia = "";
 	protected String tema = "";
+	protected double pageRank = 1.0;
 	
 	
 	public MaterialCapacitacion() {
@@ -175,14 +177,20 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 		this.relevancia = relevancia;
 	}
 
-
 	public String getTema() {
 		return tema;
 	}
 
-
 	public void setTema(String tema) {
 		this.tema = tema;
+	}
+
+	public double getPageRank() {
+		return pageRank;
+	}
+
+	public void setPageRank(double pageRank) {
+		this.pageRank = pageRank;
 	}
 
 
@@ -256,5 +264,6 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 			return aux;
 		}
 	}
+	
 	
 }

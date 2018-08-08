@@ -15,7 +15,9 @@ import javax.swing.JOptionPane;
 import frsf.isi.died.app.dao.util.CsvDatasource;
 import frsf.isi.died.app.dao.util.CsvRecord;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
+import frsf.isi.died.tp.estructuras.Arista;
 import frsf.isi.died.tp.estructuras.Grafo;
+import frsf.isi.died.tp.estructuras.Vertice;
 import frsf.isi.died.tp.modelo.Biblioteca;
 import frsf.isi.died.tp.modelo.BibliotecaABB;
 import frsf.isi.died.tp.modelo.productos.Libro;
@@ -405,5 +407,6 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 	public void deleteAristas() {
 		GRAFO_MATERIAL.deleteAristas();
 	}
+	
 	
 }

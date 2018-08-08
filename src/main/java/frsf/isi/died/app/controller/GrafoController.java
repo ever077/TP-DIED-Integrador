@@ -14,6 +14,7 @@ import java.util.Queue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import frsf.isi.died.app.dao.MaterialCapacitacionDao;
 import frsf.isi.died.app.dao.MaterialCapacitacionDaoDefault;
@@ -21,6 +22,7 @@ import frsf.isi.died.app.vista.grafo.AristaView;
 import frsf.isi.died.app.vista.grafo.ControlPanel;
 import frsf.isi.died.app.vista.grafo.GrafoPanel;
 import frsf.isi.died.app.vista.grafo.VerticeView;
+import frsf.isi.died.app.vista.pageRank.PageRankPanel;
 import frsf.isi.died.tp.estructuras.Arista;
 import frsf.isi.died.tp.estructuras.Grafo;
 import frsf.isi.died.tp.estructuras.Vertice;
@@ -33,6 +35,7 @@ public class GrafoController {
 	private GrafoPanel vistaGrafo;
 	private ControlPanel vistaControl;
 	private MaterialCapacitacionDao materialDao;
+	private PageRankController pageRankController;
 	private List<List<MaterialCapacitacion>> caminos = new ArrayList<List<MaterialCapacitacion>>();
 	
 	private Queue<MaterialCapacitacion> materialesPorPintar = new LinkedList<MaterialCapacitacion>();
@@ -42,6 +45,7 @@ public class GrafoController {
 		this.vistaGrafo.setController(this);
 		this.vistaControl = panelCtrl;
 		this.vistaControl.setController(this);
+		this.pageRankController = new PageRankController(new PageRankPanel(),this);
 		this.materialDao = new MaterialCapacitacionDaoDefault();
 		this.vistaControl.armarPanel(materialDao.listaMateriales());
 	}
@@ -192,6 +196,26 @@ public class GrafoController {
 			//JOptionPane.showMessageDialog(null, e.getMessage(), "Error en lectura o escritura", JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();
 		}
+	}
+	
+	public void showPageRank(List<Integer> verticesId, List<List<Integer>> aristasId) {
+		List<Vertice<MaterialCapacitacion>> listaVertices = new ArrayList<Vertice<MaterialCapacitacion>>();
+		List<Arista<MaterialCapacitacion>> listaAristas = new ArrayList<Arista<MaterialCapacitacion>>();
+		
+		for(Integer id : verticesId) {
+			Vertice<MaterialCapacitacion> vertice = new Vertice<MaterialCapacitacion>(materialDao.findById(id));
+			listaVertices.add(vertice);
+		}
+		
+		for(List<Integer> parId : aristasId){
+			Arista<MaterialCapacitacion> arista = new Arista<MaterialCapacitacion>();
+			Vertice<MaterialCapacitacion> verticeInicial = new Vertice<MaterialCapacitacion>( materialDao.findById(parId.get(0)) );
+			Vertice<MaterialCapacitacion> verticeFinal = new Vertice<MaterialCapacitacion>( materialDao.findById(parId.get(1)) );
+			arista.setInicio(verticeInicial);
+			arista.setFin(verticeFinal);
+			listaAristas.add(arista);
+		}
+		pageRankController.showPageRank(listaVertices, listaAristas, (JFrame) (SwingUtilities.getWindowAncestor(vistaControl)));
 	}
 	
 }
