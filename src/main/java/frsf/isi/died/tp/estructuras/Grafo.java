@@ -264,9 +264,16 @@ public class Grafo<T> {
 		Vertice<T> destino= this.getNodo(n2);
         return this.buscarCaminoNSaltos(origen, destino, saltos, new HashSet<Vertice>());
          
-    }
+    } 
+/*    
+    public List<List<T>> buscarCaminoNSaltos(T n1,T n2,Integer saltos){
+		Vertice<T> origen = this.getNodo(n1);
+		Vertice<T> destino= this.getNodo(n2);
+        return this.buscarCaminoNSaltos(origen, destino, saltos, new HashSet<Vertice>());
+       
+    }*/
     
-    private List<T> buscarCaminoNSaltos(Vertice<T> n1,Vertice<T> n2,Integer saltos,HashSet<Vertice> visitados){
+       private List<T> buscarCaminoNSaltos(Vertice<T> n1,Vertice<T> n2,Integer saltos,HashSet<Vertice> visitados){
         ArrayList<T> resultado = new ArrayList<>();
        //TODO
         
@@ -345,7 +352,39 @@ public class Grafo<T> {
     		}
     	}
     	
+    }	
     	
+        public List<List<T>> buscarCaminosHastaNSaltos(T n1,T n2, Integer k) {
+        	Vertice<T> origen = this.getNodo(n1);
+    		Vertice<T> destino= this.getNodo(n2);
+    		List<T> v = new ArrayList<T>();
+    		v.add(origen.getValor());
+        	List<List<T>> salida= new ArrayList<List<T>>();
+        	buscarCaminosHastaNSaltos(origen, destino, salida, v, k);
+        	return salida;
+        }
+        
+        private void buscarCaminosHastaNSaltos(Vertice<T> n1, Vertice<T> n2, List<List<T>> resultado, List<T> visitados,Integer k){
+        	List<Vertice<T>> adyacentes = this.getAdyacentes(n1); 
+        	List<T> copiaVisitados;
+        	
+        	if(k>0) {
+        		for(int i=0; i<adyacentes.size(); i++) {
+        		
+	        		if(n2.equals((Vertice<T>)adyacentes.get(i))){
+	        			
+	        			copiaVisitados = new ArrayList<T>(visitados);
+	        			copiaVisitados.add(n2.getValor());
+	        			resultado.add(copiaVisitados);
+	        		}
+	        		else if(!visitados.contains(adyacentes.get(i))){
+	        			copiaVisitados = new ArrayList<T>(visitados);
+	        			copiaVisitados.add(adyacentes.get(i).getValor());
+	        			this.buscarCaminosHastaNSaltos(adyacentes.get(i), n2, resultado, copiaVisitados, k-1);
+	        		}
+        	  }
+        	
+          } 	
     	
 /*    	List<T> lista = new ArrayList();
     	Stack<Vertice> porVisitar = new Stack<Vertice>();
@@ -374,9 +413,65 @@ public class Grafo<T> {
     		return lista;
     	}
   */  	
-
+    	
     }
     
+//********************************************************************************************************************************************************************    
+/*   private List<List<T>> buscarCaminoNSaltos(Vertice<T> n1,Vertice<T> n2,Integer saltos,HashSet<Vertice> visitados){
+        ArrayList<T> resultado = new ArrayList<>();
+        List<List<T>> resultadoMayor = new ArrayList<List<T>>();
+       //TODO
+        
+        List<Vertice<T>> porvisitar = new ArrayList<>();
+        
+       
+       if(saltos <= 0 || visitados.size() == this.vertices.size())
+       {
+    	   return resultadoMayor;
+    	   
+       }else {
+        	
+  
+    	   if(!visitados.contains(n1)) {
+    		   	visitados.add(n1); 
+    		   	porvisitar = this.getAdyacentes(n1); 
+      	  
+      	  		if(saltos == 1 && porvisitar.contains(n2)) {
+      	  			resultado.add(n1.getValor());
+      	  			resultado.add(n2.getValor());
+      	  			resultadoMayor.add(resultado);
+      	  		}
+      	  		else {
+      	  		
+      	  			for(Vertice<T> vertice : porvisitar) {
+          		  
+	      	  			if(!visitados.contains(vertice)) {
+	      	  				resultado.addAll(this.buscarCaminoNSaltos(vertice, n2, saltos-1, visitados));
+	      	  				
+	      	  				if(!resultado.isEmpty()) {
+	      	  					visitados.add(vertice);
+	      	  					resultado.add(0, n1.getValor());
+	      	  				}
+	      	  				else {
+	      	  					visitados.clear();
+	      	  				}
+	      	  			}
+      	  			
+	      	  			if(!resultado.isEmpty()) {
+	      	  				break;
+	      	  			}
+      	  			}
+      	  		}
+    	   }
+    	   return resultadoMayor;
+       }
+    }
+    
+    */
+        
+        public void deleteAristas() {
+        	this.aristas = new ArrayList<Arista<T>>();
+        }
 }
 
 

@@ -386,5 +386,24 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 		return pqLibrosCopy;
 	}
 	
+	public List<List<MaterialCapacitacion>> buscarCaminosHastaNSaltos(Integer nodo1, Integer nodo2, Integer n){
+		
+		MaterialCapacitacion n1 = this.findById(nodo1);
+		MaterialCapacitacion n2 = this.findById(nodo2);
+		return GRAFO_MATERIAL.buscarCaminosHastaNSaltos(n1, n2, n);
+	}
+	
+	public void eliminarArchivo(String nombreArchivo) throws IOException {
+		File fichero = new File(nombreArchivo);
+		if(fichero.exists()) {
+			fichero.delete();
+		}else {
+			throw new IOException("Error en el fichero");
+		}
+	}
+	
+	public void deleteAristas() {
+		GRAFO_MATERIAL.deleteAristas();
+	}
 	
 }

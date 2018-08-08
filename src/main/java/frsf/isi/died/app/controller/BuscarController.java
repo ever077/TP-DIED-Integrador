@@ -42,6 +42,7 @@ public class BuscarController {
 		this.buscarMaterialPanel.setController(this);
 		this.wishListController = new WishListController(new WishListPanel());
 		this.grafoController = new GrafoController(new GrafoPanel(), new ControlPanel());
+		
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
@@ -240,6 +241,7 @@ public class BuscarController {
 	}
 	
 	public void showRelaciones(Integer id, List<MaterialCapacitacion> materiales) {
+		grafoController.eliminarArchivo("aristas.csv");
 		grafoController.showRelaciones(id, materiales, (JFrame) SwingUtilities.getWindowAncestor(buscarMaterialPanel));
 	}
 	

@@ -3,6 +3,7 @@ package frsf.isi.died.app.controller;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -11,6 +12,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import frsf.isi.died.app.dao.MaterialCapacitacionDao;
@@ -31,7 +33,6 @@ public class GrafoController {
 	private GrafoPanel vistaGrafo;
 	private ControlPanel vistaControl;
 	private MaterialCapacitacionDao materialDao;
-	private List<MaterialCapacitacion> camino;
 	private List<List<MaterialCapacitacion>> caminos = new ArrayList<List<MaterialCapacitacion>>();
 	
 	private Queue<MaterialCapacitacion> materialesPorPintar = new LinkedList<MaterialCapacitacion>();
@@ -61,7 +62,7 @@ public class GrafoController {
 
 	public void buscarCamino(Integer nodo1, Integer nodo2, Integer saltos) {
 		List<MaterialCapacitacion> camino = this.materialDao.buscarCamino(nodo1, nodo2, saltos);
-		this.vistaGrafo.caminoPintar(camino, Color.PINK);
+		this.vistaGrafo.caminoPintar(camino, Color.GREEN);
 		this.vistaGrafo.repaint();
 	}
 
@@ -70,7 +71,13 @@ public class GrafoController {
 		//this.vistaGrafo.caminoPintar(caminos);
 	//	this.vistaGrafo.repaint();
 		return caminos;
-		
+	}
+	
+	public List<List<MaterialCapacitacion>> buscarCaminosHastaNSaltos(Integer nodo1, Integer nodo2, Integer n) {
+		List<List<MaterialCapacitacion>> caminos = this.materialDao.buscarCaminosHastaNSaltos(nodo1, nodo2,n);
+		//this.vistaGrafo.caminoPintar(caminos);
+	//	this.vistaGrafo.repaint();
+		return caminos;
 	}
 
 	public List<MaterialCapacitacion> listaVertices() {
@@ -138,9 +145,7 @@ public class GrafoController {
 		}
 		
 	}
-//************************************************************************************************
-//************************************************************************************************
-//************************************************************************************************
+	
 	public void pintarPrimero(List<List<MaterialCapacitacion>> caminos) {
 		this.setCaminos(caminos);
 		this.vistaGrafo.caminoPintar(this.caminos.get(0), Color.GREEN);
@@ -165,15 +170,28 @@ public class GrafoController {
 			// Borro el camino anterior de la lista de caminos
 			caminos.remove(0);
 			
-			// Pinto el nuevo camino de rojo
+			// Pinto el nuevo camino de verde
 			this.vistaGrafo.caminoPintar(this.caminos.get(0), Color.GREEN);
 		}
 		
 	}
 
-	private void setSiguienteCamino(List<MaterialCapacitacion> camino2) {
-		this.camino = (List<MaterialCapacitacion>) camino2.remove(0);
+	public void rePintarGrafo(){
+		if(caminos.size() == 1 ) {
+			this.vistaGrafo.caminoPintar(this.caminos.get(0), Color.BLACK);
+			caminos.remove(0);
+		}
 	}
 	
+	public void eliminarArchivo(String nombreArchivo) {
+		try {
+			materialDao.deleteAristas();
+			materialDao.eliminarArchivo(nombreArchivo);
+		}
+		catch(IOException e){
+			//JOptionPane.showMessageDialog(null, e.getMessage(), "Error en lectura o escritura", JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
+	}
 	
 }

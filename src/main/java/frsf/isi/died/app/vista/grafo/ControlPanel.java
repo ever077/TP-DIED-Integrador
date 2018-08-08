@@ -32,6 +32,8 @@ public class ControlPanel extends JPanel {
     private JButton btnBuscarCamino; 
     private GrafoController controller;
     private List<MaterialCapacitacion> listaVertices;
+  
+    
         
     public void armarPanel( List<MaterialCapacitacion> listaVertices){
     	this.listaVertices = listaVertices;
@@ -47,17 +49,21 @@ public class ControlPanel extends JPanel {
         this.btnBuscarCamino = new JButton("Buscar Camino");
         this.btnBuscarCamino.addActionListener(
                 e -> { 
+                	controller.rePintarGrafo();
                 	if(txtLongitudCamino.getText().isEmpty()) {
                 		Integer idOrigen = this.listaVertices.get(cmbVertice1.getSelectedIndex()).getId();
 	                    Integer idDestino = this.listaVertices.get(cmbVertice2.getSelectedIndex()).getId();
 	                    List<List<MaterialCapacitacion>> caminos = controller.buscarCaminos(idOrigen,idDestino); 
-	                    controller.pintarPrimero(caminos);//************************************************************************************************
+	                    controller.pintarPrimero(caminos);
                 	}
+                	
+                	
                 	else{
                 		Integer n = Integer.parseInt(txtLongitudCamino.getText());
 	                    Integer idOrigen = this.listaVertices.get(cmbVertice1.getSelectedIndex()).getId();
 	                    Integer idDestino = this.listaVertices.get(cmbVertice2.getSelectedIndex()).getId();
-	                    controller.buscarCamino(idOrigen,idDestino,n); 
+	                    List<List<MaterialCapacitacion>> caminos = controller.buscarCaminosHastaNSaltos(idOrigen,idDestino,n); 
+	                    controller.pintarPrimero(caminos);
                 	}
                 }
                     

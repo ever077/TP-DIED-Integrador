@@ -27,4 +27,7 @@ public interface MaterialCapacitacionDao {
 	public void agregarMaterialWishList(MaterialCapacitacion material);
 	public PriorityQueue<MaterialCapacitacion> listaWishList();
 	public List<List<MaterialCapacitacion>> buscarCaminos(Integer idOrigen, Integer idDestino);
+	public List<List<MaterialCapacitacion>> buscarCaminosHastaNSaltos(Integer nodo1, Integer nodo2, Integer n);
+	public void eliminarArchivo(String nombreArchivo) throws IOException;
+	public void deleteAristas();
 }
