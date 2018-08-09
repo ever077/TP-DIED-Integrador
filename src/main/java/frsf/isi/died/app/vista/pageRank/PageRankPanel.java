@@ -2,6 +2,10 @@ package frsf.isi.died.app.vista.pageRank;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,7 +19,11 @@ import frsf.isi.died.app.controller.PageRankController;
 import frsf.isi.died.app.vista.material.LibroTableModel;
 import frsf.isi.died.app.vista.material.VideoTableModel;
 import frsf.isi.died.app.vista.wishlist.WishTableModel;
+import frsf.isi.died.tp.estructuras.Arista;
+import frsf.isi.died.tp.estructuras.Vertice;
+import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
 import frsf.isi.died.tp.modelo.productos.Temas;
+import frsf.isi.died.tp.modelo.productos.Video;
 
 public class PageRankPanel extends JPanel {
 
@@ -28,6 +36,8 @@ public class PageRankPanel extends JPanel {
 	private PageRankController pageRankController;
 	private PageRankTableModel pageRankTableModel;
 	
+	List<Vertice<MaterialCapacitacion>> listaVertices;
+	List<Arista<MaterialCapacitacion>> listaAristas;
 	
 	// Table model de PageRank
 	
@@ -56,7 +66,8 @@ public class PageRankPanel extends JPanel {
 		
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener( e ->{
-			
+			pageRankController.calcularPageRank(this.listaVertices, this.listaAristas, (String) comboTema.getSelectedItem().toString());
+			tabla.setModel(pageRankTableModel);
 		});
 		gridConst.gridx = 4;
 		gridConst.gridwidth = 1;
@@ -79,8 +90,21 @@ public class PageRankPanel extends JPanel {
 		
 	}
 	
+	public void setListaVertices(List<Vertice<MaterialCapacitacion>> listaVertices) {
+		this.listaVertices = listaVertices;
+	}
+
+	public void setListaAristas(List<Arista<MaterialCapacitacion>> listaAristas) {
+		this.listaAristas = listaAristas;
+	}
+
 	public void setController(PageRankController pageRankController) {
 		this.pageRankController = pageRankController;
+	}
+	
+	public void setListaMateriales(List<MaterialCapacitacion> listaMateriales, boolean actualizar) {
+		this.pageRankTableModel.setMateriales(listaMateriales);
+		if(actualizar) this.pageRankTableModel.fireTableDataChanged();
 	}
 	
 }

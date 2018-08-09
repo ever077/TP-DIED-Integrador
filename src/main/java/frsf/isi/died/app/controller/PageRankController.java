@@ -15,6 +15,8 @@ import frsf.isi.died.app.vista.wishlist.WishListPanel;
 import frsf.isi.died.tp.estructuras.Arista;
 import frsf.isi.died.tp.estructuras.Vertice;
 import frsf.isi.died.tp.modelo.productos.MaterialCapacitacion;
+import frsf.isi.died.tp.modelo.productos.Temas;
+import frsf.isi.died.tp.util.OrdenarMaterialPorPageRank;
 
 public class PageRankController {
 
@@ -25,6 +27,7 @@ public class PageRankController {
 	 private static Double d = 0.5;
 	 private static Double e = 0.00001;
 	 private static Integer decimales = 5;
+	 
 	//***************************************************************************************************************************************************
 	 
 	public PageRankController(PageRankPanel pageRankPanel, GrafoController grafoController) {
@@ -35,6 +38,8 @@ public class PageRankController {
 	}
 	
 	public void showPageRank(List<Vertice<MaterialCapacitacion>> listaVertices, List<Arista<MaterialCapacitacion>> listaAristas, JFrame framePrincipal) {
+		pageRankPanel.setListaVertices(listaVertices);
+		pageRankPanel.setListaAristas(listaAristas);
 		pageRankPanel.construir();
 		framePrincipal.setContentPane(pageRankPanel);
 		framePrincipal.pack();
@@ -43,7 +48,7 @@ public class PageRankController {
 	//***************************************************************************************************************************************************
 	//***************************************************************************************************************************************************
 
-	public List<Integer> calcuarCi (List<Vertice<MaterialCapacitacion>> listaVertices, List<Arista<MaterialCapacitacion>> listaAristas) {
+	private List<Integer> calcuarCi (List<Vertice<MaterialCapacitacion>> listaVertices, List<Arista<MaterialCapacitacion>> listaAristas) {
 		
 		List<Integer> vectorCi = new ArrayList<Integer>();
 		
@@ -66,43 +71,46 @@ public class PageRankController {
 	
 	public Double formatearDecimales(Double numero, Integer numeroDecimales) {
 		return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
-		}
+	}
 		
 	//crea la matriz con todos los Pr(i)
-	public List<List<Double>> crearPRMatriz (List<Vertice<MaterialCapacitacion>> listaVertices, List<Arista<MaterialCapacitacion>> listaAristas, List<Integer> vectorCi){
+/*	public List<Vertice<MaterialCapacitacion>> crearPRMatriz (List<Vertice<MaterialCapacitacion>> listaVertices, List<Arista<MaterialCapacitacion>> listaAristas, List<Integer> vectorCi){
 		
-		List<List<Double>> matrizPR = new  ArrayList<List<Double>>();
-		List<Double> primeraFila = new ArrayList<Double>();
+		
+		List<Double> pageRank = new ArrayList<Double>();
 		
 		//aca cargo la primera fila de la matriz con 1 
 		for(int i=0; i<listaVertices.size();i++)
 		{
-			primeraFila.add(1.0);
+			pageRank.add(1.0);
 		}
 		//aca la añado
-		matrizPR.add(primeraFila);
+	
+
 		
 		int i=1;
-		while(!condicionDeCorte(matrizPR.get(i), matrizPR.get(i-1) )) //mientras no se cumpla la condicion de corte sigue
-		{
+		
+		do{
 			for(int j=0; j<listaVertices.size(); j++) {
 				
-				(matrizPR.get(i)).add(formatearDecimales(calcularPRi(j,listaVertices,listaAristas, vectorCi, matrizPR.get(i-1) ), decimales));
+				formatearDecimales(calcularPRi(j,listaVertices,listaAristas, vectorCi, pageRank ), decimales);
 			}
 			i++;
-		}
+			
+		}while(!condicionDeCorte(matrizPR.get(i), matrizPR.get(i-1) )); //mientras no se cumpla la condicion de corte sigue
 		
 		return matrizPR;
 	}
 	
 	//suponemos que todos estan en true, que todas las restas entre los valores  actuales y anteriores ameritan a que termine de cargar la matriz
 	//pero al primero que no cumple la concion de corte retorna false y el while de la matriz se sigue ejecutando
+*/
 	
 	private boolean condicionDeCorte(List<Double> actual, List<Double> anterior) {
 		boolean marca=true;
 		
 		for(int i=0; i<actual.size(); i++) {
-			if(Math.abs(actual.get(i)-anterior.get(i)) < e) {
+			if(Math.abs(actual.get(i)-anterior.get(i)) > e) {
 				
 				marca=false;
 			}
@@ -110,30 +118,82 @@ public class PageRankController {
 		return marca;
 	}
 	
-	//calcula un Pr(i)
-	// lo que hace es me fijo en la lista de vertices (lv), tomo el vertice, me fijo en la de aristas (la)
-	//donde es que aparece como nodo final, y tomo el nodo inicial de ese par, lo busco en la lista de vertices (lv)
-	// y agarro el indice, entonces divido al valor de este ultimo nodo, por C(i) correspondiente al indice en vCi
-	
-	private Double calcularPRi(int j, List<Vertice<MaterialCapacitacion>> lv, List<Arista<MaterialCapacitacion>> la, List<Integer> vCi,List<Double> anterior ){
-		
-		Double k=0.0;
-		Vertice<MaterialCapacitacion> nodo = lv.get(j);
-		int i=0;
-		for(Arista<MaterialCapacitacion> a : la) {
-			
-			if(nodo.equals(a.getFin())) {
-				
-				while(!a.getInicio().equals(lv.get(i))) {
-					i++;
-				}
-					
+	public void calcularPageRank(List<Vertice<MaterialCapacitacion>> lv, List<Arista<MaterialCapacitacion>> la, String tema) {
+		// filtrar vertices segun temas
+		List<Vertice<MaterialCapacitacion>> listaVerticesFiltrada = new ArrayList<Vertice<MaterialCapacitacion>>();
+		for(Vertice<MaterialCapacitacion> v : lv) {
+			if(v.getValor().getTema().equals(tema)) {
+				listaVerticesFiltrada.add(v);
 			}
-			k= k+(anterior.get(i)/vCi.get(i)); //si no anda probar con castear a (Double) vCi.get(i)
+		}
+		// filtrar aristas segun temas
+		List<Arista<MaterialCapacitacion>> listaAristasFiltrada = new ArrayList<Arista<MaterialCapacitacion>>();
+			for(Arista<MaterialCapacitacion> a : la) {
+				if(a.getInicio().getValor().getTema().equals(tema) && a.getFin().getValor().getTema().equals(tema)) {
+					listaAristasFiltrada.add(a);
+				}
+			}
+			List<Double> listaPageRanks = this.calcularPRi(listaVerticesFiltrada, listaAristasFiltrada);
+			List<MaterialCapacitacion> listaMateriales = this.setPageRankToMateriales(listaPageRanks, listaVerticesFiltrada);
+			listaMateriales.sort(new OrdenarMaterialPorPageRank());
+			this.pageRankPanel.setListaMateriales(listaMateriales, false);
+	}
+	
+	private List<Double> calcularPRi(List<Vertice<MaterialCapacitacion>> lv, List<Arista<MaterialCapacitacion>> la){
+		
+		List<Double> pageRank = new ArrayList<Double>();
+		List<Double> copiaPageRank;
+		List<Double> aux;
+		Boolean seguirIterando;
+		
+		List<Integer> vCi = this.calcuarCi(lv, la);
+		
+		//aca cargo la primera fila de la matriz con 1 
+		for(int i=0; i<lv.size();i++)
+		{
+			pageRank.add(1.0);
 		}
 		
+		do {
+			copiaPageRank = new ArrayList<Double>(pageRank);
+			aux = new ArrayList<Double>();
+			
+			for(Vertice<MaterialCapacitacion> v : lv) 	{
+				
+				Double k=0.0;
+				int i = 0;
+				
+				for(Arista<MaterialCapacitacion> a : la) {
+					
+					if(v.equals(a.getFin())) {
+						i = lv.indexOf(a.getInicio());	
+					
+						k= k+(copiaPageRank.get(i)/vCi.get(i)); //si no anda probar con castear a (Double) vCi.get(i)
+					}
+					
+				}
+				aux.add( formatearDecimales( ((1-d)+d*k), decimales ) );
+			}
+			if(!condicionDeCorte(aux, pageRank)) {
+				pageRank.clear();
+				pageRank.addAll(aux);
+				seguirIterando = true;
+			}else {
+				seguirIterando = false;
+			}
 		
-		return (1-d)+k;
+		}while(seguirIterando);
+	
+		return pageRank;
+	}
+	
+	private List<MaterialCapacitacion> setPageRankToMateriales(List<Double> listaPageRanks, List<Vertice<MaterialCapacitacion>> listaVerticesFiltrada){
+		List<MaterialCapacitacion> listaMateriales = new ArrayList<MaterialCapacitacion>();
+		for(int i = 0; i < listaVerticesFiltrada.size(); i++) {
+			listaVerticesFiltrada.get(i).getValor().setPageRank(listaPageRanks.get(i));
+			listaMateriales.add(listaVerticesFiltrada.get(i).getValor());
+		}
+		return listaMateriales;
 	}
 	
 	//***************************************************************************************************************************************************

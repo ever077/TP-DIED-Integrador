@@ -43,7 +43,7 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 	protected String fechaPublicacion = "";
 	protected String relevancia = "";
 	protected String tema = "";
-	protected double pageRank = 1.0;
+	protected Double pageRank = 0.0;
 	
 	
 	public MaterialCapacitacion() {
