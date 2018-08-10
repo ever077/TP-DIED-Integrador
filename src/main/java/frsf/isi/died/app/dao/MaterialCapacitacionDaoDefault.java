@@ -7,10 +7,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.PriorityQueue;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 import frsf.isi.died.app.dao.util.CsvDatasource;
 import frsf.isi.died.app.dao.util.CsvRecord;
@@ -393,6 +397,46 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 	public void deleteAristas() {
 		GRAFO_MATERIAL.deleteAristas();
 	}
+
+	public void guardarArbol(JTree arbol, String nombreArchivo) {
+		List<String> filas = new ArrayList<String>();
+		DefaultTreeModel modeloArbol = (DefaultTreeModel) arbol.getModel();
+		//modeloArbol.get
+		DefaultMutableTreeNode raiz = (DefaultMutableTreeNode)arbol.getModel().getRoot(); 
+		List<DefaultMutableTreeNode> listaNodos = new ArrayList<DefaultMutableTreeNode>();
+		this.listarNodos(raiz, listaNodos); 
+		try {
+			
+			for(DefaultMutableTreeNode n : listaNodos) {
+				dataSource.agregarFilaAlFinal(nombreArchivo, n.getUserObject().toString());
+			}
+			
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void crearArchivoArbol(String nombreArchivo) {
+		
+		try{
+			dataSource.crearArchivoArbol(nombreArchivo);
+		}catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
+	
+	public void listarNodos(DefaultMutableTreeNode nodo, List<DefaultMutableTreeNode> listaNodos) { 
+		listaNodos.add(nodo);
+
+		if (nodo.getChildCount() >= 0) { 
+			for (Enumeration e = nodo.children(); e.hasMoreElements(); ) { 
+				DefaultMutableTreeNode n = (DefaultMutableTreeNode)e.nextElement(); 
+				listarNodos(n, listaNodos); 
+			} 
+		} 
+	}
 	
 }

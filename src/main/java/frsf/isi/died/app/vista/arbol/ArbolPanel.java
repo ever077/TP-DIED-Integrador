@@ -88,7 +88,7 @@ public class ArbolPanel extends JPanel {
 			
 			DefaultMutableTreeNode nodo = (DefaultMutableTreeNode) arbol.getLastSelectedPathComponent();
 			arbolController.cargarArbol(nodo, TipoNodo.valueOf(comboTipo.getSelectedItem().toString()), txtValor.getText(), arbol);
-			
+			arbolController.guardarArbol(m, arbol);
 			
 		});
 		gridConst.gridy = 3;

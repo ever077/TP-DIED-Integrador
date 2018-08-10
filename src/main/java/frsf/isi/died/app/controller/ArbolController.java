@@ -116,11 +116,14 @@ public class ArbolController {
 				break;
 			}
 		}
-		this.guardarArbol(arbol);
+		//this.guardarArbol(arbol);
 	}
 
-	private void guardarArbol(JTree arbol) {
-		
+	public void guardarArbol(MaterialCapacitacion m, JTree arbol) {
+		// crear archivo, si ya existe lo pisa
+		String nombreArchivo = ("tree_"+m.getTitulo()+"_"+String.valueOf(m.getId())+".csv");
+		materialDao.crearArchivoArbol(nombreArchivo);
+		materialDao.guardarArbol(arbol, nombreArchivo);
 		
 	}
 	

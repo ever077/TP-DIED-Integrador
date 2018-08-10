@@ -122,9 +122,24 @@ public class CsvDatasource {
 		this.writeLine(writer, fila);
 		writer.flush();
 		writer.close();
-
 	}
 	
+	public void agregarFilaAlFinal(String archivoCsv, String fila) throws IOException {
+		FileWriter writer = new FileWriter(archivoCsv,true); 
+		this.escribirLinea(writer, fila);
+		writer.flush();
+		writer.close();
+	}
+	
+	private void escribirLinea(FileWriter writer, String fila) throws IOException {
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(fila);
+		sb.append("\n");
+		writer.append(sb.toString());
+		
+	}
+
 	public void agregarFilaAlFinal(String archivoCsv, CsvRecord fila) throws IOException {
 		FileWriter writer = new FileWriter(archivoCsv,true); 
 		this.writeLine(writer, fila.asCsvRow());
@@ -167,5 +182,14 @@ public class CsvDatasource {
 		w.append(sb.toString());
 
 	}
+
+	public void crearArchivoArbol(String nombreArchivo) throws IOException {
+		FileWriter writer;
+		writer = new FileWriter(nombreArchivo);		
+		writer.flush();
+		writer.close();
+	}
+	
+	
 
 }
