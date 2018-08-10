@@ -57,6 +57,7 @@ public class BuscarMaterialPanel extends JPanel {
 	private JButton btnCancelar;
 	private JButton btnAgregarWishList;
 	private JButton btnAsignarRelaciones;
+	private JButton btnArbolContenido;
 	private JComboBox comboTema;
 	private JComboBox comboTipoOrden;
 	private JRadioButton rbTodos, rbLibros, rbVideos;
@@ -280,7 +281,7 @@ public class BuscarMaterialPanel extends JPanel {
 		gridConst.gridwidth=1;
 		this.add(btnBuscar, gridConst);
 		
-		
+				
 		btnCancelar= new JButton("Cancelar");
 		btnCancelar.addActionListener( e ->{
 // BUSCAR COMO ELIMINAR EL PANEL
@@ -319,7 +320,7 @@ public class BuscarMaterialPanel extends JPanel {
 				
 			
 		});	
-		gridConst.gridx=2;
+		gridConst.gridx=0;
 		gridConst.gridy=5;
 		gridConst.gridwidth=2;
 		gridConst.weightx=1.0;
@@ -335,12 +336,29 @@ public class BuscarMaterialPanel extends JPanel {
 					buscarController.showRelaciones(idFilaSeleccionada, materiales);
 				}
 		});	
-		gridConst.gridx=6;
+		gridConst.gridx=4;
 		gridConst.gridy=5;
 		gridConst.gridwidth=2;
 		gridConst.weightx=1.0;
 		gridConst.anchor = GridBagConstraints.LINE_START;
 		this.add(btnAsignarRelaciones, gridConst);
+		
+		
+		btnArbolContenido = new JButton("Arbol de contenido");
+		btnArbolContenido.addActionListener( e ->{
+			// meter en try catch
+			if(idFilaSeleccionada != -1) {
+				buscarController.mostrarArbolContenido(idFilaSeleccionada);
+				
+			}
+			
+		});
+		gridConst.gridx=8;
+		gridConst.gridy=5;
+		gridConst.weightx=1.0;
+		gridConst.anchor = GridBagConstraints.LINE_START;
+		gridConst.gridwidth=2;
+		this.add(btnArbolContenido, gridConst);	
 		
 	}
 	

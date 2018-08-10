@@ -16,6 +16,7 @@ import frsf.isi.died.app.dao.MaterialCapacitacionDao;
 import frsf.isi.died.app.dao.MaterialCapacitacionDaoDefault;
 import frsf.isi.died.app.excepciones.DataOutOfBoundException;
 import frsf.isi.died.app.excepciones.MaterialNotFoundException;
+import frsf.isi.died.app.vista.arbol.ArbolPanel;
 import frsf.isi.died.app.vista.grafo.ControlPanel;
 import frsf.isi.died.app.vista.grafo.GrafoPanel;
 import frsf.isi.died.app.vista.material.BuscarMaterialPanel;
@@ -36,13 +37,14 @@ public class BuscarController {
 	private MaterialCapacitacionDao materialDAO;
 	private WishListController wishListController;
 	private GrafoController grafoController;
+	private ArbolController arbolController;
 	
 	public BuscarController(BuscarMaterialPanel buscarMaterialPanel) {
 		this.buscarMaterialPanel = buscarMaterialPanel;
 		this.buscarMaterialPanel.setController(this);
 		this.wishListController = new WishListController(new WishListPanel());
 		this.grafoController = new GrafoController(new GrafoPanel(), new ControlPanel());
-		
+		this.arbolController = new ArbolController(new ArbolPanel());
 		materialDAO = new MaterialCapacitacionDaoDefault();
 	}
 
@@ -243,6 +245,12 @@ public class BuscarController {
 	public void showRelaciones(Integer id, List<MaterialCapacitacion> materiales) {
 		grafoController.eliminarArchivo("aristas.csv");
 		grafoController.showRelaciones(id, materiales, (JFrame) SwingUtilities.getWindowAncestor(buscarMaterialPanel));
+	}
+
+	public void mostrarArbolContenido(Integer idFilaSeleccionada) {
+		
+		arbolController.mostraArbol(idFilaSeleccionada, (JFrame) SwingUtilities.getWindowAncestor(buscarMaterialPanel));
+		
 	}
 	
 	
