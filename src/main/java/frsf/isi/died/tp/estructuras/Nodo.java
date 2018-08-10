@@ -3,7 +3,9 @@ package frsf.isi.died.tp.estructuras;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Nodo {
+import javax.swing.tree.DefaultMutableTreeNode;
+
+public class Nodo extends DefaultMutableTreeNode {
 
 	 private String valor;
 	 private TipoNodo tipoNodo;

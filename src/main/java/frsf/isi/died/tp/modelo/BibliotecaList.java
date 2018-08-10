@@ -110,10 +110,6 @@ public class BibliotecaList implements Biblioteca{
 		}
 	}
 	
-	
-/*	private void RuntimeException(String string) {
-		// TODO Auto-generated method stub
-		
-	}*/
+
 
 }

@@ -232,25 +232,6 @@ public abstract class MaterialCapacitacion implements Ordenable, Comparable<Mate
 	// RESPUESTA: como Libro y Video son una especializacion de materialCapacitacion, simpre se crean instancias de
 	//Libro y Video, entonces el metodo precio() es siempre ejecutado por una de estas 2 instancias
 	
-/*	public boolean equals(Object m) {
-		if(m instanceof MaterialCapacitacion && this.titulo.equalsIgnoreCase(((MaterialCapacitacion) m).getTitulo())) {
-			return true;
-		}
-		return false;
-	}
-*/
-
-/*	@Override
-	public int compareTo(MaterialCapacitacion arg0) {
-		// TODO Auto-generated method stub
-		int aux = this.titulo.compareTo(arg0.getTitulo());
-		if(aux == 0){
-			return this.precio().compareTo(arg0.precio());
-		}else{
-			return aux;
-		}
-	}
-*/	
 
 	
 	// Puse que por dececto se compare solamente por titulo y si es igual por id

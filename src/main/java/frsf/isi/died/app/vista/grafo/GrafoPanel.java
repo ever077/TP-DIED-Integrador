@@ -231,22 +231,10 @@ public class GrafoPanel extends JPanel {
     		posicionColocarVertice = null;
     	}
     	return punto;
-/*    	this.getRightClick();
-    	
-    	return posicionColocarVertice;
-*/    	
+  	
     }
     
-/*    private void getRightClick() {
-    	addMouseListener(new MouseAdapter() {
-    		public void mouseRightClicked(MouseEvent event) {
-    			if(SwingUtilities.isRightMouseButton(event)) {
-    				posicionColocarVertice = event.getPoint();
-    			}
-    		}
-    	});
-    }
-*/    
+
     
     private List<Integer> getListIdFromVerticeView(List<VerticeView> listaVerticesView) {
     	List<Integer> lista = new ArrayList<Integer>();

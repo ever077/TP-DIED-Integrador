@@ -23,13 +23,12 @@ public class PageRankController {
 	private PageRankPanel pageRankPanel;
 	private MaterialCapacitacionDao materialDAO;
 	private GrafoController grafoController;
-	//***************************************************************************************************************************************************
-	 private static Double d = 0.5;
-	 private static Double e = 0.00001;
-	 private static Integer decimales = 5;
+
+	private static Double d = 0.5;
+	private static Double e = 0.00001;
+	private static Integer decimales = 5;
 	 
-	//***************************************************************************************************************************************************
-	 
+	
 	public PageRankController(PageRankPanel pageRankPanel, GrafoController grafoController) {
 		this.pageRankPanel = pageRankPanel;
 		this.pageRankPanel.setController(this);
@@ -45,8 +44,6 @@ public class PageRankController {
 		framePrincipal.pack();
 	}
 	
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
 
 	private List<Integer> calcuarCi (List<Vertice<MaterialCapacitacion>> listaVertices, List<Arista<MaterialCapacitacion>> listaAristas) {
 		
@@ -73,38 +70,11 @@ public class PageRankController {
 		return Math.round(numero * Math.pow(10, numeroDecimales)) / Math.pow(10, numeroDecimales);
 	}
 		
-	//crea la matriz con todos los Pr(i)
-/*	public List<Vertice<MaterialCapacitacion>> crearPRMatriz (List<Vertice<MaterialCapacitacion>> listaVertices, List<Arista<MaterialCapacitacion>> listaAristas, List<Integer> vectorCi){
-		
-		
-		List<Double> pageRank = new ArrayList<Double>();
-		
-		//aca cargo la primera fila de la matriz con 1 
-		for(int i=0; i<listaVertices.size();i++)
-		{
-			pageRank.add(1.0);
-		}
-		//aca la añado
-	
 
-		
-		int i=1;
-		
-		do{
-			for(int j=0; j<listaVertices.size(); j++) {
-				
-				formatearDecimales(calcularPRi(j,listaVertices,listaAristas, vectorCi, pageRank ), decimales);
-			}
-			i++;
-			
-		}while(!condicionDeCorte(matrizPR.get(i), matrizPR.get(i-1) )); //mientras no se cumpla la condicion de corte sigue
-		
-		return matrizPR;
-	}
 	
 	//suponemos que todos estan en true, que todas las restas entre los valores  actuales y anteriores ameritan a que termine de cargar la matriz
 	//pero al primero que no cumple la concion de corte retorna false y el while de la matriz se sigue ejecutando
-*/
+
 	
 	private boolean condicionDeCorte(List<Double> actual, List<Double> anterior) {
 		boolean marca=true;
@@ -196,6 +166,4 @@ public class PageRankController {
 		return listaMateriales;
 	}
 	
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
 }

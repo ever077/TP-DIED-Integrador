@@ -15,8 +15,7 @@ public class WishListController {
 	private WishListPanel wishListPanel;
 	private MaterialCapacitacionDao materialDAO;
 	
-	//private static PriorityQueue<MaterialCapacitacion> colaPrioridad = new PriorityQueue<MaterialCapacitacion>(new OrdenarMaterialWishList());
-	
+
 	
 	public WishListController(WishListPanel wishListPanel) {
 		this.wishListPanel = wishListPanel;
@@ -39,10 +38,6 @@ public class WishListController {
 		
 		materialDAO.agregarMaterialWishList(materialDAO.findById(id));
 	}
-/*	
-	public PriorityQueue<MaterialCapacitacion> getColaPrioridad(){
-		return colaPrioridad;
-	}
-*/
+
 	
 }

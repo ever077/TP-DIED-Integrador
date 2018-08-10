@@ -59,7 +59,11 @@ public class ArbolPanel extends JPanel {
 		this.add(lblTipo, gridConst);
 		
 		comboTipo = new JComboBox();
+		
 		comboTipo.setModel(new DefaultComboBoxModel(TipoNodo.values()));
+		comboTipo.removeItem(TipoNodo.TITULO);
+		
+
 		comboTipo.setBackground(getBackground().brighter());
 		gridConst.gridy = 1;
 		gridConst.gridx = 3;

@@ -296,21 +296,7 @@ public class MaterialCapacitacionDaoDefault implements MaterialCapacitacionDao{
 	
 	public void eliminarVideo(Integer id) throws MaterialNotFoundException {
 		List<List<String>> listaArchivo = dataSource.readFile("videos.csv");
-	/*	List<Video> videos = new ArrayList<Video>();
-		for(List<String> filaVideo: listaArchivo) {
-			if(!(filaVideo.get(0).equals(id.toString()))) {
-				Video aux = new Video();
-				aux.loadFromStringRow(filaVideo);
-				videos.add(aux);
-			}
-			
-		}
-		List<CsvRecord> l = new ArrayList<CsvRecord>();
-		for(Video v : videos) {
-			l.add(v);
-			
-		}
-	*/	
+
 		FileWriter fichero = null;
 	    PrintWriter escritor = null;
 		try {

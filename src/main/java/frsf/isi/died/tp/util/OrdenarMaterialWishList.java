@@ -19,11 +19,7 @@ public class OrdenarMaterialWishList implements Comparator<MaterialCapacitacion>
         	aux = m2.getCalificacion().compareTo(m1.getCalificacion());
         	if(aux == 0) {
         		return (m1.precio().compareTo(m2.precio()));
-             /*   if(aux == 0) {
-                	return m1.getId().compareTo(m2.getId());
-                }else {
-                	return aux;
-                }*/
+
         	}else {
         		return aux;
         	}

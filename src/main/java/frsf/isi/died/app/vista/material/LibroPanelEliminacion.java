@@ -146,10 +146,6 @@ public class LibroPanelEliminacion extends LPanel {
 		this.add(lblRelevancia, gridConst);
 				
 		comboRelevancia = new JComboBox();
-		// no cargo el combo
-		//comboRelevancia.setModel(new DefaultComboBoxModel(Relevancia.values()));	
-		//comboRelevancia.setSelectedIndex(-1);
-		//comboRelevancia.setSize(5, 0);
 		comboRelevancia.setEnabled(false);
 		comboRelevancia.addItem("           ");
 		comboRelevancia.setBackground(getBackground().brighter());

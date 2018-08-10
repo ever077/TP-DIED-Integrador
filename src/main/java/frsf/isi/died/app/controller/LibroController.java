@@ -64,21 +64,7 @@ public class LibroController {
 			l.setCalificacion(calificacion);
 			l.setRelevancia(relevancia);
 			l.setTema(tema);
-			// Para no modificar l
-		/*	Libro aux = l;
-			if(!(l.getTitulo().equals(titulo))) {
-				aux.setTitulo(titulo);
-			}
-			if(!(l.getCosto().equals(costo))) {
-				aux.setCosto(costo);
-			}
-			if(!(l.getPrecioCompra().equals(precio))) {
-				aux.setPrecioCompra(precio);
-			}
-			if(!(l.getPaginas().equals(paginas))){
-				aux.setPaginas(paginas);
-			}
-		*/
+
 			materialDAO.modificarLibro(l);
 			materialDAO = new MaterialCapacitacionDaoDefault(); 
 			this.panelLibro.setListaLibros(materialDAO.listaLibros(),true);

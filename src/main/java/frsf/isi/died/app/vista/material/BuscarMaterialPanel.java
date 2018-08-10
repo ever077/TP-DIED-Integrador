@@ -315,7 +315,7 @@ public class BuscarMaterialPanel extends JPanel {
 			// meter en try catch
 				if(idFilaSeleccionada != -1) {
 					buscarController.addMaterialWishList(idFilaSeleccionada);
-//Elim					wishListController.addMaterial(idFilaSeleccionada);\
+
 				}
 				
 			
@@ -365,17 +365,8 @@ public class BuscarMaterialPanel extends JPanel {
 	public void setController(BuscarController buscarController) {
 		this.buscarController = buscarController;
 	}
+
 	
-/*Elim	public void setWishListController(WishListController wishListController) {
-		this.wishListController = wishListController;
-	}
-*/	
-	
-/*	public void setControllers(LibroController controllerLibro, VideoController controllerVideo) {
-		this.controllerLibro = controllerLibro;
-		this.controllerVideo = controllerVideo;
-	}
-*/	
 	public void setListaLibros(Set<? extends MaterialCapacitacion> librosLista,boolean actualizar) {
 		List<Libro> l = new ArrayList<Libro>();
 		l.addAll((Collection<? extends Libro>) librosLista);

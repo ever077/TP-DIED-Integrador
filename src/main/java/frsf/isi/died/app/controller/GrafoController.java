@@ -117,22 +117,7 @@ public class GrafoController {
 			this.crearVertice(100, 170, color, mat);
 		}
 		
-/*		
-			Por cada material
-		 *  	decirle a la vistaGrafo que muestre en una burbuja el mensaje "hacer click derecho en la posicion a poner los materiales"
-		 * 		pintarlo en el lugar seleccionado
-		 * 		AZUL -> Libro ; ROJO -> Video
-		 
-		for(MaterialCapacitacion m : materiales) {
-			Point posicion = vistaGrafo.getPosicionVertice();
-			if(m.esLibro()) {
-				color = Color.BLUE;
-			}else {
-				color = Color.RED;
-			}
-			this.crearVertice(posicion.x, posicion.y, color, m);
-		}
-*/		
+
 	}
 	
 	public void pintarVertice(Point punto) {
